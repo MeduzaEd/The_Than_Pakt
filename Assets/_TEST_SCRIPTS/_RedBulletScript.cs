@@ -16,7 +16,7 @@ public class _RedBulletScript : MonoBehaviour
         //Destroy(transform, DestroyTime);
         Destroy(transform.gameObject, DestroyTime);
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (Time.time > _time)
         {

@@ -8,7 +8,7 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     [Range(0.05f, 30f)]
     float SpawnRate = 0.2f;
     [SerializeField]
-    [Range(2, 30)]
+    [Range(0, 30)]
     int SpawnCount = 2;
     [SerializeField]
     [Range(3f, 30f)]
@@ -23,17 +23,27 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     {
         do
         {
-            for (int i= -SpawnCount; i<SpawnCount;i++)
+         
+            for (int i= -SpawnCount; i<= SpawnCount; i++)
             {
-                GameObject _bullet = Instantiate(BulletPrefab, transform);
-                _bullet.transform.position = transform.position+ new Vector3(i,0,0);
-                _bullet.transform.rotation = transform.rotation;
-                _bullet.GetComponent<_RedBulletScript>().DestroyTime = DestroyTime;
-                yield return null;
+                
+                StartCoroutine(_SpawnPrefab(i, SpawnCount));
             }
             yield return new WaitForSecondsRealtime(SpawnRate);
+            Debug.Log("UN");
             yield return null;
         }
         while (true);
+    }
+    public IEnumerator _SpawnPrefab(int i,float s)
+    {
+        float Y =0.01f*((s * s *2)-((i*i)+(s*s)));
+        Debug.Log((i)+"=i;y="+Y.ToString());
+        GameObject _bullet = Instantiate(BulletPrefab);
+        _bullet.transform.SetParent(transform);
+        _bullet.transform.position = transform.position + (transform.right * 0.03f * (i))+(transform.up*Y);
+        _bullet.transform.rotation = transform.rotation;
+        _bullet.GetComponent<_RedBulletScript>().DestroyTime = DestroyTime;
+        yield return null;
     }
 }
