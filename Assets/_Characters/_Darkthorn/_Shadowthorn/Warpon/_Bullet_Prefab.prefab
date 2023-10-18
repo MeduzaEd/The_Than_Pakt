@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120e52178407ffc4198b69fc283c379d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnShottime: 1.15
   DestroyTime: 7
-  Speed: 100
   _rb: {fileID: 274582132916820865}
   _trigger: {fileID: 8082885670704404694}
 --- !u!54 &274582132916820865
@@ -132,13 +132,13 @@ Rigidbody:
   m_GameObject: {fileID: 7172392879504331855}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.1
+  m_Drag: 0.1
+  m_AngularDrag: 0.2
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &8082885670704404694
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     [Range(0, 30)]
     int SpawnCount = 2;
     [SerializeField]
-    [Range(3f, 30f)]
+    [Range(1f, 30f)]
     float DestroyTime = 5f;
     [SerializeField]
     private GameObject BulletPrefab;
