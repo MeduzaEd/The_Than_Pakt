@@ -5,14 +5,14 @@ using UnityEngine;
 public class _RedBulletScript : MonoBehaviour
 {
     float _time;
-    float OnShottime = 1f;
+    public float OnShottime = 1.15f;
     public float DestroyTime = 9f;
     float Speed = 125f;
     public Rigidbody _rb;
     public BoxCollider _trigger;
     private void Start()
     {
-        _time = Time.time+ OnShottime;
+        _time = Time.time+ OnShottime+Random.Range(0f,0.095f);
         //Destroy(transform, DestroyTime);
         Destroy(transform.gameObject, DestroyTime);
     }

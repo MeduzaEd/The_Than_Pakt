@@ -41,9 +41,10 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
         Debug.Log((i)+"=i;y="+Y.ToString());
         GameObject _bullet = Instantiate(BulletPrefab);
         _bullet.transform.SetParent(transform);
-        _bullet.transform.position = transform.position + (transform.right * 0.03f * (i))+(transform.up*Y);
+        _bullet.transform.position = transform.position + (transform.right * 0.03f * (i))+(transform.up*Y)+(new Vector3(Random.Range(-0.005f, 0.005f), Random.Range((0.01f), Y*0.02f), Random.Range(-0.005f, 0.005f)));
         _bullet.transform.rotation = transform.rotation;
         _bullet.GetComponent<_RedBulletScript>().DestroyTime = DestroyTime;
+        _bullet.GetComponent<_RedBulletScript>().OnShottime+=i*0.05f;
         yield return null;
     }
 }

@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41dc1bdfb19cd8149a672d291f57811b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnRate: 1.1
-  SpawnCount: 3
+  SpawnRate: 2.5
+  SpawnCount: 1
   DestroyTime: 3.2
   BulletPrefab: {fileID: 7172392879504331855, guid: 2b69084acbf01894eb0357af759ccc5c, type: 3}
 --- !u!4 &367163783
