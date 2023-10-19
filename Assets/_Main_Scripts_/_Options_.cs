@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using Ping = UnityEngine.Ping;
 using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 public class _Options_ : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class _Options_ : MonoBehaviour
     [Header("Connections")]
     [SerializeField]
     private GameObject _Servers;
+    [SerializeField]
+    private Mirror.Discovery.NetworkDiscovery DY;
     public void Change()
     {
         try
@@ -62,35 +65,13 @@ public class _Options_ : MonoBehaviour
     private void Start()
     {
         NM = NetworkManager.singleton;
+        DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
-        ScanLocalNetwork();
+
     }
-    private void ScanLocalNetwork()
-    {
-        string baseIP = "192.168.1.";
-        for (int i = 1; i <= 255; i++)
-        {
-            string ip = baseIP + i.ToString();
-            _Ping(ip);
-            Debug.Log("Устройство с IP-адресом " + ip + " в проверке.");
-        }
-    }
-    private IEnumerator _Ping(string i)
-    {
-        Debug.Log("Устройство с IP-адресом " + i + " активно в проверке.");
-        Ping ping = new Ping(i);
-    
-        if (ping.isDone == true)
-        {
-            Debug.Log("Устройство с IP-адресом " + i + " активно.");
-        }
-        else
-        {
-            Debug.Log("Устройство с IP-адресом " + i + "не активно.");
-        }
-        Debug.Log("Устройство с IP-адресом " + i + " проверенно.");
-        yield return null;
-    }
+
+
+
     public void ConnectionToIP()
     {
         try

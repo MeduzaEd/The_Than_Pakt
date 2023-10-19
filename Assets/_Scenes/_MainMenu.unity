@@ -438,7 +438,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 300.00003}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &73623485
@@ -924,7 +924,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.9999437, y: -24.999882}
+  m_AnchoredPosition: {x: -5, y: -24.999878}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 1.05, y: 1.05}
 --- !u!114 &198500009
@@ -1307,6 +1307,8 @@ GameObject:
   m_Component:
   - component: {fileID: 371227671}
   - component: {fileID: 371227672}
+  - component: {fileID: 371227673}
+  - component: {fileID: 371227674}
   m_Layer: 0
   m_Name: Options
   m_TagString: Untagged
@@ -1347,6 +1349,53 @@ MonoBehaviour:
   _Adress: {fileID: 484962895}
   _Port: {fileID: 749824417}
   _Servers: {fileID: 37618239}
+  DY: {fileID: 0}
+--- !u!114 &371227673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371227670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c761308e733c51245b2e8bb4201f46dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableActiveDiscovery: 1
+  BroadcastAddress: localhost
+  serverBroadcastListenPort: 47777
+  ActiveDiscoveryInterval: 3
+  transport: {fileID: 110329323}
+  OnServerFound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 371227674}
+        m_TargetAssemblyTypeName: Mirror.Discovery.NetworkDiscoveryHUD, Mirror.Components
+        m_MethodName: OnDiscoveredServer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  secretHandshake: 4746628995965740335
+--- !u!114 &371227674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371227670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c37d3deca7a834d80cfd8d3cfcc510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkDiscovery: {fileID: 371227673}
 --- !u!1 &417615568
 GameObject:
   m_ObjectHideFlags: 0
@@ -4307,7 +4356,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.9999437, y: -24.999882}
+  m_AnchoredPosition: {x: -5, y: -24.999878}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 1.05, y: 1.05}
 --- !u!114 &1436479306
@@ -5776,7 +5825,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.9999437, y: -24.999882}
+  m_AnchoredPosition: {x: -5, y: -24.999878}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 1.05, y: 1.05}
 --- !u!114 &1949444854
