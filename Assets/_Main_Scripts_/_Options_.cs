@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 public class _Options_ : MonoBehaviour
 {
+    [SerializeField]
     NetworkManager NM;
     [Header("Host")]
     [SerializeField]
@@ -64,7 +65,6 @@ public class _Options_ : MonoBehaviour
     }
     private void Start()
     {
-        NM = NetworkManager.singleton;
         DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
 
