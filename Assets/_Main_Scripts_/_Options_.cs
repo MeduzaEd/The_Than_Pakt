@@ -1,12 +1,8 @@
-using System.Collections;
+
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-using System.Net.NetworkInformation;
-
-using Ping = UnityEngine.Ping;
-using System.Net;
-using System.Net.Sockets;
+using Mirror.Discovery;
 using System.Collections.Generic;
 
 public class _Options_ : MonoBehaviour
@@ -29,7 +25,10 @@ public class _Options_ : MonoBehaviour
     [SerializeField]
     private GameObject _Servers;
     [SerializeField]
+    private GameObject _ServerUI;
+    [SerializeField]
     private Mirror.Discovery.NetworkDiscovery DY;
+    public readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
     public void Change()
     {
         try
@@ -65,25 +64,56 @@ public class _Options_ : MonoBehaviour
     }
     private void Start()
     {
-        DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
+        discoveredServers.Clear();
+        DY.StartDiscovery();
+        // DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
 
     }
+    public void StartHostDY()
+    {
+        discoveredServers.Clear();
+        NM.StartHost();
+        DY.AdvertiseServer();
+    }
 
-
-
+    public void OnConnectedFromDiscovery()
+    {
+        discoveredServers.Clear();
+        DY.StopDiscovery();
+    }
     public void ConnectionToIP()
     {
         try
         {
+            discoveredServers.Clear();
             NM.networkAddress = _Adress.text;
             NM.GetComponent<kcp2k.KcpTransport>().port =(ushort) int.Parse(_Port.text);
             NM.StartClient();
-    
             Debug.Log("Connected");
         }
         catch { Debug.Log("Error"); }
     }
+ 
+    public void FoundedServers(ServerResponse data)
+    {
+        string Adress = data.uri.DnsSafeHost;
+        string Port = data.uri.Port.ToString();
+        GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform,true);
+        _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
+        SC.Port = Port;
+        SC.Adress = Adress;
+        SC.NM = NM;
+        SC.options = this;
+        _ServerUI.transform.GetComponent<RectTransform>().sizeDelta=new Vector2(850,100);
+        _ServerUI.transform.localScale = new Vector3(1f, 1f, 1f);
 
+        Debug.Log(Adress +":"+ Port);
+    }
+    public void Referesh()
+    {
+        discoveredServers.Clear();
+        DY.StartDiscovery();
 
+    }
 }

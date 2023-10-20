@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 namespace Mirror.Discovery
 {
+    
     [Serializable]
     public class ServerFoundUnityEvent<TResponseType> : UnityEvent<TResponseType> {};
 
@@ -12,6 +13,7 @@ namespace Mirror.Discovery
     [AddComponentMenu("Network/Network Discovery")]
     public class NetworkDiscovery : NetworkDiscoveryBase<ServerRequest, ServerResponse>
     {
+        
         #region Server
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Mirror.Discovery
                 {
                     serverId = ServerId,
                     uri = transport.ServerUri()
+                    
                 };
             }
             catch (NotImplementedException)
@@ -72,9 +75,9 @@ namespace Mirror.Discovery
         /// <param name="endpoint">Address of the server that replied</param>
         protected override void ProcessResponse(ServerResponse response, IPEndPoint endpoint)
         {
+            
             // we received a message from the remote endpoint
             response.EndPoint = endpoint;
-
             // although we got a supposedly valid url, we may not be able to resolve
             // the provided host
             // However we know the real ip address of the server because we just
@@ -82,13 +85,13 @@ namespace Mirror.Discovery
             UriBuilder realUri = new UriBuilder(response.uri)
             {
                 Host = response.EndPoint.Address.ToString()
+
             };
             response.uri = realUri.Uri;
-
             OnServerFound.Invoke(response);
         }
 
         #endregion
     }
-
+    
 }
