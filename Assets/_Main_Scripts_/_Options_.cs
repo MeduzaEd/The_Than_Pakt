@@ -99,14 +99,14 @@ public class _Options_ : MonoBehaviour
     {
         string Adress = data.uri.DnsSafeHost;
         string Port = data.uri.Port.ToString();
-        GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform,true);
+        GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform,false);
         _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
         SC.Port = Port;
         SC.Adress = Adress;
         SC.NM = NM;
         SC.options = this;
         _ServerUI.transform.GetComponent<RectTransform>().sizeDelta=new Vector2(850,100);
-        _ServerUI.transform.localScale = new Vector3(1f, 1f, 1f);
+        //_ServerUI.transform.localScale = new Vector3(1f, 1f, 1f);
 
         Debug.Log(Adress +":"+ Port);
     }
@@ -115,5 +115,24 @@ public class _Options_ : MonoBehaviour
         discoveredServers.Clear();
         DY.StartDiscovery();
 
+    }
+    public void Roll()
+    {
+        RectTransform rect = _Servers.GetComponent<RectTransform>();
+        float _y = _Servers.transform.childCount>4?(_Servers.transform.childCount * 125f)-600f:25;
+        //Debug.Log(rect.localPosition);
+       // Debug.Log(rect.position);
+        //Debug.Log(_y);
+        if (rect.localPosition.y < -5f)
+        {
+            rect.localPosition= new Vector3(425,-5,0);
+            Debug.Log("Y>5");
+            //   rect.position = new Vector3(0,5,0);
+        }
+        else if (rect.localPosition.y > _y)
+        {
+            rect.localPosition = new Vector3(425, _y, 0);
+            Debug.Log("Y>_y");
+        }
     }
 }
