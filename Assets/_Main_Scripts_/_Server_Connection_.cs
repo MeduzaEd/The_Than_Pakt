@@ -17,7 +17,7 @@ public class _Server_Connection_ : MonoBehaviour
     }
     public void ConnectToServer()
     {
-        options.discoveredServers.Clear();
+       // options.discoveredServers.Clear();
         NM.networkAddress = Adress;
         NM.GetComponent<kcp2k.KcpTransport>().port = (ushort)int.Parse(Port);
         NM.StartClient();

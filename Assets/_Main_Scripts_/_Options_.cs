@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Mirror;
 using Mirror.Discovery;
 using System.Collections.Generic;
+using System;
 
 public class _Options_ : MonoBehaviour
 {
@@ -28,7 +29,9 @@ public class _Options_ : MonoBehaviour
     private GameObject _ServerUI;
     [SerializeField]
     private Mirror.Discovery.NetworkDiscovery DY;
-    public readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
+    //public readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
+    
+    private List<ServerResponse> serverslist=new List<ServerResponse>();
     public void Change()
     {
         try
@@ -64,7 +67,7 @@ public class _Options_ : MonoBehaviour
     }
     private void Start()
     {
-        discoveredServers.Clear();
+     //   discoveredServers.Clear();
         DY.StartDiscovery();
         // DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
@@ -72,21 +75,21 @@ public class _Options_ : MonoBehaviour
     }
     public void StartHostDY()
     {
-        discoveredServers.Clear();
+      //  discoveredServers.Clear();
         NM.StartHost();
         DY.AdvertiseServer();
     }
 
     public void OnConnectedFromDiscovery()
     {
-        discoveredServers.Clear();
+     //   discoveredServers.Clear();
         DY.StopDiscovery();
     }
     public void ConnectionToIP()
     {
         try
         {
-            discoveredServers.Clear();
+          //  discoveredServers.Clear();
             NM.networkAddress = _Adress.text;
             NM.GetComponent<kcp2k.KcpTransport>().port =(ushort) int.Parse(_Port.text);
             NM.StartClient();
@@ -97,22 +100,45 @@ public class _Options_ : MonoBehaviour
  
     public void FoundedServers(ServerResponse data)
     {
-        string Adress = data.uri.DnsSafeHost;
-        string Port = data.uri.Port.ToString();
-        GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform,false);
-        _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
-        SC.Port = Port;
-        SC.Adress = Adress;
-        SC.NM = NM;
-        SC.options = this;
-        _ServerUI.transform.GetComponent<RectTransform>().sizeDelta=new Vector2(850,100);
-        //_ServerUI.transform.localScale = new Vector3(1f, 1f, 1f);
-
-        Debug.Log(Adress +":"+ Port);
+        try
+        {
+            if (!serverslist.Contains(data)) // Проверяем, не существует ли элемента в списке
+            {
+                serverslist.Add(data); // Если не существует, добавляем его
+            }
+        }
+        catch {}
     }
     public void Referesh()
     {
-        discoveredServers.Clear();
+        try
+        {
+            if (_Servers.transform.childCount > 0)
+            {
+                foreach (Transform server_ in _Servers.transform)
+                {
+                    Destroy(server_.gameObject);
+                }
+
+            }
+            if (serverslist.Count > 0)
+            {
+                foreach (ServerResponse data in serverslist)
+                {
+                    string Adress = data.uri.DnsSafeHost;
+                    string Port = data.uri.Port.ToString();
+                    GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform, false);
+                    _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
+                    SC.Port = Port;
+                    SC.Adress = Adress;
+                    SC.NM = NM;
+                    SC.options = this;
+                    _ServerUI.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(850, 100);
+                }
+            }
+        }
+        catch(Exception ex) { Debug.Log(ex); }
+        //  discoveredServers.Clear();
         DY.StartDiscovery();
 
     }
@@ -126,13 +152,10 @@ public class _Options_ : MonoBehaviour
         if (rect.localPosition.y < -5f)
         {
             rect.localPosition= new Vector3(425,-5,0);
-            Debug.Log("Y>5");
-            //   rect.position = new Vector3(0,5,0);
         }
         else if (rect.localPosition.y > _y)
         {
             rect.localPosition = new Vector3(425, _y, 0);
-            Debug.Log("Y>_y");
         }
     }
 }
