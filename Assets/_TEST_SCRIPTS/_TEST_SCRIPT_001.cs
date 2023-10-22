@@ -10,6 +10,8 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     [SerializeField]
     [Range(0, 30)]
     int SpawnCount = 2;
+    [Range(1, 5)]
+    int LineCount = 2;
     [SerializeField]
     [Range(1f, 30f)]
     float DestroyTime = 5f;
@@ -23,12 +25,36 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     {
         do
         {
-         
-            for (int i= -SpawnCount; i<= SpawnCount; i++)
+            SpawnCount = 5;
+            if (SpawnCount > 2)
             {
-                
-                StartCoroutine(_SpawnPrefab(i, SpawnCount));
+                if (SpawnCount%2==0)
+                {
+                    int _the_line = SpawnCount %2;
+                }
+                else
+                {
+
+                }
+                for (int i = SpawnCount; i <= SpawnCount; i++)
+                {
+
+                    StartCoroutine(_SpawnPrefab(i, SpawnCount));
+                }
+
             }
+            else
+            {
+                for (int i = -SpawnCount; i <= SpawnCount; i++)
+                {
+
+                    StartCoroutine(_SpawnPrefab(i, SpawnCount));
+                }
+            }
+            /////////////---
+            int _sediment_ = SpawnCount % LineCount;
+            int _Line_Y_ = _sediment_==0?SpawnCount/LineCount:(SpawnCount / LineCount)+1;
+            /////////////---
             yield return new WaitForSecondsRealtime(SpawnRate);
             Debug.Log("UN");
             yield return null;
