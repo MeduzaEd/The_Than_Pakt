@@ -30,6 +30,7 @@ public class _Server_Scripts_ : NetworkBehaviour
     {
         if (string.IsNullOrEmpty(CharacterId) || string.IsNullOrEmpty(CharacterName) || CharacterName.Length < 3 || CharacterId.Length < 7)
         {
+            Debug.Log("Character Not ADDED");
             return;
         }
 
