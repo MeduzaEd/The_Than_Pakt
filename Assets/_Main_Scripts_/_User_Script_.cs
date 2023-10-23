@@ -4,18 +4,22 @@ using UnityEngine;
 using Mirror;
 public class _User_Script_ : NetworkBehaviour
 {
+
+
+
+
+    #region ____
     private string SI_ID="None";
     private GameObject _Camera;
     private Vector3 _CameraOffSet=new Vector3(0,0.25f,-0.2f);
     public GameObject Character;
-    [SyncVar]
     public string UserName="ayanayan132412";
     [Command]
     private void AddCharacter()
     {
         Debug.Log("ADDCharacter");
         _Server_Scripts_ serverObject = FindObjectOfType<_Server_Scripts_>();
-        serverObject.CreateCharacter(SystemInfo.deviceUniqueIdentifier, UserName);
+        serverObject.CreateCharacter(this.gameObject,SystemInfo.deviceUniqueIdentifier, UserName);
     }
 
     void Start()
@@ -35,4 +39,5 @@ public class _User_Script_ : NetworkBehaviour
         if (!isLocalPlayer||!Character|| !_Camera) return;
         _Camera.transform.position = Character.transform.GetChild(0).position + _CameraOffSet;
     }
+    #endregion
 }

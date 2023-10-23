@@ -4,8 +4,6 @@ using UnityEngine;
 using Mirror;
 public class _Server_Scripts_ : NetworkBehaviour
 {
-    //[SyncVar]
-    // private int serverValue = 0;
     #region _Prefabs_
     [Header("_Prefabs_"), SerializeField]
     private GameObject Characters_Parent;
@@ -15,35 +13,34 @@ public class _Server_Scripts_ : NetworkBehaviour
     private GameObject Character_Prefab;
     #endregion
 
-
+    #region /// ___Commands___ \\\
     [Command(requiresAuthority = false)]
-    public void CreateCharacter(string CharacterId,string CharacterName)
+    public void CreateCharacter(GameObject User, string CharacterId,string CharacterName)
     {
+        if (!NetworkServer.active) { Debug.Log("NetworkServer not active");  return; }
         Debug.Log("Character ADD");
-        CreatePlayer(CharacterId, CharacterName);
-    }
+        CreatePlayer(User,CharacterId, CharacterName);
 
+    }
+    #endregion
 
     #region /// ___SERVER___ \\\
     [Server]
-    public void CreatePlayer(string CharacterId, string CharacterName)
+    public void CreatePlayer(GameObject User, string CharacterId, string CharacterName)
     {
         if (string.IsNullOrEmpty(CharacterId) || string.IsNullOrEmpty(CharacterName) || CharacterName.Length < 3 || CharacterId.Length < 7)
         {
             Debug.Log("Character Not ADDED");
             return;
         }
+        Debug.Log("Character ADDED");
+        GameObject newPlayer = Instantiate(Character_Prefab, Characters_Parent.transform);
+        User.GetComponent<_User_Script_>().Character = newPlayer;
 
-        if (Characters_Parent.transform.Find(CharacterId) == null)
-        {
-            Debug.Log("Character ADDED");
-            GameObject newPlayer = Instantiate(Character_Prefab, Characters_Parent.transform);
-            GameObject.FindGameObjectWithTag("_USERS_").transform.Find(CharacterId).GetComponent<_User_Script_>().Character= newPlayer;
-
-            newPlayer.transform.position = new Vector3(Random.Range(-SpawnRate, SpawnRate),0, Random.Range(-SpawnRate, SpawnRate)); // Устанавливаем начальную позицию, например, в точку (0, 0, 0).
-            newPlayer.name = CharacterId;
-            NetworkServer.Spawn(newPlayer);
-        }
+        newPlayer.transform.position = new Vector3(Random.Range(-SpawnRate, SpawnRate), 0, Random.Range(-SpawnRate, SpawnRate)); // Устанавливаем начальную позицию, например, в точку (0, 0, 0).
+        newPlayer.name = CharacterId;
+        NetworkServer.Spawn(newPlayer);
+       
     }
     #endregion
 }
