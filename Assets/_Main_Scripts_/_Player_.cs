@@ -5,17 +5,16 @@ using UnityEngine;
 public class _Player_ : MonoBehaviour
 {
     #region _Variables_
-
     public int Level = 0;
     public int Exp = 0;
     public int Gold = 0;
     public string Name = "Null";
     [SerializeField]
     public List<_Character> Characters;
-
     #endregion
     public void Load()
     {
+
         Player_Datas _Datas = _LocalData_.Load_Player_Datas();
 
         Level = _Datas.Level;

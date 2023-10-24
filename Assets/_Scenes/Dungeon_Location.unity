@@ -448,9 +448,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 595200244}
     - target: {fileID: -8193912468651543243, guid: e1fa0e2fbc882604a9f0cc00e132296e, type: 3}
+      propertyPath: Users_Parent
+      value: 
+      objectReference: {fileID: 813555727}
+    - target: {fileID: -8193912468651543243, guid: e1fa0e2fbc882604a9f0cc00e132296e, type: 3}
       propertyPath: Character_Prefab
       value: 
-      objectReference: {fileID: 15894691819469917, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      objectReference: {fileID: 2515183876908002263, guid: 6a5eb10417408b347ab1d2780d1897ee, type: 3}
     - target: {fileID: -8193912468651543243, guid: e1fa0e2fbc882604a9f0cc00e132296e, type: 3}
       propertyPath: Characters_Parent
       value: 
