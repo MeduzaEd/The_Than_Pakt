@@ -63,10 +63,20 @@ public class _Character_Controller_ : NetworkBehaviour
         verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);
 
         C.transform.rotation = Quaternion.Euler(verticalRotation, C.transform.eulerAngles.y, 0);
-
+        Vector3 cameraTargetPosition = Rbp - C.transform.forward * Offset.z + Vector3.up * Offset.y;
         // ѕозиционирование камеры
-        C.transform.position = Rbp - C.transform.forward * Offset.z + Vector3.up * Offset.y;
-    
+        
+        RaycastHit hit;
+        if (Physics.Raycast(Rbp, cameraTargetPosition - Rbp, out hit, Vector3.Distance(Rbp, cameraTargetPosition)))
+        {
+            // ≈сли луч пересекает что-либо, записываем позицию пересечени€
+            Vector3 newPosition = hit.point;
+            C.transform.position = newPosition;
+        }
+        else
+        {
+            C.transform.position = cameraTargetPosition;
+        }
     }
     #region Move
     [Command]
