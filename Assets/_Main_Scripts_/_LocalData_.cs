@@ -4,15 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Mirror;
 #endregion
 // ________________________ \\
 #region _Data_
 [System.Serializable]
 public class Player_Datas
 {
+    [SyncVar]
     public int Level;
+    [SyncVar]
     public int Exp;
+    [SyncVar]
     public int Gold;
+    [SyncVar]
     public string Name;
     public List<_Character> Characters;
     public Player_Datas (_Player_ User)
@@ -27,12 +32,14 @@ public class Player_Datas
 [System.Serializable]
 public struct _Character
 {
+    [SyncVar]
     public string Name;
     public List<_Character_Skin> Character_Skins;
 }
 [System.Serializable]
 public struct _Character_Skin
 {
+    [SyncVar]
     public string Name;
 }
 #endregion

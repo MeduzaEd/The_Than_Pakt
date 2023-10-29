@@ -16,11 +16,13 @@ public struct HumanoidStats
 public class _Humanoid_ : NetworkBehaviour
 {
     [SyncVar]
+    public string DisplayName = "None";
+    [SyncVar]
     public HumanoidStats Stats;
     public _Player_ Killer;
-    public _Player_ _User;
     public void OnDamage(_Player_ _Killer_,int _Damage)
     {
+        this.transform.SetParent(GameObject.FindGameObjectWithTag("_USERS_").transform);
         if (!isServerOnly) { return; }
         Debug.Log("OnDamaged");
     }
