@@ -7,15 +7,28 @@ public class _Character_Controller_ : NetworkBehaviour
     [SerializeField]
     private Camera C;
     [SerializeField]
-    private CharacterController CC;
-    private Vector3 Offset = new Vector3(-0.1f, 1.2f, -1.1f);
+    private Rigidbody RB;
+
+
+
+    [SerializeField]
+    private Vector3 Offset = new Vector3(-0.1f, 2f, -2f);
+    public float MaxVerticalAngle = 80.0f; // Максимальный угол наклона вверх
+    public float MinVerticalAngle = -80.0f; // Максимальный угол наклона вниз
+
+    public float CameraSpeed = 5f;
+
+    [SerializeField]
+    private float verticalRotation = 0.0f;
+
+
     [SyncVar]
     public bool InputLag = false;
     [SyncVar]
     public float PlayerSpeed=5f;
     private void Start()
     {
-        CC = this.GetComponentInChildren<CharacterController>();
+        RB = this.GetComponentInChildren<Rigidbody>();
         C = GameObject.FindObjectOfType<Camera>();
     }
     public void FixedUpdate()
@@ -24,23 +37,36 @@ public class _Character_Controller_ : NetworkBehaviour
         if (!isLocalPlayer || !isClient) { return; }//is Not Server Check
         if (Input.GetAxis("Horizontal") != 0 || 0 != Input.GetAxis("Vertical"))
         {
-            if (!CC) { }
-            else
-            {
+            if (!RB) { return; }
+
                 float horizontalInput = Input.GetAxis("Horizontal");// X
                 float verticalInput = Input.GetAxis("Vertical");// Z
 
                 MoveOn(horizontalInput, verticalInput);
-                Debug.Log("isLocalMove: OnStart");
-            }
+               // Debug.Log("isLocalMove: OnStart");
         }
     }
     public void LateUpdate()
     {
-       
-        if (!isLocalPlayer ||!isClient){return;}//is Not Server Check
-        C.transform.position = CC.transform.position + Offset;
-        
+        if (!isLocalPlayer || !isClient) { return; }//is Not Server Check
+
+        float horizontalInput = Input.GetAxis("HorizontalRotation"); // Получаем ввод для вращения
+        float verticalInput = Input.GetAxis("VerticalRotation");
+        Debug.Log($"H: {horizontalInput} |V:{verticalInput}");
+        Vector3 Rbp = RB.transform.position;
+
+
+        C.transform.RotateAround(Rbp, Vector3.up, horizontalInput * CameraSpeed);
+
+        // Вращение по вертикали с ограничением угла
+        verticalRotation -= verticalInput * CameraSpeed;
+        verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);
+
+        C.transform.rotation = Quaternion.Euler(verticalRotation, C.transform.eulerAngles.y, 0);
+
+        // Позиционирование камеры
+        C.transform.position = Rbp - C.transform.forward * Offset.z + Vector3.up * Offset.y;
+    
     }
     #region Move
     [Command]
@@ -48,27 +74,37 @@ public class _Character_Controller_ : NetworkBehaviour
     {
         // Вызывайте метод движения на сервере
         if (!isServer) return;
-        ServerMoveOn(x, z);
+        Vector3 Move = new Vector3(x, -.1f, z).normalized;
+        Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
+        RpcDebuge(MoveNormal.ToString());
+        RB.velocity = (MoveNormal);
+        //ServerMoveOn(x, z);
         //else { Debug.Log("isNotServer"); }
+
     }
     [Server]
     public void ServerMoveOn(float x, float z)
     {
-        Vector3 Move = new Vector3(x, 0, z).normalized;
+        Vector3 Move = new Vector3(x, -.1f, z).normalized;
         Vector3 MoveNormal =Move* PlayerSpeed * Time.fixedDeltaTime;
-        CC.Move(MoveNormal);
-        Debuge(MoveNormal.ToString());
+        RB.velocity = (MoveNormal);
+        //Debuge(MoveNormal.ToString());
     }
     [ClientRpc]
-    public void Debuge(string text)
+    public void RpcDebuge(string text)
     {
-        Debug.Log($"isGlobalMove:{text},");
+        Debug.Log($"isGlobal:{text},");
     }
     public void MoveOn(float x, float z)
     {
-       // CC.Move(new Vector3(x, 0, z).normalized * PlayerSpeed * Time.smoothDeltaTime);
-       
+
+        Vector3 Move = new Vector3(x, -.1f, z).normalized;
+        Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
+        RpcDebuge(MoveNormal.ToString());
+        RB.velocity=(MoveNormal);
+
         CmdMoveOn(x, z);//Basic Move
+
     }
     #endregion
 
