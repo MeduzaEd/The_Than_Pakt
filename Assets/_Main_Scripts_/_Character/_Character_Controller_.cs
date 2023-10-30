@@ -16,6 +16,8 @@ public class _Character_Controller_ : NetworkBehaviour
     public float MaxVerticalAngle = 80.0f; // Максимальный угол наклона вверх
     public float MinVerticalAngle = -80.0f; // Максимальный угол наклона вниз
 
+    public float CameraZoom = 1f;
+    public float CameraZoomMax = 2f;
     public float CameraSpeed = 5f;
     public float cameraspeed = 5f;
     [SerializeField]
@@ -102,7 +104,7 @@ public class _Character_Controller_ : NetworkBehaviour
         Vector3 MoveNormal = ((Move.x * Cam.transform.right) +(Move.z* Cam.transform.forward) +((Move.y * Cam.transform.up)))* PlayerSpeed * Time.fixedDeltaTime;
         RpcDebuge(MoveNormal.ToString());
         RB.rotation =Quaternion.Euler( 0,(Quaternion.LookRotation(MoveNormal*10)).eulerAngles.y,0);
-        RB.velocity = (MoveNormal);
+        RB.velocity=(MoveNormal);
         
         //ServerMoveOn(x, z);
         //else { Debug.Log("isNotServer"); }
@@ -115,12 +117,13 @@ public class _Character_Controller_ : NetworkBehaviour
     }
     public void MoveOn(float x, float z)
     {
-
-        Vector3 Move = new Vector3(x, -.1f, z).normalized;
-        Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
-        RpcDebuge(MoveNormal.ToString());
-        RB.velocity=(MoveNormal);
-
+        if (InputLag==true)
+        {
+            Vector3 Move = new Vector3(x, -.1f, z).normalized;
+            Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
+            RpcDebuge(MoveNormal.ToString());
+            RB.velocity=( MoveNormal);
+        }
         CmdMoveOn(x, z,C.transform.rotation);//Basic Move
 
     }
