@@ -83,11 +83,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.01
   C: {fileID: 0}
-  RB: {fileID: 0}
+  RB: {fileID: 846719931878677004}
   Offset: {x: 0, y: 1, z: 2}
   MaxVerticalAngle: 80
   MinVerticalAngle: -35
   CameraSpeed: 5
+  cameraspeed: 5
   verticalRotation: 0
   InputLag: 1
   PlayerSpeed: 250
@@ -235,6 +236,26 @@ PrefabInstance:
     - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
