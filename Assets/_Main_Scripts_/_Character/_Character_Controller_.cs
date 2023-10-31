@@ -121,7 +121,7 @@ public class _Character_Controller_ : NetworkBehaviour
         {
             Vector3 Move = new Vector3(x, -.1f, z).normalized;
             Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
-            RpcDebuge(MoveNormal.ToString());
+            
             RB.velocity=( MoveNormal);
         }
         CmdMoveOn(x, z,C.transform.rotation);//Basic Move
