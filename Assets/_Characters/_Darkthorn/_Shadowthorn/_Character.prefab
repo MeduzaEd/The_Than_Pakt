@@ -95,6 +95,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7671818883208084388, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
+      propertyPath: m_Name
+      value: Outline
+      objectReference: {fileID: 0}
     - target: {fileID: -3274235572066147243, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -137,15 +141,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8758464439920378208, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 9
+      value: 10.3
       objectReference: {fileID: 0}
     - target: {fileID: 8758464439920378208, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 9
+      value: 10.3
       objectReference: {fileID: 0}
     - target: {fileID: 8758464439920378208, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 9
+      value: 10.3
       objectReference: {fileID: 0}
     - target: {fileID: 8758464439920378208, guid: 6197d4a9491e5ce4f9c2b42472c815e7, type: 3}
       propertyPath: m_LocalPosition.x

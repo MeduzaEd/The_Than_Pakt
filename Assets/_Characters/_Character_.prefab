@@ -84,9 +84,11 @@ MonoBehaviour:
   syncInterval: 0.01
   C: {fileID: 0}
   RB: {fileID: 846719931878677004}
-  Offset: {x: 0, y: 1, z: 2}
+  Offset: {x: 0, y: 0.5, z: 1}
   MaxVerticalAngle: 80
   MinVerticalAngle: -35
+  CameraZoom: 1
+  CameraZoomMax: 2
   CameraSpeed: 1
   cameraspeed: 5
   verticalRotation: 0
@@ -220,6 +222,18 @@ PrefabInstance:
     - target: {fileID: 850132808799001267, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020045404069036438, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020045404069036438, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020045404069036438, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10.2
       objectReference: {fileID: 0}
     - target: {fileID: 7698699622112766089, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
       propertyPath: m_LocalScale.x
