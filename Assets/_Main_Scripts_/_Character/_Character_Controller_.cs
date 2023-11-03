@@ -10,7 +10,8 @@ public class _Character_Controller_ : NetworkBehaviour
     private Rigidbody RB;
 
 
-
+    [SerializeField]
+    Animator _Animator;
     [SerializeField]
     private Vector3 Offset = new Vector3(-0.1f, 2f, -2f);
     public float MaxVerticalAngle = 80.0f; // Максимальный угол наклона вверх
@@ -22,21 +23,27 @@ public class _Character_Controller_ : NetworkBehaviour
     public float cameraspeed = 5f;
     [SerializeField]
     private float verticalRotation = 0.0f;
-
+    private Humanoid hum;
 
     [SyncVar]
     public bool InputLag = false;
-    [SyncVar]
-    public float PlayerSpeed=5f;
     private void Start()
     {
+        hum = this.GetComponentInChildren<Humanoid>();
         RB = this.GetComponentInChildren<Rigidbody>();
         C = GameObject.FindObjectOfType<Camera>();
     }
+    void Update()
+    {
+        if (!isLocalPlayer || !isClient) { return; }
+        float ZoomInput = Input.GetAxis("Mouse ScrollWheel");
+        Debug.Log(ZoomInput);
+    }
     public void FixedUpdate()
     {
-
+      
         if (!isLocalPlayer || !isClient) { return; }//is Not Server Check
+        _Animator.SetFloat("Speed", RB.velocity.magnitude);
         if (Input.GetAxis("Horizontal") != 0 || 0 != Input.GetAxis("Vertical"))
         {
             if (!RB) { return; }
@@ -62,9 +69,9 @@ public class _Character_Controller_ : NetworkBehaviour
         }
         float horizontalInput = Input.GetAxis("HorizontalRotation"); // Получаем ввод для вращения
         float verticalInput = Input.GetAxis("VerticalRotation");
-        Debug.Log($"H: {horizontalInput} |V:{verticalInput}");
+       
         Vector3 Rbp = RB.transform.position;
-
+       
 
         C.transform.RotateAround(Rbp, Vector3.up, horizontalInput * cameraspeed);
      
@@ -93,6 +100,7 @@ public class _Character_Controller_ : NetworkBehaviour
     [Command]
     public void CmdMoveOn(float x, float z,Quaternion Rotation)
     {
+        
         // Вызывайте метод движения на сервере
         if (!isServer) return;
         Vector3 Move = new Vector3(x, -.1f, z).normalized;
@@ -100,32 +108,20 @@ public class _Character_Controller_ : NetworkBehaviour
         Transform Cam = GameObject.FindObjectOfType<Camera>().transform;
         Cam.position = RB.position;
         Cam.rotation = Quaternion.Euler( 0,Rotation.eulerAngles.y ,0);
-        
-        Vector3 MoveNormal = ((Move.x * Cam.transform.right) +(Move.z* Cam.transform.forward) +((Move.y * Cam.transform.up)))* PlayerSpeed * Time.fixedDeltaTime;
-        RpcDebuge(MoveNormal.ToString());
+       
+        Vector3 MoveNormal = ((Move.x * Cam.transform.right) +(Move.z* Cam.transform.forward) +((Move.y * Cam.transform.up)))* hum.Speed * Time.fixedDeltaTime;
         RB.rotation =Quaternion.Euler( 0,(Quaternion.LookRotation(MoveNormal*10)).eulerAngles.y,0);
         RB.velocity=(MoveNormal);
         
-        //ServerMoveOn(x, z);
-        //else { Debug.Log("isNotServer"); }
 
     }
-    [ClientRpc]
-    public void RpcDebuge(string text)
-    {
-        Debug.Log($"isGlobal:{text},");
-    }
+
     public void MoveOn(float x, float z)
     {
-        if (InputLag==true)
-        {
-            Vector3 Move = new Vector3(x, -.1f, z).normalized;
-            Vector3 MoveNormal = Move * PlayerSpeed * Time.fixedDeltaTime;
-            
-            RB.velocity=( MoveNormal);
-        }
+        
+        Debug.Log(RB.velocity.magnitude);
         CmdMoveOn(x, z,C.transform.rotation);//Basic Move
-
+        
     }
     #endregion
 

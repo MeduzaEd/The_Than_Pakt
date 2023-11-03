@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -7636785319631880233}
   - component: {fileID: 7002749253840164743}
   - component: {fileID: 7277111628633854701}
+  - component: {fileID: 2656999081102989090}
   m_Layer: 0
   m_Name: _Character_
   m_TagString: Player
@@ -84,6 +85,7 @@ MonoBehaviour:
   syncInterval: 0.01
   C: {fileID: 0}
   RB: {fileID: 846719931878677004}
+  _Animator: {fileID: 7714782988167258828}
   Offset: {x: 0, y: 0.5, z: 1}
   MaxVerticalAngle: 80
   MinVerticalAngle: -35
@@ -93,7 +95,6 @@ MonoBehaviour:
   cameraspeed: 5
   verticalRotation: 0
   InputLag: 1
-  PlayerSpeed: 200
 --- !u!114 &7002749253840164743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,6 +165,23 @@ MonoBehaviour:
   compressRotation: 0
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!114 &2656999081102989090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515183876908002263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 0
+  animator: {fileID: 7714782988167258828}
 --- !u!1001 &2489037096018513397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -307,8 +325,63 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.85, z: 0.35}
   m_Center: {x: 0, y: -0.325, z: 0}
+--- !u!114 &1012899746248239959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2500252257736634792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147fdeadac3d57b4a9f9c05f0ac8a0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.01
+  Health: 10
+  MaxHealth: 20
+  Mana: 9
+  MaxMana: 10
+  Damage: 1
+  Defence: 1
+  Speed: 150
+  OnLoaded: 0
+  OnDied: 0
+  OnImmune: 0
+  OnImmortal: 0
+  CharacterType: 0
+  Team: 0
+  Exp: 0
+  Gold: 0
 --- !u!4 &2974224326052190022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 850132808799001267, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
   m_PrefabInstance: {fileID: 2489037096018513397}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6476179836698062930 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8893154828933103015, guid: 43d75ee41bf06b744948a0a8525d4500, type: 3}
+  m_PrefabInstance: {fileID: 2489037096018513397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7714782988167258828
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6476179836698062930}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a0346247b9285854eb7e2cc35d82839b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
