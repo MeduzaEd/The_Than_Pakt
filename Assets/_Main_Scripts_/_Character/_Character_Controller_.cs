@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
+
 public class _Character_Controller_ : NetworkBehaviour
 {
     [SerializeField]
@@ -27,6 +29,7 @@ public class _Character_Controller_ : NetworkBehaviour
     private Humanoid hum;
     private Vector2 touchStart;
     private FixedJoystick FJ;
+    private Transform UI;
     float ZoomInput = 0;
     [SyncVar]
     public bool InputLag = false;
@@ -36,10 +39,15 @@ public class _Character_Controller_ : NetworkBehaviour
         RB = this.GetComponentInChildren<Rigidbody>();
         C = GameObject.FindObjectOfType<Camera>();
         FJ = GameObject.FindObjectOfType<FixedJoystick>();
-        ZoomInput = -10f;
+        UI = this.transform.GetChild(0).GetChild(1).transform;
+        if (!isLocalPlayer || !isClient) { return; }
+        UI.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.green;
     }
     void Update()
     {
+        UI.transform.rotation = C.transform.rotation;
+
+
         if (!isLocalPlayer || !isClient) { return; }
         
         if (SystemInfo.deviceType != DeviceType.Handheld)
