@@ -39,7 +39,7 @@ public class _Character_Controller_ : NetworkBehaviour
         RB = this.GetComponentInChildren<Rigidbody>();
         C = GameObject.FindObjectOfType<Camera>();
         FJ = GameObject.FindObjectOfType<FixedJoystick>();
-        UI = this.transform.GetChild(0).GetChild(1).transform;
+        UI = this.transform.GetChild(0).GetChild(0).transform;
         if (!isLocalPlayer || !isClient) { return; }
         UI.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.green;
     }

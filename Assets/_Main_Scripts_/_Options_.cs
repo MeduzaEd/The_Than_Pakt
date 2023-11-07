@@ -150,7 +150,9 @@ public class _Options_ : MonoBehaviour
         DY.StartDiscovery();
         // DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
-
+        ChangeVsync(false);
+        QualitySet(1);
+        FPSSet(1);
     }
     public void StartHostDY()
     {
