@@ -29,8 +29,87 @@ public class _Options_ : MonoBehaviour
     private GameObject _ServerUI;
     [SerializeField]
     private Mirror.Discovery.NetworkDiscovery DY;
+    [SerializeField]
+    private Text QualityUpdate;
+    [SerializeField]
+    private Text FPSUpdate;
     //public readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
-    
+    public void QualitySet(int qualitylevel)
+    {
+        QualitySettings.SetQualityLevel(qualitylevel);
+    }
+    public void ChangeVsync(bool val)
+    {
+        QualitySettings.vSyncCount = val == true ? 1 : 0;
+    }
+    public void FPSSet(int levele)
+    {
+        uint FPS=30;
+        switch (levele)
+        {
+            case 0:
+                FPS = 30;
+                break;
+            case 1:
+                FPS = 60;
+                break;
+            case 2:
+                FPS = 120;
+                break;
+            case 3:
+                FPS = 265;
+                break;
+            default:
+                FPS = 30;
+                break;
+        }
+        Application.targetFrameRate = (int)FPS;
+    }
+    private void Update()
+    {
+        string q = "none";
+        switch(QualitySettings.GetQualityLevel())
+        {
+            case 0:
+                q = "Low";
+                
+                break;
+            case 1:
+                q = "Normal";
+                break;
+            case 2:
+                q = "Hight";
+                break;
+            case 3:
+                q = "Ultra";
+                FPSSet(3);
+                break;
+            default:
+                q = "Error";
+                break;
+        }
+        QualityUpdate.text = $"Current Quality:{q}";
+        switch (Application.targetFrameRate)
+        {
+            case 30:
+                q = "Low";
+                break;
+            case 60:
+                q = "Normal";
+                break;
+            case 120:
+                q = "Hight";
+                break;
+            case 265:
+                q = "Ultra";
+                break;
+            default:
+                q = "Error";
+                break;
+        }
+        FPSUpdate.text = $"Current FPS Limit:{q}";
+
+    }
     private List<ServerResponse> serverslist=new List<ServerResponse>();
     public void Change()
     {
