@@ -37,10 +37,11 @@ public class _Character_Controller_ : NetworkBehaviour
     {
         hum = this.GetComponentInChildren<Humanoid>();
         RB = this.GetComponentInChildren<Rigidbody>();
-        C = GameObject.FindObjectOfType<Camera>();
         FJ = GameObject.FindObjectOfType<FixedJoystick>();
         UI = this.transform.GetChild(0).GetChild(0).transform;
+        C = GameObject.FindObjectOfType<Camera>();
         if (!isLocalPlayer || !isClient) { return; }
+        
         UI.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.green;
     }
     void Update()
@@ -169,7 +170,7 @@ public class _Character_Controller_ : NetworkBehaviour
     public void MoveOn(float x, float z)
     {
         
-        Debug.Log(RB.velocity.magnitude);
+        //Debug.Log(RB.velocity.magnitude);
         CmdMoveOn(x, z,C.transform.rotation);//Basic Move
         
     }

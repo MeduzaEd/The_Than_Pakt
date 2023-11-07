@@ -62,4 +62,27 @@ public class Humanoid : NetworkBehaviour
         OnDied = true;
         
     }
+
+
+    #region Local Variables 
+
+    RectTransform UI;
+
+
+    #endregion
+    private void Start()
+    {
+         UI = transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RectTransform>();
+    }
+    private void Update()
+    {
+        if (Health < MaxHealth)
+        {
+            UI.localPosition = new Vector3(Health <= 0 ? 0f : ((Health / MaxHealth) * 50f)-50f, 0, 0);
+        }
+        else
+        {
+            UI.localPosition = new Vector3(-50f, 0, 0);
+        }
+    }
 }
