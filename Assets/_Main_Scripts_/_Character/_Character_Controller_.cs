@@ -43,6 +43,7 @@ public class _Character_Controller_ : NetworkBehaviour
         C = GameObject.FindObjectOfType<Camera>();
         _Animator = this.transform.GetChild(0).GetChild(1).GetChild(0).GetChild((int)SkinIndex).GetComponent<Animator>();
         //this.transform.GetChild(0).GetChild(1).GetChild(0).GetComponentsInChildren<GameObject>()
+
         if (!isLocalPlayer || !isClient) { return; }
         
         UI.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.green;
