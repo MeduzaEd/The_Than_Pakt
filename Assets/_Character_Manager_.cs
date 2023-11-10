@@ -32,7 +32,7 @@ public class _Character_Manager_ : NetworkBehaviour
 
     private void Start()
     {
-        if (!isLocalPlayer) return;
+        //if (!isLocalPlayer) return;
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
         //Joystick 
@@ -65,6 +65,12 @@ public class _Character_Manager_ : NetworkBehaviour
     private void CharacterSpawn()
     {
         if (!isServer) return;
+        NetworkIdentity networkIdentity = character.GetComponent<NetworkIdentity>();
+        if (networkIdentity != null && networkIdentity.connectionToClient != null)
+        {
+            // Объект уже принадлежит клиенту, пропустить спаун
+            return;
+        }
         NetworkServer.Spawn(character);
        // character.GetComponent<NetworkIdentity>().netId = id;
         //NetworkServer.Spawn(character);
