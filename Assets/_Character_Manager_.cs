@@ -76,6 +76,7 @@ public class _Character_Manager_ : NetworkBehaviour
         //NetworkServer.Spawn(character);
 
         character.transform.localPosition = Vector3.zero;
+      
     }
 
     [Command(requiresAuthority = false)]
