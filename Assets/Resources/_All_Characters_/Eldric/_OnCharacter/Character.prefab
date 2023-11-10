@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4845141393183382620}
   - component: {fileID: 7214497104653753264}
   - component: {fileID: 7531043570928877941}
+  - component: {fileID: 6921013074101218346}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -65,3 +66,24 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  BasicHealth: 250
+  BasicDefence: 10
+  BasicPhysicPower: 1
+  BasicMagicPower: 25
+  BasicSpeed: 120
+  BasicCrit: 0
+  BasicCritDamage: 100
+  BasicCharacterType: 0
+--- !u!65 &6921013074101218346
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541198654364390466}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.6, z: 0.2}
+  m_Center: {x: 0, y: 0.125, z: 0}

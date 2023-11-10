@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using UnityEditor;
+
+
 public class _Character_Manager_ : NetworkBehaviour
 {
     //private Vector var
@@ -31,6 +32,7 @@ public class _Character_Manager_ : NetworkBehaviour
 
     private void Start()
     {
+        if (!isLocalPlayer) return;
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
         //Joystick 
@@ -41,13 +43,15 @@ public class _Character_Manager_ : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         //Spawn
 
-        character =Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(player.Character_Path));
-        GameObject Skin = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(player.Skin_Path));
+        character =Instantiate(Resources.Load<GameObject>(player.Character_Path));
+        GameObject Skin = Instantiate(Resources.Load<GameObject>(player.Skin_Path));
         
         Skin.transform.SetParent(character.transform);
         character.transform.SetParent(this.transform);
-       
+
         //Spawn On Network
+     
+
         CharacterSpawn();
     }
     private void FixedUpdate()
@@ -57,14 +61,18 @@ public class _Character_Manager_ : NetworkBehaviour
         CharacterUpdate();
         _CameraUpdate();
     }
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CharacterSpawn()
     {
+        if (!isServer) return;
         NetworkServer.Spawn(character);
+       // character.GetComponent<NetworkIdentity>().netId = id;
+        //NetworkServer.Spawn(character);
+
         character.transform.localPosition = Vector3.zero;
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CharacterMove(float H, float V)
     {
 

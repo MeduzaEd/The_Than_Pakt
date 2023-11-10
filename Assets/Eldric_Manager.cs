@@ -19,17 +19,17 @@ public class Eldric_Manager : NetworkBehaviour
     #endregion
 
 
-    [Command]
+    [Command(requiresAuthority =false)]
     public void OnSpec1()
     {
 
     }
-    [Command]
+    [Command(requiresAuthority = false)]
     public void OnSpec2()
     {
 
     }
-    [Command]
+    [Command(requiresAuthority = false)]
     public void OnSpec3()
     {
 

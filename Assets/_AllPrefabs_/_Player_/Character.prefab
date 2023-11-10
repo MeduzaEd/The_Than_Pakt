@@ -290,5 +290,5 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  Character_Path: Assets/_All_Characters_/Eldric/_OnCharacter/Character.prefab
-  Skin_Path: Assets/_All_Characters_/Eldric/sunrise/Character.prefab
+  Character_Path: _All_Characters_/Eldric/_OnCharacter/Character
+  Skin_Path: _All_Characters_/Eldric/sunrise/Character
