@@ -34,7 +34,7 @@ public struct Variables
     [SyncVar]
     public bool Stopped;
     [SyncVar]
-    public bool Pushed;
+    public bool Pushed;//Толчек как в млбб от Огненного выстрела или подброс вейла
 
 }
 

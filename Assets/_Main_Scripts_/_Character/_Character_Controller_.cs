@@ -108,7 +108,7 @@ public class _Character_Controller_ : NetworkBehaviour
     public void LateUpdate()
     {
         if (!isLocalPlayer || !isClient) { return; }//is Not Server Check
-        float horizontalInput = Input.GetAxis("HorizontalRotation"); // Получаем ввод для вращения
+        float horizontalInput = Input.GetAxis("HorizontalRotation"); 
         float verticalInput = Input.GetAxis("VerticalRotation");
 
         if (SystemInfo.deviceType == DeviceType.Handheld)

@@ -53,9 +53,10 @@ MonoBehaviour:
   LocalCameraPosition: {fileID: 2140158712859247812}
   Offset: {x: -0.1, y: 0.8, z: -1.6}
   CameraZoomSpeed: 0.25
-  CameraZoomMin: 5.5
-  CameraZoomMax: -1.5
-  CameraSpeed: 5
+  CameraZoomMin: 1.2
+  CameraZoomMax: 4.2
+  CameraSpeed: 1
+  CameraSlerpSpeed: 10
   realcameraspeed: 5
 --- !u!54 &6325260188404492299
 Rigidbody:
@@ -136,8 +137,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 32213386778896855}
-  - component: {fileID: 8824992291776321613}
   - component: {fileID: 5466036360909817340}
+  - component: {fileID: 8824992291776321613}
   m_Layer: 0
   m_Name: Humanoid
   m_TagString: Untagged
@@ -161,6 +162,34 @@ Transform:
   m_Father: {fileID: 8244181602232430486}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5466036360909817340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3492872922251692563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca524a2841167d418d5973f9ab80855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  variables:
+    Character: 
+    SkinPath: 
+    Health: 0
+    MaxHealth: 0
+    Defence: 0
+    PhysicPower: 0
+    MagicPower: 0
+    Speed: 0
+    CritRarity: 0
+    CritPower: 0
+    AttackSpeed: 0
+    CharacterType: 0
+    Stun: 0
+    Stopped: 0
+    Pushed: 0
 --- !u!114 &8824992291776321613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,34 +224,6 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
---- !u!114 &5466036360909817340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3492872922251692563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca524a2841167d418d5973f9ab80855, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  variables:
-    Character: 
-    SkinPath: 
-    Health: 0
-    MaxHealth: 0
-    Defence: 0
-    PhysicPower: 0
-    MagicPower: 0
-    Speed: 0
-    CritRarity: 0
-    CritPower: 0
-    AttackSpeed: 0
-    CharacterType: 0
-    Stun: 0
-    Stopped: 0
-    Pushed: 0
 --- !u!1 &4945729949111377180
 GameObject:
   m_ObjectHideFlags: 0

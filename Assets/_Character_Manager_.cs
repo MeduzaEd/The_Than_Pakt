@@ -12,9 +12,10 @@ public class _Character_Manager_ : NetworkBehaviour
     private Vector3 Offset = new Vector3(-0.1f, 1f, -2f);
     //Public float var 
     public float CameraZoomSpeed = 0.25f;
-    public float CameraZoomMin = -5f;
-    public float CameraZoomMax = -1f;
+    public float CameraZoomMin = 1.2f;
+    public float CameraZoomMax = 9f;
     public float CameraSpeed = 5f;
+    public float CameraSlerpSpeed = 3f;
     public float realcameraspeed = 5f;
     //Private float var 
     private float verticalRotation = 0.0f;
@@ -97,7 +98,7 @@ public class _Character_Manager_ : NetworkBehaviour
         _CameraScroll();
         if (ZoomInput !=0)
         {
-            Offset = Vector3.Lerp(Offset, new Vector3(-0.1f, Mathf.Clamp(Offset.y + ZoomInput, 0.1f, CameraZoomMax * 0.25f), Mathf.Clamp((Offset.z) + ZoomInput, CameraZoomMin, CameraZoomMax)), Time.deltaTime * 125f);
+            Offset = Vector3.Lerp(Offset, new Vector3(-0.1f, Offset.y , Mathf.Clamp((Offset.z) + ZoomInput, -CameraZoomMax, -CameraZoomMin)), Time.deltaTime * 125f);
             ZoomInput = 0;
         }
     }
@@ -142,19 +143,18 @@ public class _Character_Manager_ : NetworkBehaviour
         _camera.transform.RotateAround(rb.position, Vector3.up, horizontalInput * realcameraspeed);
         verticalRotation -= verticalInput * realcameraspeed;
         verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);
-        _camera.transform.rotation =Quaternion.Slerp(_camera.transform.rotation, Quaternion.Euler(verticalRotation, _camera.transform.eulerAngles.y, 0),Time.deltaTime*5f);
+        _camera.transform.rotation =Quaternion.Slerp(_camera.transform.rotation, Quaternion.Euler(verticalRotation, _camera.transform.eulerAngles.y, 0),Time.deltaTime* CameraSlerpSpeed);
         Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
         RaycastHit hit;
         if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition)))
         {
-            // Если луч пересекает что-либо, записываем позицию пересечения
-            Vector3 newPosition = hit.point;
-            _camera.transform.position = newPosition;
+            _camera.transform.position = hit.point;
+            
         }
         else
         {
            // _camera.transform.position = cameraTargetPosition;
-            _camera.transform.position = Vector3.Lerp(_camera.transform.position, cameraTargetPosition, Time.deltaTime * 5f);
+            _camera.transform.position = Vector3.Lerp(_camera.transform.position, cameraTargetPosition, Time.deltaTime * CameraSlerpSpeed);
 
         }
 
