@@ -29,7 +29,14 @@ public class _Character_Manager_ : NetworkBehaviour
     private Transform _camera;
     private Rigidbody rb;
     private FixedJoystick fixedJoystick;
-
+    public GameObject FindObjectByNetID(uint netID)
+    {
+        if (NetworkServer.spawned.TryGetValue(netID, out NetworkIdentity obj))
+        {
+            return obj.gameObject;
+        }
+        return null;
+    }
     private void Start()
     {
         //if (!isLocalPlayer) return;
@@ -45,13 +52,13 @@ public class _Character_Manager_ : NetworkBehaviour
 
         character =Instantiate(Resources.Load<GameObject>(player.Character_Path));
         GameObject Skin = Instantiate(Resources.Load<GameObject>(player.Skin_Path));
-        
+        player.gameObject.name = player.netId.ToString();
         Skin.transform.SetParent(character.transform);
         character.transform.SetParent(this.transform);
-
+        character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
         //Spawn On Network
-     
 
+        Debug.Log("ONSPAWN");
         CharacterSpawn();
     }
     private void FixedUpdate()
@@ -65,45 +72,44 @@ public class _Character_Manager_ : NetworkBehaviour
     private void CharacterSpawn()
     {
         if (!isServer) return;
-        NetworkIdentity networkIdentity = character.GetComponent<NetworkIdentity>();
-        if (networkIdentity != null && networkIdentity.connectionToClient != null)
-        {
-            // Объект уже принадлежит клиенту, пропустить спаун
-            return;
-        }
-        NetworkServer.Spawn(character);
-       // character.GetComponent<NetworkIdentity>().netId = id;
-        //NetworkServer.Spawn(character);
 
-        character.transform.localPosition = Vector3.zero;
-      
+        if(!NetworkServer.spawned.TryGetValue(character.GetComponent<NetworkIdentity>().netId, out NetworkIdentity networkIdentity))
+        {
+            NetworkServer.Spawn(character);
+            character.transform.localPosition = Vector3.zero;
+        }
     }
 
     [Command(requiresAuthority = false)]
-    private void CharacterMove(float H, float V)
+    private void CharacterMove(float H, float V,uint NetworkID)
     {
 
-        if (!isServer || _camera==null|| LocalCameraPosition==null) return;
+        if (!isServer || _camera==null|| NetworkID < 0) return;
         if (H == 0 && V == 0) return;
-        
-        LocalCameraPosition.position = rb.position;
-        LocalCameraPosition.rotation = Quaternion.Euler(0, _camera.rotation.eulerAngles.y, 0);
+        Debug.Log($"themove {NetworkID}");
+        GameObject LocalCam =  FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        Debug.Log("onthemove");
+        LocalCam.transform.position = rb.position;
+        LocalCam.transform.rotation = Quaternion.Euler(0, _camera.rotation.eulerAngles.y, 0);
         Vector3 Move = new Vector3(H, -.125f, V).normalized;
-        Vector3 MoveNormal = ((Move.x * LocalCameraPosition.transform.right) + (Move.z * LocalCameraPosition.transform.forward)+(Move.y * LocalCameraPosition.transform.up)) * 125f * Time.fixedDeltaTime;
+        Vector3 MoveNormal = ((Move.x * LocalCam.transform.right) + (Move.z * LocalCam.transform.forward)+(Move.y * LocalCam.transform.up)) * 125f * Time.fixedDeltaTime;
         rb.rotation = Quaternion.Euler(0, (Quaternion.LookRotation(MoveNormal * 10)).eulerAngles.y, 0);
         rb.velocity=MoveNormal;
+        Debug.Log("onthemoved");
 
     }
     private void CharacterUpdate()
     {
         if(fixedJoystick.Horizontal !=0 || fixedJoystick.Vertical!=0)
         {
-            CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical);
+            Debug.Log("move");
+            CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId);
             return;
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
-            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
+            Debug.Log("onmove");
+            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , player.GetComponent<NetworkIdentity>().netId);
             return;
         }
     }
