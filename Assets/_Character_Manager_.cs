@@ -29,6 +29,8 @@ public class _Character_Manager_ : NetworkBehaviour
     private Transform _camera;
     private Rigidbody rb;
     private FixedJoystick fixedJoystick;
+    // Private Vectors vat
+    private Vector2 notochscreenposition = new Vector2(Screen.width / 3, Screen.height / 3);
     public GameObject FindObjectByNetID(uint netID)
     {
         if (NetworkServer.spawned.TryGetValue(netID, out NetworkIdentity obj))
@@ -156,10 +158,18 @@ public class _Character_Manager_ : NetworkBehaviour
         float horizontalInput = Input.GetAxis("HorizontalRotation");
         float verticalInput = Input.GetAxis("VerticalRotation");
      
-        if (Input.touchCount == 2 && Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
-        {horizontalInput = 0f;verticalInput = 0f;}
-        DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} touches:{Input.touchCount}");
+       // if (ZoomInput !=0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
+      //  {horizontalInput = 0f;verticalInput = 0f;}
+       
         if (Input.GetMouseButton(1)) { realcameraspeed = CameraSpeed; } else { realcameraspeed = 0; }
+        if( (notochscreenposition.x < Input.GetTouch(0).position.x && notochscreenposition.y < Input.GetTouch(0).position.y))
+        {
+            horizontalInput=Input.GetTouch(0).deltaPosition.x;
+            verticalInput = Input.GetTouch(0).deltaPosition.y;
+            realcameraspeed = CameraSpeed;
+        }
+        DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
+
         _camera.transform.RotateAround(rb.position, Vector3.up, horizontalInput * realcameraspeed);
         verticalRotation -= verticalInput * realcameraspeed;
         verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);
