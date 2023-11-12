@@ -49,14 +49,14 @@ public class _Character_Manager_ : NetworkBehaviour
         //Rigid Body
         rb = GetComponent<Rigidbody>();
         //Spawn
-
-        character =Instantiate(Resources.Load<GameObject>(player.Character_Path));
+        character = Instantiate(Resources.Load<GameObject>(player.Character_Path));
         GameObject Skin = Instantiate(Resources.Load<GameObject>(player.Skin_Path));
-        player.gameObject.name = player.netId.ToString();
+        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
         Skin.transform.SetParent(character.transform);
         character.transform.SetParent(this.transform);
         character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
+
         //Spawn On Network
 
         Debug.Log("ONSPAWN");
@@ -84,30 +84,28 @@ public class _Character_Manager_ : NetworkBehaviour
 
         if (!isServer || FindObjectByNetID(NetworkID) == null) return;
         if (H == 0 && V == 0) return;
-        Debug.Log($"themove {NetworkID}");
+        //Debug.Log($"themove {NetworkID}");
         
         GameObject LocalCam =  FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        Debug.Log("onthemove");
+       // Debug.Log("onthemove");
         LocalCam.transform.position = rb.position;
         LocalCam.transform.rotation = Quaternion.Euler(0,cruay, 0);
         Vector3 Move = new Vector3(H, -.125f, V).normalized;
         Vector3 MoveNormal = ((Move.x * LocalCam.transform.right) + (Move.z * LocalCam.transform.forward)+(Move.y * LocalCam.transform.up)) * 125f * Time.fixedDeltaTime;
         rb.rotation = Quaternion.Euler(0, (Quaternion.LookRotation(MoveNormal * 10)).eulerAngles.y, 0);
         rb.velocity=MoveNormal;
-        Debug.Log("onthemoved");
-
     }
     private void CharacterUpdate()
     {
         if(fixedJoystick.Horizontal !=0 || fixedJoystick.Vertical!=0)
         {
-            Debug.Log("move");
+           // Debug.Log("move");
             CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
             return;
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
-            Debug.Log("onmove");
+           // Debug.Log("onmove");
             CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
             return;
         }
@@ -133,7 +131,7 @@ public class _Character_Manager_ : NetworkBehaviour
 
             if (Input.touchCount == 2 )
             {
-                if(Input.GetAxis("Horizontal")!=0 || Input.GetAxis("Vertical") != 0) { return; }//Break On Move
+                if(Input.GetAxis("Horizontal")!=0 || Input.GetAxis("Vertical") != 0 || fixedJoystick.Horizontal != 0 || fixedJoystick.Vertical != 0) { return; }//Break On Move
                 // MOBILE 
                 Touch touch1 = Input.GetTouch(0);
                 Touch touch2 = Input.GetTouch(1);
@@ -157,8 +155,10 @@ public class _Character_Manager_ : NetworkBehaviour
     {
         float horizontalInput = Input.GetAxis("HorizontalRotation");
         float verticalInput = Input.GetAxis("VerticalRotation");
-        if (Input.touchCount == 2 && Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+     
+        if (Input.touchCount == 2 && Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
         {horizontalInput = 0f;verticalInput = 0f;}
+        DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} touches:{Input.touchCount}");
         if (Input.GetMouseButton(1)) { realcameraspeed = CameraSpeed; } else { realcameraspeed = 0; }
         _camera.transform.RotateAround(rb.position, Vector3.up, horizontalInput * realcameraspeed);
         verticalRotation -= verticalInput * realcameraspeed;
