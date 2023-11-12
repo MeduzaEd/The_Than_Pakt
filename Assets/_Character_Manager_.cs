@@ -145,7 +145,7 @@ public class _Character_Manager_ : NetworkBehaviour
                 float startDistance = Vector2.Distance(touch1.position - touch1.deltaPosition, touch2.position - touch2.deltaPosition);
 
                 //  изменение масштаба
-                float zoomAmount = (startDistance - currentDistance) * CameraZoomSpeed;
+                float zoomAmount = (startDistance - currentDistance) * -CameraZoomSpeed;
 
                 //  изменение масштаба с ограничениями
                 ZoomInput = zoomAmount;
@@ -157,16 +157,28 @@ public class _Character_Manager_ : NetworkBehaviour
     {
         float horizontalInput = Input.GetAxis("HorizontalRotation");
         float verticalInput = Input.GetAxis("VerticalRotation");
-     
-       // if (ZoomInput !=0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
-      //  {horizontalInput = 0f;verticalInput = 0f;}
-       
+
+        // if (ZoomInput !=0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
+        //  {horizontalInput = 0f;verticalInput = 0f;}
+
         if (Input.GetMouseButton(1)) { realcameraspeed = CameraSpeed; } else { realcameraspeed = 0; }
-        if( (notochscreenposition.x < Input.GetTouch(0).position.x && notochscreenposition.y < Input.GetTouch(0).position.y))
+        
+        
+        if ((notochscreenposition.x < Input.GetTouch(0).position.x && notochscreenposition.y < Input.GetTouch(0).position.y))
         {
-            horizontalInput=Input.GetTouch(0).deltaPosition.x;
+            horizontalInput = Input.GetTouch(0).deltaPosition.x;
             verticalInput = Input.GetTouch(0).deltaPosition.y;
             realcameraspeed = CameraSpeed;
+        }
+        
+        if (Input.touchCount >= 2)
+        { 
+            if ((notochscreenposition.x < Input.GetTouch(1).position.x && notochscreenposition.y < Input.GetTouch(1).position.y))
+            {
+                horizontalInput = Input.GetTouch(1).deltaPosition.x;
+                verticalInput = Input.GetTouch(1).deltaPosition.y;
+                realcameraspeed = CameraSpeed;
+            }
         }
         DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
 
