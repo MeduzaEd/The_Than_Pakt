@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
+using System;
 
 public class _Character_Manager_ : NetworkBehaviour
 {
@@ -160,45 +160,51 @@ public class _Character_Manager_ : NetworkBehaviour
 
         // if (ZoomInput !=0 && fixedJoystick.Horizontal == 0 && fixedJoystick.Vertical == 0)
         //  {horizontalInput = 0f;verticalInput = 0f;}
+      //  try
+   //     {
+            if (Input.GetMouseButton(1)) { realcameraspeed = CameraSpeed; } else { realcameraspeed = 0; }
 
-        if (Input.GetMouseButton(1)) { realcameraspeed = CameraSpeed; } else { realcameraspeed = 0; }
-        
-        
-        if ((notochscreenposition.x < Input.GetTouch(0).position.x && notochscreenposition.y < Input.GetTouch(0).position.y))
+            
+        if (Input.touchCount > 0)
         {
-            horizontalInput = Input.GetTouch(0).deltaPosition.x;
-            verticalInput = Input.GetTouch(0).deltaPosition.y;
-            realcameraspeed = CameraSpeed;
-        }
-        
-        if (Input.touchCount >= 2)
-        { 
-            if ((notochscreenposition.x < Input.GetTouch(1).position.x && notochscreenposition.y < Input.GetTouch(1).position.y))
+            Touch touch1 = Input.GetTouch(0);
+            if ((notochscreenposition.x < touch1.position.x && notochscreenposition.y < touch1.position.y))
             {
-                horizontalInput = Input.GetTouch(1).deltaPosition.x;
-                verticalInput = Input.GetTouch(1).deltaPosition.y;
+                horizontalInput = touch1.deltaPosition.x;
+                verticalInput = touch1.deltaPosition.y;
                 realcameraspeed = CameraSpeed;
             }
-        }
-        DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
 
+            if (Input.touchCount >= 2)
+            {
+                Touch touch2 = Input.GetTouch(1);
+                if ((notochscreenposition.x < touch2.position.x && notochscreenposition.y < touch2.position.y))
+                {
+                    horizontalInput = touch2.deltaPosition.x;
+                    verticalInput = touch2.deltaPosition.y;
+                    realcameraspeed = CameraSpeed;
+                }
+            }
+            DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
+        }
+      //  }
+       // catch (Exception ex) { Debug.Log(ex); horizontalInput = 0;verticalInput = 0; }
         _camera.transform.RotateAround(rb.position, Vector3.up, horizontalInput * realcameraspeed);
         verticalRotation -= verticalInput * realcameraspeed;
         verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);
-        _camera.transform.rotation =Quaternion.Slerp(_camera.transform.rotation, Quaternion.Euler(verticalRotation, _camera.transform.eulerAngles.y, 0),Time.deltaTime* CameraSlerpSpeed);
+        _camera.transform.rotation = Quaternion.Slerp(_camera.transform.rotation, Quaternion.Euler(verticalRotation, _camera.transform.eulerAngles.y, 0), Time.deltaTime * CameraSlerpSpeed);
         Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
         RaycastHit hit;
         if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition)))
         {
             _camera.transform.position = hit.point;
-            
+
         }
         else
         {
-           // _camera.transform.position = cameraTargetPosition;
+            // _camera.transform.position = cameraTargetPosition;
             _camera.transform.position = Vector3.Lerp(_camera.transform.position, cameraTargetPosition, Time.deltaTime * CameraSlerpSpeed);
 
         }
-
     }
 }
