@@ -55,11 +55,12 @@ public class _Character_Manager_ : NetworkBehaviour
         player.gameObject.name = player.netId.ToString();
         Skin.transform.SetParent(character.transform);
         character.transform.SetParent(this.transform);
+        character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
         //Spawn On Network
 
         Debug.Log("ONSPAWN");
-        CharacterSpawn();
+        CharacterSpawn(player.GetComponent<NetworkIdentity>().netId);
     }
     private void FixedUpdate()
     {
@@ -69,28 +70,26 @@ public class _Character_Manager_ : NetworkBehaviour
         _CameraUpdate();
     }
     [Command(requiresAuthority = false)]
-    private void CharacterSpawn()
+    private void CharacterSpawn(uint NetworkID)
     {
-        if (!isServer) return;
-
-        if(!NetworkServer.spawned.TryGetValue(character.GetComponent<NetworkIdentity>().netId, out NetworkIdentity networkIdentity))
-        {
-            NetworkServer.Spawn(character);
-            character.transform.localPosition = Vector3.zero;
-        }
+        if (!isServer|| FindObjectByNetID(NetworkID) == null) return;
+        GameObject player = FindObjectByNetID(NetworkID);
+        NetworkServer.Spawn(character, player);
+        
     }
 
     [Command(requiresAuthority = false)]
-    private void CharacterMove(float H, float V,uint NetworkID)
+    private void CharacterMove(float H, float V,uint NetworkID,float cruay)
     {
 
-        if (!isServer || _camera==null|| NetworkID < 0) return;
+        if (!isServer || FindObjectByNetID(NetworkID) == null) return;
         if (H == 0 && V == 0) return;
         Debug.Log($"themove {NetworkID}");
+        
         GameObject LocalCam =  FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
         Debug.Log("onthemove");
         LocalCam.transform.position = rb.position;
-        LocalCam.transform.rotation = Quaternion.Euler(0, _camera.rotation.eulerAngles.y, 0);
+        LocalCam.transform.rotation = Quaternion.Euler(0,cruay, 0);
         Vector3 Move = new Vector3(H, -.125f, V).normalized;
         Vector3 MoveNormal = ((Move.x * LocalCam.transform.right) + (Move.z * LocalCam.transform.forward)+(Move.y * LocalCam.transform.up)) * 125f * Time.fixedDeltaTime;
         rb.rotation = Quaternion.Euler(0, (Quaternion.LookRotation(MoveNormal * 10)).eulerAngles.y, 0);
@@ -103,13 +102,13 @@ public class _Character_Manager_ : NetworkBehaviour
         if(fixedJoystick.Horizontal !=0 || fixedJoystick.Vertical!=0)
         {
             Debug.Log("move");
-            CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId);
+            CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
             return;
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
             Debug.Log("onmove");
-            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , player.GetComponent<NetworkIdentity>().netId);
+            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
             return;
         }
     }
