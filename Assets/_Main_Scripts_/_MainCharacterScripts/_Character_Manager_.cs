@@ -42,7 +42,7 @@ public class _Character_Manager_ : NetworkBehaviour
     }
     private void Start()
     {
-        //if (!isLocalPlayer) return;
+        
         //humanoid = transform.parent.GetComponent<_humanoid_>();
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
@@ -52,7 +52,7 @@ public class _Character_Manager_ : NetworkBehaviour
         player = this.transform.parent.parent.GetComponent<_player_>();
         //Rigid Body
         rb = GetComponent<Rigidbody>();
-        //Spawn
+        Debug.Log("ONSPAWNed");
         character = Instantiate(Resources.Load<GameObject>(player.Character_Path));
         GameObject Skin = Instantiate(Resources.Load<GameObject>(player.Skin_Path));
         player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
@@ -62,8 +62,8 @@ public class _Character_Manager_ : NetworkBehaviour
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
 
         //Spawn On Network
-
-        Debug.Log("ONSPAWN");
+        if (!isLocalPlayer) return;
+        Debug.Log("ONSPAWNLocalPlayer");
         CharacterSpawn(player.GetComponent<NetworkIdentity>().netId);
     }
     private void FixedUpdate()

@@ -148,7 +148,7 @@ namespace Mirror.Experimental
         void SyncToClients()
         {
             // only update if they have changed more than Sensitivity
-
+            if (!isServer) return;
             Vector3 currentVelocity = syncVelocity ? target.velocity : default;
             Vector3 currentAngularVelocity = syncAngularVelocity ? target.angularVelocity : default;
 
