@@ -20,10 +20,11 @@ public class _Character_Manager_ : NetworkBehaviour
     public float realcameraspeed = 5f;
     //Private float var 
     private float verticalRotation = 0.0f;
-    private float ZoomInput = 0;
-    private float MaxVerticalAngle = 70.0f; // Максимальный угол наклона вверх
-    private float MinVerticalAngle = -35.0f; // Максимальный угол наклона вниз
+    private float ZoomInput = 0.1f;
+    private float MaxVerticalAngle = 66.0f; // Максимальный угол наклона вверх
+    private float MinVerticalAngle = -33.0f; // Максимальный угол наклона вниз
     // private Object and Script Variables 
+    //private _humanoid_ humanoid;
     private _player_ player;
     private GameObject character;
     private Transform _camera;
@@ -42,6 +43,7 @@ public class _Character_Manager_ : NetworkBehaviour
     private void Start()
     {
         //if (!isLocalPlayer) return;
+        //humanoid = transform.parent.GetComponent<_humanoid_>();
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
         //Joystick 
@@ -81,14 +83,15 @@ public class _Character_Manager_ : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    private void CharacterMove(float H, float V,uint NetworkID,float cruay)
+    private void CharacterMove(float H, float V, uint NetworkID, float cruay)
     {
 
         if (!isServer || FindObjectByNetID(NetworkID) == null) return;
         if (H == 0 && V == 0) return;
         //Debug.Log($"themove {NetworkID}");
-        
-        GameObject LocalCam =  FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        Variables variables = FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables;
+        GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        if (variables.Died == true || variables.Stun == true|| variables.Stopped == true|| variables.Pushed == true) { return; }
        // Debug.Log("onthemove");
         LocalCam.transform.position = rb.position;
         LocalCam.transform.rotation = Quaternion.Euler(0,cruay, 0);
@@ -99,11 +102,14 @@ public class _Character_Manager_ : NetworkBehaviour
     }
     private void CharacterUpdate()
     {
-        if(fixedJoystick.Horizontal !=0 || fixedJoystick.Vertical!=0)
+        if (fixedJoystick != null)
         {
-           // Debug.Log("move");
-            CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
-            return;
+            if (fixedJoystick.Horizontal != 0 || fixedJoystick.Vertical != 0)
+            {
+                // Debug.Log("move");
+                CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
+                return;
+            }
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
