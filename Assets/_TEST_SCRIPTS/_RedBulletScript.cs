@@ -9,18 +9,20 @@ public class _RedBulletScript : MonoBehaviour
     public Rigidbody _rb;
     public float Damage = 5f;
     public uint Owner = 0;
-    private List <uint> Targeted;
+   // private List <uint> Targeted;
     
     public _humanoid_ hum = null;
     public uint targetid = 0;
     private void Start()
     {
-        StartCoroutine(OnStart(99f));
+        StartCoroutine(OnStart(1f));
     }
     IEnumerator OnStart(float _time)
     {
+        _rb.velocity = transform.right * UnityEngine.Random.Range(-0.05f,0.05f);
         yield return new WaitForSecondsRealtime(_time);
-        _rb.velocity = transform.up * 4f;
+        _rb.velocity = Vector3.zero;
+       _rb.velocity = transform.forward * 9f;
         yield return null;
     }
     private void OnTriggerEnter(Collider other)
@@ -36,6 +38,6 @@ public class _RedBulletScript : MonoBehaviour
         catch (Exception ex) { Debug.Log($"EXE:{ex}"); return; }
         Debug.Log($"Damaged:{other}");
         hum.OnDamage(Damage, Owner);
-        Targeted.Add(targetid);
+        //Targeted.Add(targetid);
     }
 }

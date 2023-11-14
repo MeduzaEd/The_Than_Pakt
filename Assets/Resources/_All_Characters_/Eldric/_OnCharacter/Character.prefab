@@ -406,7 +406,7 @@ MonoBehaviour:
   BasicCrit: 0
   BasicCritDamage: 100
   BasicCharacterType: 0
-  _redbullet: {fileID: 7172392879504331855, guid: 2b69084acbf01894eb0357af759ccc5c, type: 3}
+  _redbullet: {fileID: 6890652486857140995, guid: 290e86e857611a542b1bfd483495ced3, type: 3}
 --- !u!65 &6921013074101218346
 BoxCollider:
   m_ObjectHideFlags: 0

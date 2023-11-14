@@ -25,6 +25,7 @@ public class Eldric_Manager : NetworkBehaviour
     [Header("0 - Человек . 1 - Нежить . 2 - Чудища . 3 - Приведение . 4 - Меха . 5 - Растения ")]
     public int BasicCharacterType = 0;
     _humanoid_ humanoid;
+    Transform _camera;
     [SerializeField]
     private GameObject _redbullet;
     #endregion
@@ -32,6 +33,7 @@ public class Eldric_Manager : NetworkBehaviour
     {
         try
         {
+            _camera = GameObject.FindObjectOfType<Camera>().transform;
             humanoid = transform.parent.parent.GetComponent<_humanoid_>();
             humanoid.variables.MaxHealth = BasicHealth;
             humanoid.variables.Health = BasicHealth;
@@ -53,25 +55,26 @@ public class Eldric_Manager : NetworkBehaviour
         try
         {
             DebouggerToText.DEBUGLOG("On Attack");
-            CmdOnAttack(humanoid.transform.parent.GetComponent<NetworkIdentity>().netId);
+            CmdOnAttack(humanoid.transform.parent.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
             DebouggerToText.DEBUGLOG("On Attacked");
         }
         catch { return; }
     }
     [Command(requiresAuthority = false)]
-    public void CmdOnAttack(uint NetworkID)
+    public void CmdOnAttack(uint NetworkID, float cruay)
     {
         Debug.Log("SERVER ATTACK");
         if (!isServer) return;
-        GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        Debug.Log($"Local Cam rotation:{LocalCam.transform.rotation}");
         GameObject newredbullet = Instantiate(_redbullet);
         newredbullet.transform.SetParent(FindObjectByNetID(NetworkID).transform.GetChild(1).transform);
-        newredbullet.transform.position= LocalCam.transform.position+(Vector3.up*0.5f);
-        newredbullet.transform.rotation = LocalCam.transform.rotation;
-        newredbullet.GetComponent<_RedBulletScript>().Damage += LocalCam.transform.parent.parent.GetComponent<_humanoid_>().variables.MagicPower;
-        newredbullet.GetComponent<_RedBulletScript>().Owner = NetworkID;
+        Transform Character = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(1).transform;
+        newredbullet.transform.position = Character.position+(Vector3.up*0.5f)+(Character.right*(Random.Range(-0.3f,0.3f)));
+        newredbullet.transform.rotation = Quaternion.Euler(0, cruay, 0);
+        newredbullet.transform.GetChild(0).GetComponent<_RedBulletScript>().Damage += FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables.MagicPower;
+        newredbullet.transform.GetChild(0).GetComponent<_RedBulletScript>().Owner = NetworkID;
+        newredbullet.transform.localScale = new Vector3(3f, 3f, 3f);
         NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
+        Debug.Log($"Local Cam rotation:{newredbullet.transform.rotation}");
 
     }
     [Command(requiresAuthority =false)]
