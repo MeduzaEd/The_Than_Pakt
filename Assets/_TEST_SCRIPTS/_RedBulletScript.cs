@@ -4,7 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 
-public class _RedBulletScript : MonoBehaviour
+public class _RedBulletScript : NetworkBehaviour
 {
     public Rigidbody _rb;
     public float Damage = 5f;
@@ -15,7 +15,7 @@ public class _RedBulletScript : MonoBehaviour
     public uint targetid = 0;
     private void Start()
     {
-        StartCoroutine(OnStart(1f));
+        StartCoroutine(OnStart(11f));
     }
     IEnumerator OnStart(float _time)
     {
@@ -24,6 +24,21 @@ public class _RedBulletScript : MonoBehaviour
         _rb.velocity = Vector3.zero;
        _rb.velocity = transform.forward * 9f;
         yield return null;
+        yield return new WaitForSecondsRealtime(_time);
+        //Debug.Log("DESTROOY");
+        CmdDestroy(netId);
+        
+    }
+    [Command(requiresAuthority =false)]
+    public void CmdDestroy(uint Id)
+    {
+        if (!isServer) return;
+        if (NetworkServer.spawned.TryGetValue(Id, out NetworkIdentity obj))
+        {
+          
+            NetworkServer.Destroy(obj.gameObject);
+        }
+
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -12,10 +12,7 @@ GameObject:
   - component: {fileID: 8598509696072737958}
   - component: {fileID: 5814424517622763628}
   - component: {fileID: 5148012308048940270}
-  - component: {fileID: 3152798285386151299}
-  - component: {fileID: 274582132916820865}
-  - component: {fileID: 8082885670704404694}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: redbulletphysic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,49 +104,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3152798285386151299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172392879504331855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 120e52178407ffc4198b69fc283c379d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 274582132916820865}
-  Damage: 5
-  Owner: 0
-  hum: {fileID: 0}
-  targetid: 0
---- !u!54 &274582132916820865
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172392879504331855}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0.1
-  m_AngularDrag: 0.2
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 2
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &8082885670704404694
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172392879504331855}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.025722664, y: 0.025722623, z: 0.051491037}
-  m_Center: {x: 0.000001993496, y: -0.000005329493, z: -0.0020103015}

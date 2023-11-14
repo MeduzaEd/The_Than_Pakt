@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CameraTransparent
   - Water
   - UI
   - UI2

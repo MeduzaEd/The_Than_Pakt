@@ -71,15 +71,20 @@ public class _Character_Manager_ : NetworkBehaviour
     private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path)
     {
         if (!isServer|| FindObjectByNetID(NetworkID) == null) return;
+
         GameObject player = FindObjectByNetID(NetworkID);
-        character = Instantiate(Resources.Load<GameObject>(Character_Path));
-        GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
+        GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
         player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
-        Skin.transform.SetParent(character.transform);
         character.transform.SetParent(this.transform);
         character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
+
         NetworkServer.Spawn(character, player.gameObject);
+
+        GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
+        Skin.transform.SetParent(character.transform);
+        Skin.transform.localPosition = Vector3.zero;
+        NetworkServer.Spawn(Skin, player.gameObject);
     }
 
     [Command(requiresAuthority = false)]
@@ -202,7 +207,7 @@ public class _Character_Manager_ : NetworkBehaviour
         _camera.transform.rotation = Quaternion.Slerp(_camera.transform.rotation, Quaternion.Euler(verticalRotation, _camera.transform.eulerAngles.y, 0), Time.deltaTime * CameraSlerpSpeed);
         Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
         RaycastHit hit;
-        if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition)))
+        if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition),~LayerMask.NameToLayer("CameraTransparent")))
         {
             _camera.transform.position = hit.point;
 
