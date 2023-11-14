@@ -66,6 +66,8 @@ public class Eldric_Manager : NetworkBehaviour
         Debug.Log("SERVER ATTACK");
         if (!isServer) return;
         GameObject newredbullet = Instantiate(_redbullet);
+        NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
+
         newredbullet.transform.SetParent(FindObjectByNetID(NetworkID).transform.GetChild(1).transform);
         Transform Character = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(1).transform;
         newredbullet.transform.position = Character.position+(Vector3.up*0.5f)+(Character.right*(Random.Range(-0.3f,0.3f)));
@@ -73,7 +75,7 @@ public class Eldric_Manager : NetworkBehaviour
         newredbullet.transform.GetComponent<_RedBulletScript>().Damage += FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables.MagicPower;
         newredbullet.transform.GetComponent<_RedBulletScript>().Owner = NetworkID;
         newredbullet.transform.localScale = new Vector3(3f, 3f, 3f);
-        NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
+       
         Debug.Log($"Local Cam rotation:{newredbullet.transform.rotation}");
 
     }

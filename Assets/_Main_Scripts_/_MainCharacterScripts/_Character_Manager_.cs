@@ -73,18 +73,23 @@ public class _Character_Manager_ : NetworkBehaviour
         if (!isServer|| FindObjectByNetID(NetworkID) == null) return;
 
         GameObject player = FindObjectByNetID(NetworkID);
-        GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
-        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
-        character.transform.SetParent(this.transform);
-        character.transform.localPosition = Vector3.zero;
-        character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
+        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString()+"_PLAYER _________________";
 
-        NetworkServer.Spawn(character, player.gameObject);
+        GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
+        character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
+        character.transform.localPosition = Vector3.zero;
+        character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
+
+        NetworkServer.Spawn(character, player);
 
         GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
         Skin.transform.SetParent(character.transform);
-        Skin.transform.localPosition = Vector3.zero;
-        NetworkServer.Spawn(Skin, player.gameObject);
+        Skin.transform.localPosition = Vector3.zero; 
+
+        
+
+        Debug.Log("On Spawned Character");
+        //NetworkServer.Spawn(Skin, player.gameObject);
     }
 
     [Command(requiresAuthority = false)]
