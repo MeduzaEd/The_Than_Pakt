@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
+
 public class _RedBulletScript : MonoBehaviour
 {
     public Rigidbody _rb;
@@ -9,8 +11,8 @@ public class _RedBulletScript : MonoBehaviour
     public uint Owner = 0;
     private List <uint> Targeted;
     
-    _humanoid_ hum = null;
-    uint targetid = 0;
+    public _humanoid_ hum = null;
+    public uint targetid = 0;
     private void Start()
     {
         StartCoroutine(OnStart(99f));
@@ -24,11 +26,16 @@ public class _RedBulletScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.ToString());
-        
-        try{hum = other.transform.parent.parent.GetComponent<_humanoid_>(); targetid = hum.transform.parent.GetComponent<NetworkIdentity>().netId; }
-        catch { return; }
-        if(hum.variables.Died==true||hum.variables.Inmortal==true||Targeted.Contains(targetid)){return;}
-        hum.OnDamage(Damage, Owner, targetid);
+
+        try
+        {
+            hum = other.transform.parent.parent.GetComponent<_humanoid_>();
+            if (hum.variables.Died == true || hum.variables.Inmortal == true|| hum.transform.parent.GetComponent<NetworkIdentity>()==null) { return; }
+            targetid = hum.transform.parent.GetComponent<NetworkIdentity>().netId;
+        }
+        catch (Exception ex) { Debug.Log($"EXE:{ex}"); return; }
+        Debug.Log($"Damaged:{other}");
+        hum.OnDamage(Damage, Owner);
         Targeted.Add(targetid);
     }
 }

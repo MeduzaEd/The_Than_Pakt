@@ -57,10 +57,10 @@ public class _humanoid_ : NetworkBehaviour
     public Variables variables;
     
     [Command(requiresAuthority =false)]
-    public void OnDamage(float Damage,uint ThisID, uint EnemyID)
+    public void OnDamage(float Damage,uint ThisID)
     {
-        if (Damage <= 0|| FindObjectByNetID(ThisID)==null || FindObjectByNetID(EnemyID) == null) { return; }
-        _humanoid_ enemyhumanoid = FindObjectByNetID(EnemyID).GetComponentInChildren<_humanoid_>();
+        if (Damage <= 0|| FindObjectByNetID(ThisID)==null || FindObjectByNetID(transform.parent.GetComponent<NetworkIdentity>().netId) == null) { return; }
+        _humanoid_ enemyhumanoid = FindObjectByNetID(transform.parent.GetComponent<NetworkIdentity>().netId).GetComponentInChildren<_humanoid_>();
         if(enemyhumanoid.variables.Died == true||enemyhumanoid.variables.Inmortal==true) { return; }
         enemyhumanoid.variables.Health -= Damage;
         enemyhumanoid.variables.KilledMe = ThisID;

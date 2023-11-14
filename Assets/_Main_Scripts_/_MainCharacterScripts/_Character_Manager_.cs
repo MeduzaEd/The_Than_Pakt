@@ -53,18 +53,12 @@ public class _Character_Manager_ : NetworkBehaviour
         //Rigid Body
         rb = GetComponent<Rigidbody>();
         Debug.Log("ONSPAWNed");
-        character = Instantiate(Resources.Load<GameObject>(player.Character_Path));
-        GameObject Skin = Instantiate(Resources.Load<GameObject>(player.Skin_Path));
-        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
-        Skin.transform.SetParent(character.transform);
-        character.transform.SetParent(this.transform);
-        character.transform.localPosition = Vector3.zero;
-        character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
+       
 
         //Spawn On Network
         if (!isLocalPlayer) return;
         Debug.Log("ONSPAWNLocalPlayer");
-        CharacterSpawn(player.GetComponent<NetworkIdentity>().netId);
+        CharacterSpawn(player.GetComponent<NetworkIdentity>().netId, player.Character_Path, player.Skin_Path);
     }
     private void FixedUpdate()
     {
@@ -74,12 +68,18 @@ public class _Character_Manager_ : NetworkBehaviour
         _CameraUpdate();
     }
     [Command(requiresAuthority = false)]
-    private void CharacterSpawn(uint NetworkID)
+    private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path)
     {
         if (!isServer|| FindObjectByNetID(NetworkID) == null) return;
         GameObject player = FindObjectByNetID(NetworkID);
-        NetworkServer.Spawn(character, player);
-        
+        character = Instantiate(Resources.Load<GameObject>(Character_Path));
+        GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
+        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString();
+        Skin.transform.SetParent(character.transform);
+        character.transform.SetParent(this.transform);
+        character.transform.localPosition = Vector3.zero;
+        character.name = character.GetComponent<NetworkIdentity>().netId.ToString();
+        NetworkServer.Spawn(character, player.gameObject);
     }
 
     [Command(requiresAuthority = false)]
@@ -91,6 +91,7 @@ public class _Character_Manager_ : NetworkBehaviour
         //Debug.Log($"themove {NetworkID}");
         Variables variables = FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables;
         GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        Debug.Log($"Local Cam Movement:{LocalCam.transform.rotation}");
         if (variables.Died == true || variables.Stun == true|| variables.Stopped == true|| variables.Pushed == true) { return; }
        // Debug.Log("onthemove");
         LocalCam.transform.position = rb.position;

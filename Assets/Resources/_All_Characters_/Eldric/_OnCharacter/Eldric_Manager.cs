@@ -64,14 +64,15 @@ public class Eldric_Manager : NetworkBehaviour
         Debug.Log("SERVER ATTACK");
         if (!isServer) return;
         GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        Debug.Log($"Local Cam rotation:{LocalCam.transform.rotation}");
         GameObject newredbullet = Instantiate(_redbullet);
         newredbullet.transform.SetParent(FindObjectByNetID(NetworkID).transform.GetChild(1).transform);
-        newredbullet.GetComponent<Rigidbody>().position= LocalCam.transform.parent.GetComponent<Rigidbody>().position+(Vector3.up*0.5f);
-        newredbullet.GetComponent<Rigidbody>().rotation = LocalCam.transform.rotation;
+        newredbullet.transform.position= LocalCam.transform.position+(Vector3.up*0.5f);
+        newredbullet.transform.rotation = LocalCam.transform.rotation;
         newredbullet.GetComponent<_RedBulletScript>().Damage += LocalCam.transform.parent.parent.GetComponent<_humanoid_>().variables.MagicPower;
         newredbullet.GetComponent<_RedBulletScript>().Owner = NetworkID;
         NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
-  
+
     }
     [Command(requiresAuthority =false)]
     public void OnSpec1()
