@@ -24,31 +24,37 @@ public class Eldric_Manager : NetworkBehaviour
     public float BasicCritDamage = 100f;
     [Header("0 - Человек . 1 - Нежить . 2 - Чудища . 3 - Приведение . 4 - Меха . 5 - Растения ")]
     public int BasicCharacterType = 0;
-    _humanoid_ humanoid;
-    Transform _camera;
+    public _humanoid_ humanoid;
+    private Transform _camera;
     [SerializeField]
     private GameObject _redbullet;
     #endregion
     private void Start()
     {
+        _camera = GameObject.FindObjectOfType<Camera>().transform;
         try
         {
-            _camera = GameObject.FindObjectOfType<Camera>().transform;
             humanoid = transform.parent.parent.GetComponent<_humanoid_>();
-            humanoid.variables.MaxHealth = BasicHealth;
-            humanoid.variables.Health = BasicHealth;
-            humanoid.variables.Defence = BasicDefence;
-            humanoid.variables.Speed = BasicSpeed;
-            humanoid.variables.CritRarity = BasicCrit;
-            humanoid.variables.CritPower = BasicCritDamage;
-            humanoid.variables.PhysicPower = BasicPhysicPower;
-            humanoid.variables.MagicPower = BasicMagicPower;
-            humanoid.variables.Defence = BasicDefence;
-            humanoid.variables.CharacterType = BasicCharacterType;
-        }
-        catch { Destroy(this.transform.gameObject);}
-    }
+            CmdOnStart(netId);
 
+        }
+        catch {}
+    }
+    [Command(requiresAuthority = false)]
+    public void CmdOnStart(uint NetworkID )
+    {
+        humanoid.variables.MaxHealth = BasicHealth;
+        humanoid.variables.Health = BasicHealth;
+        humanoid.variables.Defence = BasicDefence;
+        humanoid.variables.Speed = BasicSpeed;
+        humanoid.variables.CritRarity = BasicCrit;
+        humanoid.variables.CritPower = BasicCritDamage;
+        humanoid.variables.PhysicPower = BasicPhysicPower;
+        humanoid.variables.MagicPower = BasicMagicPower;
+        humanoid.variables.Defence = BasicDefence;
+        humanoid.variables.CharacterType = BasicCharacterType;
+    }
+    [Client]
     public void OnAttack()
     {
         DebouggerToText.DEBUGLOG("Do On Attack");
@@ -60,24 +66,32 @@ public class Eldric_Manager : NetworkBehaviour
         }
         catch { return; }
     }
-    [Command(requiresAuthority = false)]
+    [Command]
     public void CmdOnAttack(uint NetworkID, float cruay)
     {
         Debug.Log("SERVER ATTACK");
         if (!isServer) return;
         GameObject newredbullet = Instantiate(_redbullet);
-        NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
+        //NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
 
-        newredbullet.transform.SetParent(FindObjectByNetID(NetworkID).transform.GetChild(1).transform);
         Transform Character = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(1).transform;
+
+        //newredbullet.transform.SetParent(FindObjectByNetID(NetworkID).transform.GetChild(1).transform);
         newredbullet.transform.position = Character.position+(Vector3.up*0.5f)+(Character.right*(Random.Range(-0.3f,0.3f)));
         newredbullet.transform.rotation = Quaternion.Euler(0, cruay, 0);
         newredbullet.transform.GetComponent<_RedBulletScript>().Damage += FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables.MagicPower;
         newredbullet.transform.GetComponent<_RedBulletScript>().Owner = NetworkID;
         newredbullet.transform.localScale = new Vector3(3f, 3f, 3f);
-       
-        Debug.Log($"Local Cam rotation:{newredbullet.transform.rotation}");
 
+        NetworkServer.Spawn(newredbullet, FindObjectByNetID(NetworkID).gameObject);
+        Debug.Log($"Local Cam rotation:{newredbullet.transform.rotation}");
+        onServerPrinted($"newredbullet.transform parent:{newredbullet.transform.parent}");
+
+    }
+    [ClientRpc]
+    public void onServerPrinted(string txt)
+    {
+        DebouggerToText.DEBUGLOG($"On Server:{txt}");
     }
     [Command(requiresAuthority =false)]
     public void OnSpec1()

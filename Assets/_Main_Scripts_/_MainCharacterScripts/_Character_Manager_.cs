@@ -25,7 +25,7 @@ public class _Character_Manager_ : NetworkBehaviour
     private float MinVerticalAngle = -33.0f; // Максимальный угол наклона вниз
     // private Object and Script Variables 
     //private _humanoid_ humanoid;
-    private _player_ player;
+    [SerializeField]public _player_ player;
     private GameObject character;
     private Transform _camera;
     private Rigidbody rb;
@@ -40,47 +40,54 @@ public class _Character_Manager_ : NetworkBehaviour
         }
         return null;
     }
+
     private void Start()
     {
-        
+        Debug.Log($"NetId:{netId}");
         //humanoid = transform.parent.GetComponent<_humanoid_>();
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
         //Joystick 
         fixedJoystick = GameObject.FindObjectOfType<FixedJoystick>();
-        //Player
-        player = this.transform.parent.parent.GetComponent<_player_>();
         //Rigid Body
         rb = GetComponent<Rigidbody>();
         Debug.Log("ONSPAWNed");
        
 
         //Spawn On Network
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer||!isOwned) return;
         Debug.Log("ONSPAWNLocalPlayer");
-        CharacterSpawn(player.GetComponent<NetworkIdentity>().netId, player.Character_Path, player.Skin_Path);
+        CharacterSpawn(netId, player.Character_Path, player.Skin_Path);
     }
     private void FixedUpdate()
     {
-        if (!isLocalPlayer) { return; }//Break On Not Local Player
+        if (!isOwned|| !isClient) { return; }//Break On Not Local Player
 
         CharacterUpdate();
         _CameraUpdate();
     }
-    [Command(requiresAuthority = false)]
+
+
+
+    [Command]
     private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path)
     {
-        if (!isServer|| FindObjectByNetID(NetworkID) == null) return;
-
+        if (!isServer|| FindObjectByNetID(NetworkID) == null|| !connectionToClient.isReady) return;
+        Debug.Log("ISOWN:");
         GameObject player = FindObjectByNetID(NetworkID);
-        player.gameObject.name = player.GetComponent<NetworkIdentity>().netId.ToString()+"_PLAYER _________________";
+        player.gameObject.name = "the PLAYER :"+ NetworkID;
 
         GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
         character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
         character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
-
+        
         NetworkServer.Spawn(character, player);
+        NetworkIdentity characterIdentity = character.GetComponent<NetworkIdentity>();
+        characterIdentity.AssignClientAuthority(connectionToClient);
+
+
+
 
         GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
         Skin.transform.SetParent(character.transform);
@@ -92,11 +99,11 @@ public class _Character_Manager_ : NetworkBehaviour
         //NetworkServer.Spawn(Skin, player.gameObject);
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     private void CharacterMove(float H, float V, uint NetworkID, float cruay)
     {
 
-        if (!isServer || FindObjectByNetID(NetworkID) == null) return;
+        if (!isServer || FindObjectByNetID(NetworkID) == null|| !connectionToClient.isReady) return;
         if (H == 0 && V == 0) return;
         //Debug.Log($"themove {NetworkID}");
         Variables variables = FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables;
@@ -118,14 +125,14 @@ public class _Character_Manager_ : NetworkBehaviour
             if (fixedJoystick.Horizontal != 0 || fixedJoystick.Vertical != 0)
             {
                 // Debug.Log("move");
-                CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
+                CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, netId, _camera.rotation.eulerAngles.y);
                 return;
             }
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
            // Debug.Log("onmove");
-            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , player.GetComponent<NetworkIdentity>().netId, _camera.rotation.eulerAngles.y);
+            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , netId, _camera.rotation.eulerAngles.y);
             return;
         }
     }

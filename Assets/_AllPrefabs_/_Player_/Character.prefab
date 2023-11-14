@@ -89,6 +89,7 @@ MonoBehaviour:
   CameraSpeed: 1
   CameraSlerpSpeed: 10
   realcameraspeed: 5
+  player: {fileID: 4216362166290516082}
 --- !u!54 &6325260188404492299
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -13,9 +13,14 @@ public class _RedBulletScript : NetworkBehaviour
     
     public _humanoid_ hum = null;
     public uint targetid = 0;
+
     private void Start()
     {
-        StartCoroutine(OnStart(11f));
+        if (NetworkServer.spawned.TryGetValue(Owner, out NetworkIdentity obj))
+        {
+            CmdStart(Owner,GetComponent<NetworkIdentity>().netId);
+        }
+        
     }
     IEnumerator OnStart(float _time)
     {
@@ -39,6 +44,16 @@ public class _RedBulletScript : NetworkBehaviour
             NetworkServer.Destroy(obj.gameObject);
         }
 
+    }
+    [Command(requiresAuthority = false)]
+    public void CmdStart(uint Id,uint thisid)
+    {
+        if (!isServer) return;
+        if (NetworkServer.spawned.TryGetValue(Id, out NetworkIdentity obj)&& NetworkServer.spawned.TryGetValue(thisid, out NetworkIdentity thisobj))
+        {
+            thisobj.transform.SetParent(obj.transform.GetChild(1).transform);
+        }
+        StartCoroutine(OnStart(9f));
     }
     private void OnTriggerEnter(Collider other)
     {
