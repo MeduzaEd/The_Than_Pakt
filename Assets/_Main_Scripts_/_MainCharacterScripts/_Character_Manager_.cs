@@ -81,7 +81,9 @@ public class _Character_Manager_ : NetworkBehaviour
         character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
         character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
-        
+
+
+
         NetworkServer.Spawn(character, player);
         NetworkIdentity characterIdentity = character.GetComponent<NetworkIdentity>();
         characterIdentity.AssignClientAuthority(connectionToClient);
@@ -91,9 +93,11 @@ public class _Character_Manager_ : NetworkBehaviour
 
         GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
         Skin.transform.SetParent(character.transform);
-        Skin.transform.localPosition = Vector3.zero; 
+        Skin.transform.localPosition = Vector3.zero;
+        NetworkIdentity SkinIdentity = Skin.GetComponent<NetworkIdentity>();
+        SkinIdentity.AssignClientAuthority(connectionToClient);
 
-        
+        NetworkServer.Spawn(Skin, player);
 
         Debug.Log("On Spawned Character");
         //NetworkServer.Spawn(Skin, player.gameObject);
