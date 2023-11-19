@@ -35,6 +35,7 @@ public class Eldric_Manager : NetworkBehaviour
         try
         {
             humanoid = transform.parent.parent.GetComponent<_humanoid_>();
+            if (!isLocalPlayer) return;
             CmdOnStart(netId);
 
         }
@@ -88,6 +89,7 @@ public class Eldric_Manager : NetworkBehaviour
         onServerPrinted($"newredbullet.transform parent:{newredbullet.transform.parent}");
 
     }
+
     [ClientRpc]
     public void onServerPrinted(string txt)
     {

@@ -57,7 +57,7 @@ public class _Character_Manager_ : NetworkBehaviour
         //Spawn On Network
         if (!isLocalPlayer||!isOwned) return;
         Debug.Log("ONSPAWNLocalPlayer");
-        CharacterSpawn(netId, player.Character_Path, player.Skin_Path);
+        CmdCharacterSpawn(netId, player.Character_Path, player.Skin_Path);
     }
     private void FixedUpdate()
     {
@@ -67,40 +67,36 @@ public class _Character_Manager_ : NetworkBehaviour
         _CameraUpdate();
     }
 
-
-
     [Command]
-    private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path)
+    public void CmdCharacterSpawn(uint NetworkID, string Character_Path, string Skin_Path)
     {
-        if (!isServer|| FindObjectByNetID(NetworkID) == null|| !connectionToClient.isReady) return;
+        CharacterSpawn(NetworkID, Character_Path, Skin_Path,connectionToClient);
+    }
+    [Server]
+    private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path,NetworkConnectionToClient CTC)
+    {
+        if (!isServer|| FindObjectByNetID(NetworkID) == null|| !CTC.isReady) return;
         Debug.Log("ISOWN:");
         GameObject player = FindObjectByNetID(NetworkID);
         player.gameObject.name = "the PLAYER :"+ NetworkID;
-
+       
         GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
+
         character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
+
+
         character.transform.localPosition = Vector3.zero;
         character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
-
-
-
-        NetworkServer.Spawn(character, player);
-        NetworkIdentity characterIdentity = character.GetComponent<NetworkIdentity>();
-        characterIdentity.AssignClientAuthority(connectionToClient);
-
-
-
+        
 
         GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
+
+        
+      
         Skin.transform.SetParent(character.transform);
         Skin.transform.localPosition = Vector3.zero;
-        NetworkIdentity SkinIdentity = Skin.GetComponent<NetworkIdentity>();
-        SkinIdentity.AssignClientAuthority(connectionToClient);
-
-        NetworkServer.Spawn(Skin, player);
-
-        Debug.Log("On Spawned Character");
-        //NetworkServer.Spawn(Skin, player.gameObject);
+        NetworkServer.Spawn(character, CTC);
+        NetworkServer.Spawn(Skin, CTC);
     }
 
     [Command]
