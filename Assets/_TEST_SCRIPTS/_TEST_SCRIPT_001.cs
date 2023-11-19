@@ -12,9 +12,9 @@ public class _TEST_SCRIPT_001 : MonoBehaviour
     int SpawnCount = 2;
     [Range(1, 5)]
     int LineCount = 2;
-    [SerializeField]
-    [Range(1f, 30f)]
-    float DestroyTime = 5f;
+    //   [SerializeField]
+    //  [Range(1f, 30f)]
+    //  float DestroyTime = 5f;
     [SerializeField]
     private GameObject BulletPrefab;
     void Start()

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using Unity.Netcode;
 using UnityEngine.UI;
 
 public class _Server_Connection_ : MonoBehaviour
@@ -17,10 +17,10 @@ public class _Server_Connection_ : MonoBehaviour
     }
     public void ConnectToServer()
     {
-       // options.discoveredServers.Clear();
-        NM.networkAddress = Adress;
-        NM.GetComponent<kcp2k.KcpTransport>().port = (ushort)int.Parse(Port);
-        NM.StartClient();
+        // options.discoveredServers.Clear();
+        //NM.networkAddress = Adress;
+        //NM.GetComponent<kcp2k.KcpTransport>().port = (ushort)int.Parse(Port);
+        //NM.StartClient();
     }
 
 }

@@ -1,17 +1,17 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
-using Mirror.Discovery;
+//using Mirror;
+//using Mirror.Discovery;
 using System.Collections.Generic;
 using System;
 
 public class _Options_ : MonoBehaviour
 {
     [SerializeField]
-    NetworkManager NM;
+    //  NetworkManager NM;
     [Header("Host")]
-    [SerializeField]
+    //  [SerializeField]
     private Slider CL;
     [SerializeField]
     private Slider CD;
@@ -27,8 +27,8 @@ public class _Options_ : MonoBehaviour
     private GameObject _Servers;
     [SerializeField]
     private GameObject _ServerUI;
-    [SerializeField]
-    private Mirror.Discovery.NetworkDiscovery DY;
+    //  [SerializeField]
+    //private Mirror.Discovery.NetworkDiscovery DY;
     [SerializeField]
     private Text QualityUpdate;
     [SerializeField]
@@ -110,22 +110,22 @@ public class _Options_ : MonoBehaviour
         FPSUpdate.text = $"Current FPS Limit:{q}";
 
     }
-    private List<ServerResponse> serverslist=new List<ServerResponse>();
+    // private List<ServerResponse> serverslist=new List<ServerResponse>();
     public void Change()
     {
         try
         {
-            NM.GetComponent<kcp2k.KcpTransport>().port = (ushort)PT.value;
+            //  NM.GetComponent<kcp2k.KcpTransport>().port = (ushort)PT.value;
         }
-        catch{}
+        catch {}
         try
         {
-            NM.disconnectInactiveTimeout = (int)CD.value;
+            //  NM.disconnectInactiveTimeout = (int)CD.value;
         }
         catch { }
         try
         {
-            NM.maxConnections= (int)CL.value;
+            //    NM.maxConnections= (int)CL.value;
         }
         catch { }
         try
@@ -146,8 +146,8 @@ public class _Options_ : MonoBehaviour
     }
     private void Start()
     {
-     //   discoveredServers.Clear();
-        DY.StartDiscovery();
+        //   discoveredServers.Clear();
+        //   DY.StartDiscovery();
         // DY =GetComponent< Mirror.Discovery.NetworkDiscovery >();
         Change();
         ChangeVsync(false);
@@ -156,40 +156,40 @@ public class _Options_ : MonoBehaviour
     }
     public void StartHostDY()
     {
-      //  discoveredServers.Clear();
-        NM.StartHost();
-        DY.AdvertiseServer();
+        //  discoveredServers.Clear();
+        //   NM.StartHost();
+        //   DY.AdvertiseServer();
     }
 
     public void OnConnectedFromDiscovery()
     {
-     //   discoveredServers.Clear();
-        DY.StopDiscovery();
+        //   discoveredServers.Clear();
+        //   DY.StopDiscovery();
     }
     public void ConnectionToIP()
     {
         try
         {
-          //  discoveredServers.Clear();
-            NM.networkAddress = _Adress.text;
-            NM.GetComponent<kcp2k.KcpTransport>().port =(ushort) int.Parse(_Port.text);
-            NM.StartClient();
+            //  discoveredServers.Clear();
+            //   NM.networkAddress = _Adress.text;
+            //   NM.GetComponent<kcp2k.KcpTransport>().port =(ushort) int.Parse(_Port.text);
+            //   NM.StartClient();
             Debug.Log("Connected");
         }
         catch { Debug.Log("Error"); }
     }
- 
-    public void FoundedServers(ServerResponse data)
-    {
-        try
-        {
-            if (!serverslist.Contains(data)) // Проверяем, не существует ли элемента в списке
-            {
-                serverslist.Add(data); // Если не существует, добавляем его
-            }
-        }
-        catch {}
-    }
+
+    //   public void FoundedServers(ServerResponse data)
+    //   {
+    //     try
+    //    {
+    //        if (!serverslist.Contains(data)) // Проверяем, не существует ли элемента в списке
+    //        {
+    //            serverslist.Add(data); // Если не существует, добавляем его
+    //}//
+    //   }
+    //      catch { }
+    //   }
     public void Referesh()
     {
         try
@@ -202,25 +202,25 @@ public class _Options_ : MonoBehaviour
                 }
 
             }
-            if (serverslist.Count > 0)
+            //  if (serverslist.Count > 0)
             {
-                foreach (ServerResponse data in serverslist)
-                {
-                    string Adress = data.uri.DnsSafeHost;
-                    string Port = data.uri.Port.ToString();
-                    GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform, false);
-                    _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
-                    SC.Port = Port;
-                    SC.Adress = Adress;
-                    SC.NM = NM;
-                    SC.options = this;
-                    _ServerUI.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(850, 100);
-                }
+                // foreach (ServerResponse data in serverslist)
+                //   {
+                //     string Adress = data.uri.DnsSafeHost;
+                //       string Port = data.uri.Port.ToString();
+                //    GameObject _ServerUI_ = Instantiate(_ServerUI, _Servers.transform, false);
+                //        _Server_Connection_ SC = _ServerUI_.GetComponent<_Server_Connection_>();
+                //     SC.Port = Port;
+                //     SC.Adress = Adress;
+                //    //        SC.NM = NM;
+                //    SC.options = this;
+                //     _ServerUI.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(850, 100);
+                //     }
             }
         }
         catch(Exception ex) { Debug.Log(ex); }
         //  discoveredServers.Clear();
-        DY.StartDiscovery();
+        //     DY.StartDiscovery();
 
     }
     public void Roll()

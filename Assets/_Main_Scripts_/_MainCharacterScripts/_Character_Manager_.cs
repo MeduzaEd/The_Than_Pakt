@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+
 using System;
 
-public class _Character_Manager_ : NetworkBehaviour
+public class _Character_Manager_ : MonoBehaviour
 {
     //private Vector var
     [SerializeField]
@@ -23,27 +23,20 @@ public class _Character_Manager_ : NetworkBehaviour
     private float ZoomInput = 0.1f;
     private float MaxVerticalAngle = 66.0f; // Максимальный угол наклона вверх
     private float MinVerticalAngle = -33.0f; // Максимальный угол наклона вниз
-    // private Object and Script Variables 
-    //private _humanoid_ humanoid;
-    [SerializeField]public _player_ player;
+                                             // private Object and Script Variables 
+                                             //private _humanoid_ humanoid;
+                                             // [SerializeField]public _player_ player;
     private GameObject character;
     private Transform _camera;
     private Rigidbody rb;
     private FixedJoystick fixedJoystick;
     // Private Vectors vat
     private Vector2 notochscreenposition = new Vector2(Screen.width / 3, Screen.height / 3);
-    public GameObject FindObjectByNetID(uint netID)
-    {
-        if (NetworkServer.spawned.TryGetValue(netID, out NetworkIdentity obj))
-        {
-            return obj.gameObject;
-        }
-        return null;
-    }
+
 
     private void Start()
     {
-        Debug.Log($"NetId:{netId}");
+    
         //humanoid = transform.parent.GetComponent<_humanoid_>();
         //Camera
         _camera = GameObject.FindObjectOfType<Camera>().transform;
@@ -55,68 +48,68 @@ public class _Character_Manager_ : NetworkBehaviour
        
 
         //Spawn On Network
-        if (!isLocalPlayer||!isOwned) return;
+
         Debug.Log("ONSPAWNLocalPlayer");
-        CmdCharacterSpawn(netId, player.Character_Path, player.Skin_Path);
+ 
     }
     private void FixedUpdate()
     {
-        if (!isOwned|| !isClient) { return; }//Break On Not Local Player
+        // if (!isOwned|| !isClient) { return; }//Break On Not Local Player
 
         CharacterUpdate();
         _CameraUpdate();
     }
 
-    [Command]
+    //[Command]
     public void CmdCharacterSpawn(uint NetworkID, string Character_Path, string Skin_Path)
     {
-        CharacterSpawn(NetworkID, Character_Path, Skin_Path,connectionToClient);
+        // CharacterSpawn(NetworkID, Character_Path, Skin_Path,connectionToClient);
     }
-    [Server]
-    private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path,NetworkConnectionToClient CTC)
-    {
-        if (!isServer|| FindObjectByNetID(NetworkID) == null|| !CTC.isReady) return;
-        Debug.Log("ISOWN:");
-        GameObject player = FindObjectByNetID(NetworkID);
-        player.gameObject.name = "the PLAYER :"+ NetworkID;
-       
-        GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
+    //[Server]
+    // private void CharacterSpawn(uint NetworkID,string Character_Path,string Skin_Path,NetworkConnectionToClient CTC)
+    // {
+    // //if (!isServer|| FindObjectByNetID(NetworkID) == null|| !CTC.isReady) return;
+    // Debug.Log("ISOWN:");
+    //GameObject player = FindObjectByNetID(NetworkID);
+    // player.gameObject.name = "the PLAYER :"+ NetworkID;
 
-        character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
+    // GameObject character = Instantiate(Resources.Load<GameObject>(Character_Path));
+
+    // character.transform.SetParent(player.transform.GetChild(0).GetChild(0).transform);
 
 
-        character.transform.localPosition = Vector3.zero;
-        character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
-        
+    // character.transform.localPosition = Vector3.zero;
+    // character.name = character.GetComponent<NetworkIdentity>().netId.ToString() + " on CHARACTER_________________";
 
-        GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
 
-        
-      
-        Skin.transform.SetParent(character.transform);
-        Skin.transform.localPosition = Vector3.zero;
-        NetworkServer.Spawn(character, CTC);
-        NetworkServer.Spawn(Skin, CTC);
-    }
+    // GameObject Skin = Instantiate(Resources.Load<GameObject>(Skin_Path));
 
-    [Command]
+
+
+    // Skin.transform.SetParent(character.transform);
+    // Skin.transform.localPosition = Vector3.zero;
+    // NetworkServer.Spawn(character, CTC);
+    // NetworkServer.Spawn(Skin, CTC);
+    //}
+
+    // [Command]
     private void CharacterMove(float H, float V, uint NetworkID, float cruay)
     {
 
-        if (!isServer || FindObjectByNetID(NetworkID) == null|| !connectionToClient.isReady) return;
-        if (H == 0 && V == 0) return;
-        //Debug.Log($"themove {NetworkID}");
-        Variables variables = FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables;
-        GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        Debug.Log($"Local Cam Movement:{LocalCam.transform.rotation}");
-        if (variables.Died == true || variables.Stun == true|| variables.Stopped == true|| variables.Pushed == true) { return; }
-       // Debug.Log("onthemove");
-        LocalCam.transform.position = rb.position;
-        LocalCam.transform.rotation = Quaternion.Euler(0,cruay, 0);
-        Vector3 Move = new Vector3(H, -.125f, V).normalized;
-        Vector3 MoveNormal = ((Move.x * LocalCam.transform.right) + (Move.z * LocalCam.transform.forward)+(Move.y * LocalCam.transform.up)) * 125f * Time.fixedDeltaTime;
-        rb.rotation = Quaternion.Euler(0, (Quaternion.LookRotation(MoveNormal * 10)).eulerAngles.y, 0);
-        rb.velocity=MoveNormal;
+        //  if (!isServer || FindObjectByNetID(NetworkID) == null|| !connectionToClient.isReady) return;
+        //if (H == 0 && V == 0) return;
+        ////Debug.Log($"themove {NetworkID}");
+        //  Variables variables = FindObjectByNetID(NetworkID).transform.GetChild(0).GetComponent<_humanoid_>().variables;
+        //GameObject LocalCam = FindObjectByNetID(NetworkID).transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        //  Debug.Log($"Local Cam Movement:{LocalCam.transform.rotation}");
+        // if (variables.Died == true || variables.Stun == true|| variables.Stopped == true|| variables.Pushed == true) { return; }
+        // Debug.Log("onthemove");
+        //  LocalCam.transform.position = rb.position;
+        //  LocalCam.transform.rotation = Quaternion.Euler(0,cruay, 0);
+        //   Vector3 Move = new Vector3(H, -.125f, V).normalized;
+        //   Vector3 MoveNormal = ((Move.x * LocalCam.transform.right) + (Move.z * LocalCam.transform.forward)+(Move.y * LocalCam.transform.up)) * 125f * Time.fixedDeltaTime;
+        //   rb.rotation = Quaternion.Euler(0, (Quaternion.LookRotation(MoveNormal * 10)).eulerAngles.y, 0);
+        //  rb.velocity=MoveNormal;
     }
     private void CharacterUpdate()
     {
@@ -125,14 +118,14 @@ public class _Character_Manager_ : NetworkBehaviour
             if (fixedJoystick.Horizontal != 0 || fixedJoystick.Vertical != 0)
             {
                 // Debug.Log("move");
-                CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, netId, _camera.rotation.eulerAngles.y);
+                //  CharacterMove(fixedJoystick.Horizontal, fixedJoystick.Vertical, netId, _camera.rotation.eulerAngles.y);
                 return;
             }
         }
         if (Input.GetAxis("Horizontal") !=0|| Input.GetAxis("Vertical") != 0)
         {
-           // Debug.Log("onmove");
-            CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , netId, _camera.rotation.eulerAngles.y);
+            // Debug.Log("onmove");
+            //   CharacterMove(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") , netId, _camera.rotation.eulerAngles.y);
             return;
         }
     }
@@ -209,10 +202,10 @@ public class _Character_Manager_ : NetworkBehaviour
                     realcameraspeed = CameraSpeed;
                 }
             }
-            DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
+            //  DebouggerToText.DEBUGLOG($"horizontal :{horizontalInput} vertical:{verticalInput} 0 touchpos:{Input.GetTouch(0).position}");
         }
-      //  }
-       // catch (Exception ex) { Debug.Log(ex); horizontalInput = 0;verticalInput = 0; }
+        //  }
+        // catch (Exception ex) { Debug.Log(ex); horizontalInput = 0;verticalInput = 0; }
         _camera.transform.RotateAround(rb.position, Vector3.up, horizontalInput * realcameraspeed);
         verticalRotation -= verticalInput * realcameraspeed;
         verticalRotation = Mathf.Clamp(verticalRotation, MinVerticalAngle, MaxVerticalAngle);

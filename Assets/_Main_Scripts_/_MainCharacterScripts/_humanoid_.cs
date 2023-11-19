@@ -1,69 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 [System.Serializable]
 public struct Variables
 {
-    [SyncVar]
+   // [SyncVar]
     public float Health;
-    [SyncVar]
+    // [SyncVar]
     public float MaxHealth;
-    [SyncVar]
+    // [SyncVar]
     public float Defence;
-    [SyncVar]
+    //[SyncVar]
     public float PhysicPower;
-    [SyncVar]
+    //[SyncVar]
     public float MagicPower;
-    [SyncVar]
+    //[SyncVar]
     public float Speed;
-    [SyncVar]
+    //[SyncVar]
     public float CritRarity;
-    [SyncVar]
+    //[SyncVar]
     public float CritPower;
-    [SyncVar]
+    //[SyncVar]
     public float AttackSpeed;
-    [SyncVar]
+    //[SyncVar]
     public int CharacterType;
-    [SyncVar]
+    //[SyncVar]
     public bool DontStun;
-    [SyncVar]
+    //[SyncVar]
     public bool DontStop;
-    [SyncVar]
+    //[SyncVar]
     public bool Inmortal;
-    [SyncVar]
+    //[SyncVar]
     public bool Stun;
-    [SyncVar]
+    //[SyncVar]
     public bool Stopped;
-    [SyncVar]
+    //[SyncVar]
     public bool Pushed;//Толчек как в млбб от Огненного выстрела или подброс вейла
-    [SyncVar]
+    //[SyncVar]
     public bool Died;
-    [SyncVar]
+    //[SyncVar]
     public uint KilledMe;
     public bool IsPlayer;
 }
 
-public class _humanoid_ : NetworkBehaviour
+public class _humanoid_ : MonoBehaviour
 {
-    public GameObject FindObjectByNetID(uint netID)
-    {
-        if (NetworkServer.spawned.TryGetValue(netID, out NetworkIdentity obj))
-        {
-            return obj.gameObject;
-        }
-        return null;
-    }
+
     public Variables variables;
     
-    [Command(requiresAuthority =false)]
+
     public void OnDamage(float Damage,uint ThisID)
     {
-        if (Damage <= 0|| FindObjectByNetID(ThisID)==null || FindObjectByNetID(transform.parent.GetComponent<NetworkIdentity>().netId) == null) { return; }
-        _humanoid_ enemyhumanoid = FindObjectByNetID(transform.parent.GetComponent<NetworkIdentity>().netId).GetComponentInChildren<_humanoid_>();
-        if(enemyhumanoid.variables.Died == true||enemyhumanoid.variables.Inmortal==true) { return; }
-        enemyhumanoid.variables.Health -= Damage;
-        enemyhumanoid.variables.KilledMe = ThisID;
+
+
     }
 
 }
