@@ -9,40 +9,62 @@ public class User_Interface : MonoBehaviour
     [SerializeField] Image SoundButton;
     [SerializeField] Scrollbar ScroolVolumeSound;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
-    
-    public  bool IsMuteGame = false;
-    public  float SongsVolume = 1f;
+    public _Cache_Save_System_ UserData;
     private void Start()
     {
-        _VolumeChange(1f);
-        ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
-    }
-    public void _VolumeChange(float _v)
-    {
-        IsMuteGame = false;
-        SongsVolume = _v;
-        if (SongsVolume>0f && SongsVolume<=0.25f)
+        #region Load Local Data's
+        UserData = GameObject.FindObjectOfType<_Cache_Save_System_>();
+        #endregion
+
+        #region UI's Load
+        if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
         {
             SoundButton.sprite = SoundButtons[1];
         }
-        else if(SongsVolume >0.25f && SongsVolume <=0.5f)
+        else if (UserData.UserData.SoundsVolume > 0.25f && UserData.UserData.SoundsVolume <= 0.5f)
         {
             SoundButton.sprite = SoundButtons[2];
         }
-        else if(SongsVolume > 0.5f && SongsVolume<=1f)
+        else if (UserData.UserData.SoundsVolume > 0.5f && UserData.UserData.SoundsVolume <= 1f)
         {
             SoundButton.sprite = SoundButtons[3];
         }
-        else if (SongsVolume <= 0f)
+        if (UserData.UserData.SoundsVolume <= 0f|| UserData.UserData.SoundsIsMute)
+        {
+            SoundButton.sprite = SoundButtons[0];
+        }
+        ScroolVolumeSound.value = UserData.UserData.SoundsVolume;
+        #endregion
+        #region Actions
+        ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
+        #endregion
+    }
+    public void _VolumeChange(float _v)
+    {
+        UserData.UserData.SoundsIsMute = false;
+        UserData.UserData.SoundsVolume = _v;
+        if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
+        {
+            SoundButton.sprite = SoundButtons[1];
+        }
+        else if(UserData.UserData.SoundsVolume > 0.25f && UserData.UserData.SoundsVolume <= 0.5f)
+        {
+            SoundButton.sprite = SoundButtons[2];
+        }
+        else if(UserData.UserData.SoundsVolume > 0.5f && UserData.UserData.SoundsVolume <= 1f)
+        {
+            SoundButton.sprite = SoundButtons[3];
+        }
+        else if (UserData.UserData.SoundsVolume <= 0f)
         {
             SoundButton.sprite = SoundButtons[0];
         }
     }
     public void _MuteUnMute()
     {
-        IsMuteGame = !IsMuteGame;
+        UserData.UserData.SoundsIsMute = !UserData.UserData.SoundsIsMute;
         SoundButton.sprite= SoundButtons[0];
-        if (!IsMuteGame) { _VolumeChange(SongsVolume); }
+        if (!UserData.UserData.SoundsIsMute) { _VolumeChange(UserData.UserData.SoundsVolume); }
     }
     public void AnimationSettingsChange(bool _To)
     {
@@ -83,7 +105,9 @@ public class User_Interface : MonoBehaviour
     }
     private void _Exit_()
     {
-        Debug.Log("Exit");
+        Debug.Log("Saving");
+        UserData.SaveData();
+        Debug.Log("Exiting");
         Application.Quit();
     }
 }
