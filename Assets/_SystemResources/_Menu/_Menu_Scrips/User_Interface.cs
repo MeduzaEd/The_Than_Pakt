@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class User_Interface : MonoBehaviour
 {
     [SerializeField] Image SoundButton;
-    [SerializeField] Scrollbar ScroolVolumeSound;
+    [SerializeField] public Scrollbar ScroolVolumeSound;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
     public _Cache_Save_System_ UserData;
     private void Start()
@@ -17,6 +17,14 @@ public class User_Interface : MonoBehaviour
         #endregion
 
         #region UI's Load
+        _ImageChange();
+        #endregion
+        #region Actions
+        ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
+        #endregion
+    }
+    public void _ImageChange()
+    {
         if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
         {
             SoundButton.sprite = SoundButtons[1];
@@ -29,36 +37,22 @@ public class User_Interface : MonoBehaviour
         {
             SoundButton.sprite = SoundButtons[3];
         }
-        if (UserData.UserData.SoundsVolume <= 0f|| UserData.UserData.SoundsIsMute)
-        {
-            SoundButton.sprite = SoundButtons[0];
-        }
-        ScroolVolumeSound.value = UserData.UserData.SoundsVolume;
-        #endregion
-        #region Actions
-        ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
-        #endregion
-    }
-    public void _VolumeChange(float _v)
-    {
-        UserData.UserData.SoundsIsMute = false;
-        UserData.UserData.SoundsVolume = _v;
-        if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
-        {
-            SoundButton.sprite = SoundButtons[1];
-        }
-        else if(UserData.UserData.SoundsVolume > 0.25f && UserData.UserData.SoundsVolume <= 0.5f)
-        {
-            SoundButton.sprite = SoundButtons[2];
-        }
-        else if(UserData.UserData.SoundsVolume > 0.5f && UserData.UserData.SoundsVolume <= 1f)
-        {
-            SoundButton.sprite = SoundButtons[3];
-        }
         else if (UserData.UserData.SoundsVolume <= 0f)
         {
             SoundButton.sprite = SoundButtons[0];
         }
+        ScroolVolumeSound.value = UserData.UserData.SoundsVolume;
+        if (UserData.UserData.SoundsIsMute) { SoundButton.sprite = SoundButtons[0]; }
+    }
+    public void _VolumeChange(float _v)
+    {
+
+        Debug.Log("Ñðôòïóâ");
+        UserData.UserData.SoundsIsMute = _v>0?false:true;
+        UserData.UserData.SoundsVolume = _v;
+        
+        _ImageChange();
+       
     }
     public void _MuteUnMute()
     {

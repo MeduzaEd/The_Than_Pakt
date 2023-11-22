@@ -37,7 +37,7 @@ public class _Cache_Save_System_ : MonoBehaviour
     {
         string json = JsonUtility.ToJson(UserData);
         string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
-        string filePath = Path.Combine(directoryPath, "UserLocalData.json");
+        string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
 
         // Создаем директорию, если ее нет
         if (!Directory.Exists(directoryPath))
@@ -60,7 +60,7 @@ public class _Cache_Save_System_ : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         LoadData();
     }
@@ -68,22 +68,36 @@ public class _Cache_Save_System_ : MonoBehaviour
     public void LoadData()
     {
         string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
-        string filePath = Path.Combine(directoryPath, "UserLocalData.json");
+        string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
         try
         {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
                 AllUserData data = JsonUtility.FromJson<AllUserData>(json);
-
                 Debug.Log("UserLocalData loaded from: " + filePath);
                 UserData= data;
+                #region Sync to start!
+                GameObject.FindObjectOfType<User_Interface>()._ImageChange();
+                GameObject.FindObjectOfType<User_Interface>().ScroolVolumeSound.value = UserData.SoundsVolume;
+                #endregion
             }
             else
             {
-                Directory.CreateDirectory(directoryPath);
-                Debug.LogError("Save file-'UserLocalData' not found at : " + filePath);
+
+                SaveData();
+                Debug.Log("Save file-'UserLocalData' not found and Saved new file to path : " + filePath);
             }
         }catch(Exception ex) { Debug.Log(ex);}
+    }
+    private void OnApplicationQuit()
+    {
+        SaveData();
+        Debug.Log("HasSaved!");
     }
 }
