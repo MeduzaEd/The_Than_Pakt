@@ -35,7 +35,8 @@ public class _Cache_Save_System_ : MonoBehaviour
     public AllUserData UserData=new AllUserData();
     public void SaveData()
     {
-        string json = JsonUtility.ToJson(UserData);
+    
+        string encryptedJson = EncryptionManager.Encrypt(JsonUtility.ToJson(UserData));
         string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
         string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
 
@@ -49,13 +50,13 @@ public class _Cache_Save_System_ : MonoBehaviour
         if (File.Exists(filePath))
         {
             // Если существует, обновляем его
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, encryptedJson);
             Debug.Log("Data updated at: " + filePath);
         }
         else
         {
             // Если файла нет, создаем новый
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, encryptedJson);
             Debug.Log("Data saved at: " + filePath);
         }
     }
@@ -78,8 +79,10 @@ public class _Cache_Save_System_ : MonoBehaviour
             
             if (File.Exists(filePath))
             {
-                string json = File.ReadAllText(filePath);
-                AllUserData data = JsonUtility.FromJson<AllUserData>(json);
+        
+                string decryptedJson = EncryptionManager.Decrypt(File.ReadAllText(filePath));
+                AllUserData data = JsonUtility.FromJson<AllUserData>(decryptedJson);
+               // JsonUtility.FromJsonOverwrite(decryptedJson, UserData);
                 Debug.Log("UserLocalData loaded from: " + filePath);
                 UserData= data;
                 #region Sync to start!
