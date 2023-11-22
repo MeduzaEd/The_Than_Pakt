@@ -1063,7 +1063,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 144780235}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 849761479}
+        m_TargetAssemblyTypeName: User_Interface, Assembly-CSharp
+        m_MethodName: AnimationMenuHostChange
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &144780235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2567,7 +2579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MessageBufferSize: 5120
-  MaxConnections: 100
+  MaxConnections: 8
   MaxSentMessageQueueSize: 128
   ConnectAddress: 127.0.0.1
   ConnectPort: 7777
@@ -5993,6 +6005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SoundButton: {fileID: 465424578}
   ScroolVolumeSound: {fileID: 1444900958}
+  ScroolVolumeMaxConnections: {fileID: 330484586}
   SoundButtons:
   - {fileID: 854256497, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
   - {fileID: -2049525304, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
@@ -9129,7 +9142,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 849761479}
         m_TargetAssemblyTypeName: User_Interface, Assembly-CSharp
-        m_MethodName: AnimationPlayMenuChange
+        m_MethodName: AnimationMenuHostChange
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14116,8 +14129,10 @@ MonoBehaviour:
     Crystals: 0
     Characters: []
     CharactersSkins: []
+    TutorialSkip: 0
     SoundsIsMute: 0
     SoundsVolume: 0
+    MaxUsersInHost: 0
 --- !u!114 &1933661338
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,10 +23,10 @@ public struct AllUserData
     #endregion
 
     #region Menu Data's
-
+    public bool TutorialSkip;
     public bool SoundsIsMute;
     public float SoundsVolume;
-
+    public int MaxUsersInHost;
     #endregion
 }
 
@@ -61,7 +61,7 @@ public class _Cache_Save_System_ : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
         LoadData();
     }
@@ -83,12 +83,15 @@ public class _Cache_Save_System_ : MonoBehaviour
                 string decryptedJson = EncryptionManager.Decrypt(File.ReadAllText(filePath));
                 AllUserData data = JsonUtility.FromJson<AllUserData>(decryptedJson);
                // JsonUtility.FromJsonOverwrite(decryptedJson, UserData);
-                Debug.Log("UserLocalData loaded from: " + filePath);
                 UserData= data;
                 #region Sync to start!
-                GameObject.FindObjectOfType<User_Interface>()._ImageChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeSound.value = UserData.SoundsVolume;
+                GameObject.FindObjectOfType<User_Interface>()._ImageChange();
+                GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value =((float)UserData.MaxUsersInHost)/16;
+                GameObject.FindObjectOfType<User_Interface>()._TextChangeInMaxUsers();
+                GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.onValueChanged.AddListener(The_MaxUsersChange);
                 #endregion
+                Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
             }
             else
             {
@@ -98,9 +101,13 @@ public class _Cache_Save_System_ : MonoBehaviour
             }
         }catch(Exception ex) { Debug.Log(ex);}
     }
+    private void The_MaxUsersChange(float _)
+    {
+        GameObject.FindObjectOfType<User_Interface>()._MaxUsersChange();
+    }
     private void OnApplicationQuit()
     {
         SaveData();
-        Debug.Log("HasSaved!");
+        Debug.Log($"{ UserData.MaxUsersInHost} - HasSaved!");
     }
 }
