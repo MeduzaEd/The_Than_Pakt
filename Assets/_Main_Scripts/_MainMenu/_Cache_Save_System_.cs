@@ -36,6 +36,7 @@ public struct AllUserData
 public class _Cache_Save_System_ : MonoBehaviour
 {
     public AllUserData UserData=new AllUserData();
+    public static _Cache_Save_System_ _SaveSingeton;
     public void SaveData()
     {
     
@@ -66,6 +67,7 @@ public class _Cache_Save_System_ : MonoBehaviour
 
     private void Start()
     {
+        _SaveSingeton = this;
         LoadData();
     }
 
@@ -91,9 +93,11 @@ public class _Cache_Save_System_ : MonoBehaviour
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeSound.value = UserData.SoundsVolume;
                 GameObject.FindObjectOfType<User_Interface>()._ImageChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value =((float)UserData.MaxUsersInHost)/16;
-                GameObject.FindObjectOfType<User_Interface>()._TextChangeInMaxUsers();
+                GameObject.FindObjectOfType<User_Interface>()._MaxUsersChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.onValueChanged.AddListener(The_MaxUsersChange);
                 GameObject.FindObjectOfType<User_Interface>().ServerName.transform.parent.GetComponent<InputField>().text = UserData.MyServerName ;
+                GameObject.FindObjectOfType<User_Interface>()._ServerNameChange(UserData.MyServerName);
+
                 #endregion
                 Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
             }

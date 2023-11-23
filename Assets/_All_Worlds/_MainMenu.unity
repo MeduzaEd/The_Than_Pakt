@@ -2545,7 +2545,7 @@ GameObject:
   - component: {fileID: 342381245}
   - component: {fileID: 342381244}
   m_Layer: 0
-  m_Name: Network
+  m_Name: ---Netcode--Network---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2559,7 +2559,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342381240}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.101027325, y: 0.06346338, z: -0.0037894766}
+  m_LocalPosition: {x: 0, y: 0.06340338, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2600,7 +2600,7 @@ MonoBehaviour:
   m_Port: 47777
   m_UniqueApplicationId: -7147323479721309665
   m_StartWithServer: 1
-  ServerName: EnterName
+  ServerName: No_Name_Server
   MaxConnections: 10
   CurentConnections: 10
   OnServerFound:
@@ -2623,7 +2623,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 342381244}
-    PlayerPrefab: {fileID: 0}
+    PlayerPrefab: {fileID: 7260525749597145714, guid: be2dfc49a3baae844a835acdf524ec35, type: 3}
     NetworkPrefabs: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
@@ -2891,14 +2891,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 849761479}
         m_TargetAssemblyTypeName: User_Interface, Assembly-CSharp
-        m_MethodName: AnimationPlayMenuChange
-        m_Mode: 6
+        m_MethodName: _HostGameAnimation
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Close_Settings
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &400947997
@@ -4600,7 +4600,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: -0.025, y: -1}
+  m_Pivot: {x: -0.075, y: -1}
 --- !u!114 &711570535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8529,7 +8529,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: -0.025, y: 2}
+  m_Pivot: {x: -0.075, y: 2}
 --- !u!114 &1130578826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9368,7 +9368,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: -0.025, y: 3}
+  m_Pivot: {x: -0.075, y: 3}
 --- !u!114 &1230055221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11348,7 +11348,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: -0.025, y: 1}
+  m_Pivot: {x: -0.075, y: 1}
 --- !u!114 &1482358396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15126,7 +15126,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: -0.025, y: 0}
+  m_Pivot: {x: -0.075, y: 0}
 --- !u!114 &2054276850
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class User_Interface : MonoBehaviour
     [SerializeField] public Scrollbar ScroolVolumeMaxConnections;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
     public _Cache_Save_System_ UserData;
+    private NetworkManager _NetworkManager;
     private void Start()
     {
         #region Load Local Data's
@@ -30,6 +31,7 @@ public class User_Interface : MonoBehaviour
         ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
         GlobalBadTexts = BadTexts;
         #endregion
+        _NetworkManager = NetworkManager.Singleton;
     }
     public void _MaxUsersChange()
     {
@@ -81,7 +83,7 @@ public class User_Interface : MonoBehaviour
         ServerName.text = _text;
         ServerName.transform.parent.GetComponent<InputField>().text = _text;
         UserData.UserData.MyServerName = _text;
-
+        NetworkManager.Singleton.GetComponent<ExampleNetworkDiscovery>().ServerName = UserData.UserData.MyServerName;
     }
     public void _ImageChange()
     {
@@ -170,6 +172,15 @@ public class User_Interface : MonoBehaviour
     {
         GetComponent<Animator>().Play("ExitToGame");
     }
+    public void _HostGameAnimation()
+    {
+        GetComponent<Animator>().Play("StartHostAnimation");
+    }
+    public void _HostGame()
+    {
+        
+    }
+
     private void _Exit_()
     {
         Debug.Log("Saving");

@@ -23,6 +23,7 @@ public class ExampleNetworkDiscovery : NetworkDiscovery<DiscoveryBroadcastData, 
     public string ServerName = "EnterName";
     public uint MaxConnections = 10;
     public uint CurentConnections = 10;
+
     public ServerFoundEvent OnServerFound;
 
     private bool m_HasStartedWithServer = false;
@@ -38,6 +39,7 @@ public class ExampleNetworkDiscovery : NetworkDiscovery<DiscoveryBroadcastData, 
         {
             if (m_NetworkManager.IsServer)
             {
+                
                 MaxConnections = (uint)m_NetworkManager.GetComponent<UNetTransport>().MaxConnections;
                 StartServer();
                 m_HasStartedWithServer = true;
