@@ -31,8 +31,13 @@ public class ExampleNetworkDiscovery : NetworkDiscovery<DiscoveryBroadcastData, 
     public void Awake()
     {
         m_NetworkManager = GetComponent<NetworkManager>();
+        m_NetworkManager.OnServerStarted += StartMainScene;
     }
-
+    private void StartMainScene()
+    {
+        if (!m_NetworkManager.IsServer) { return; }
+        m_NetworkManager.SceneManager.LoadScene("_Dungeon_Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+    }
     public void Update()
     {
         if (m_StartWithServer && m_HasStartedWithServer == false && IsRunning == false)
@@ -71,4 +76,5 @@ public class ExampleNetworkDiscovery : NetworkDiscovery<DiscoveryBroadcastData, 
     {
         OnServerFound.Invoke(sender, response);
     }
+    
 }

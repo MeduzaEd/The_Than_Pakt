@@ -178,7 +178,7 @@ public class User_Interface : MonoBehaviour
     }
     public void _HostGame()
     {
-        
+        NetworkManager.Singleton.StartHost();
     }
 
     private void _Exit_()

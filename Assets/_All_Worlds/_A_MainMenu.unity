@@ -2544,6 +2544,7 @@ GameObject:
   - component: {fileID: 342381246}
   - component: {fileID: 342381245}
   - component: {fileID: 342381244}
+  - component: {fileID: 342381247}
   m_Layer: 0
   m_Name: ---Netcode--Network---
   m_TagString: Untagged
@@ -2640,6 +2641,20 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+--- !u!114 &342381247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342381240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76448ef1416e7dc4d9def5ec93b3a22f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Discovery: {fileID: 342381245}
+  DrawOffset: {x: 10, y: 210}
 --- !u!1 &371227670
 GameObject:
   m_ObjectHideFlags: 0
