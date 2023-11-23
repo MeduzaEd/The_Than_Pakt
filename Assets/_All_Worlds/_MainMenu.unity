@@ -14161,7 +14161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933661335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3338472, y: 5.130639, z: 12.183939}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14187,9 +14187,9 @@ MonoBehaviour:
     CharactersSkins: []
     TutorialSkip: 0
     SoundsIsMute: 0
-    SoundsVolume: 0
-    MaxUsersInHost: 0
-    MyServerName: 
+    SoundsVolume: 1
+    MaxUsersInHost: 8
+    MyServerName: Default-SERVER
 --- !u!114 &1933661338
 MonoBehaviour:
   m_ObjectHideFlags: 0
