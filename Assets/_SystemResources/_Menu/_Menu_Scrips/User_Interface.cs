@@ -4,9 +4,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode.Transports.UNET;
+using System.Linq;
+using System;
+
 public class User_Interface : MonoBehaviour
 {
+    [SerializeField] List<string> BadTexts;
     [SerializeField] Image SoundButton;
+    [SerializeField] public Text ServerName;
     [SerializeField] public Scrollbar ScroolVolumeSound;
     [SerializeField] public Scrollbar ScroolVolumeMaxConnections;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
@@ -36,8 +41,45 @@ public class User_Interface : MonoBehaviour
     {
         ScroolVolumeMaxConnections.transform.parent.GetChild(0).GetComponent<Text>().text = $"max connections:{UserData.UserData.MaxUsersInHost}";
     }
+    private string ServerNameFormat(string _text)
+    {
+        string defoldservername = "Default-Server";
+        try
+        {
+            if (_text.Replace(" ", string.Empty).Length != _text.Length)
+            {
+                Debug.Log("Server name has not use spaces");
+                _text = _text.Replace(" ", string.Empty);
+            }
+
+            if (_text.Length > 32 || _text.Length < 6)
+            {
+                Debug.Log("Server name has not upper 32 & lower 6 symb");
+                return defoldservername;
+            }
+            foreach (string _Bad_text in BadTexts)
+            {
+                if (_text.ToLower().Contains(_Bad_text.ToLower()))
+                {
+                    Debug.Log("Please dont use Bad texts");
+                    return defoldservername;
+                }
+            }
+        }
+        catch(Exception ex) 
+        { 
+            Debug.Log(ex); 
+            return defoldservername; 
+        }
+
+        return _text;
+    }
     public void _ServerNameChange(string _text)
     {
+        _text = ServerNameFormat(_text);
+        ServerName.text = _text;
+        ServerName.transform.parent.GetComponent<InputField>().text = _text;
+        UserData.UserData.MyServerName = _text;
 
     }
     public void _ImageChange()

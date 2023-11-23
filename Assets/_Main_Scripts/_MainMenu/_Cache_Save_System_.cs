@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+
 [System.Serializable]
 public struct AllUserData
 {
@@ -27,6 +29,7 @@ public struct AllUserData
     public bool SoundsIsMute;
     public float SoundsVolume;
     public int MaxUsersInHost;
+    public string MyServerName;
     #endregion
 }
 
@@ -90,6 +93,7 @@ public class _Cache_Save_System_ : MonoBehaviour
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value =((float)UserData.MaxUsersInHost)/16;
                 GameObject.FindObjectOfType<User_Interface>()._TextChangeInMaxUsers();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.onValueChanged.AddListener(The_MaxUsersChange);
+                GameObject.FindObjectOfType<User_Interface>().ServerName.transform.parent.GetComponent<InputField>().text = UserData.MyServerName ;
                 #endregion
                 Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
             }
@@ -101,6 +105,7 @@ public class _Cache_Save_System_ : MonoBehaviour
             }
         }catch(Exception ex) { Debug.Log(ex);}
     }
+
     private void The_MaxUsersChange(float _)
     {
         GameObject.FindObjectOfType<User_Interface>()._MaxUsersChange();
