@@ -10,6 +10,7 @@ using System;
 public class User_Interface : MonoBehaviour
 {
     [SerializeField] List<string> BadTexts;
+    public static List<string> GlobalBadTexts;
     [SerializeField] Image SoundButton;
     [SerializeField] public Text ServerName;
     [SerializeField] public Scrollbar ScroolVolumeSound;
@@ -27,7 +28,7 @@ public class User_Interface : MonoBehaviour
         #endregion
         #region Actions
         ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
-
+        GlobalBadTexts = BadTexts;
         #endregion
     }
     public void _MaxUsersChange()

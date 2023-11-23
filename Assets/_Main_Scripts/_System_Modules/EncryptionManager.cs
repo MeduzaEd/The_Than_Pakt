@@ -42,8 +42,8 @@ public class EncryptionManager : MonoBehaviour
         // Загружаем ключи при запуске приложения
         key = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_key2", GenerateKey()));
         iv = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_iv2", GenerateIV()));
-        Debug.Log(key);
-        Debug.Log(iv);
+        //Debug.Log(key);
+        //Debug.Log(iv);
     }
     public static string Encrypt(string plainText)
     {
