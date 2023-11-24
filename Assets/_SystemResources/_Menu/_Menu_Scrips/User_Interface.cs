@@ -31,13 +31,14 @@ public class User_Interface : MonoBehaviour
         ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
         GlobalBadTexts = BadTexts;
         #endregion
-        _NetworkManager = NetworkManager.Singleton;
+        _NetworkManager = GameObject.FindObjectOfType<NetworkManager>();
     }
     public void _MaxUsersChange()
     {
         int Users = (int)(ScroolVolumeMaxConnections.value * 15);
         UserData.UserData.MaxUsersInHost =(Users+1);
-        NetworkManager.Singleton.GetComponent<UNetTransport>().MaxConnections =UserData.UserData.MaxUsersInHost;
+
+        GameObject.FindObjectOfType<UNetTransport>().MaxConnections =UserData.UserData.MaxUsersInHost;
         _TextChangeInMaxUsers();
     }
     public void _TextChangeInMaxUsers()
@@ -83,7 +84,7 @@ public class User_Interface : MonoBehaviour
         ServerName.text = _text;
         ServerName.transform.parent.GetComponent<InputField>().text = _text;
         UserData.UserData.MyServerName = _text;
-        NetworkManager.Singleton.GetComponent<ExampleNetworkDiscovery>().ServerName = UserData.UserData.MyServerName;
+        GameObject.FindObjectOfType<ExampleNetworkDiscovery>().ServerName = UserData.UserData.MyServerName;
     }
     public void _ImageChange()
     {
@@ -178,7 +179,7 @@ public class User_Interface : MonoBehaviour
     }
     public void _HostGame()
     {
-        NetworkManager.Singleton.StartHost();
+        GameObject.FindObjectOfType<NetworkManager>().StartHost();
     }
 
     private void _Exit_()

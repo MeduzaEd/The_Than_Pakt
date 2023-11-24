@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UNET;
+using System.Collections;
 
 [RequireComponent(typeof(ExampleNetworkDiscovery))]
 [RequireComponent(typeof(NetworkManager))]
@@ -36,7 +37,7 @@ public class ExampleNetworkDiscoveryHud : MonoBehaviour
     }
 #endif
 
-    void OnServerFound(IPEndPoint sender, DiscoveryResponseData response)
+    public void OnServerFound(IPEndPoint sender, DiscoveryResponseData response)
     {
         discoveredServers[sender.Address] = response;
     }
@@ -59,7 +60,16 @@ public class ExampleNetworkDiscoveryHud : MonoBehaviour
 
         GUILayout.EndArea();
     }
-
+    IEnumerator PingCheck(string ip)
+    {
+        Ping pn = new Ping(ip);
+        while (!pn.isDone)
+        {
+            yield return null;
+        }
+        
+        yield return pn.time.ToString();
+    }
     void ClientSearchGUI()
     {
         if (m_Discovery.IsRunning)
@@ -80,7 +90,8 @@ public class ExampleNetworkDiscoveryHud : MonoBehaviour
 
             foreach (var discoveredServer in discoveredServers)
             {
-                if (GUILayout.Button($"{discoveredServer.Value.ServerName}[{discoveredServer.Key.ToString()}] {discoveredServer.Value.CurentConnections}/{discoveredServer.Value.MaxConnections}"))
+                
+                if (GUILayout.Button($"{discoveredServer.Value.ServerName}[{discoveredServer.Key.ToString()}] Ping:{  StartCoroutine(PingCheck(discoveredServer.Key.ToString())) }"))
                 {
                     UNetTransport transport = (UNetTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
                     transport.ConnectAddress = discoveredServer.Key.ToString();
