@@ -9,7 +9,6 @@ public class NetworkConnectionToServer : MonoBehaviour
 {
     public string _Adress="127.0.0.1";
     public ushort _Port = 7777;
-    public uint _Ping = 999;
     public NetworkManager m_NetworkManager;
     private Text _pingtext;
     public void connectclient()
@@ -24,16 +23,15 @@ public class NetworkConnectionToServer : MonoBehaviour
         m_NetworkManager = GameObject.FindObjectOfType<NetworkManager>();
         _pingtext = transform.GetChild(0).GetChild(2).GetComponent<Text>();
         StartCoroutine(serverchecker());
+        _pingtext.text = $"Ping:{999}+ ms";
     }
     IEnumerator serverchecker()
     {
         yield return null;
         do
         {
-            yield return new WaitForSecondsRealtime(2f);
-
             StartCoroutine(PingServer());
-            _pingtext.text = $"Ping:{_Ping}ms";
+            yield return new WaitForSecondsRealtime(1f);
             yield return null;
         } while (true);
     }
@@ -44,7 +42,7 @@ public class NetworkConnectionToServer : MonoBehaviour
         {
             yield return null;
         }
-        _Ping=(uint)pn.time;
+        _pingtext.text = $"Ping:{pn.time} ms";
         yield return null;
 
     }
