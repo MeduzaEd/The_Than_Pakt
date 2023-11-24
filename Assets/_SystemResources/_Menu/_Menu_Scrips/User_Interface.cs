@@ -14,6 +14,7 @@ public class User_Interface : MonoBehaviour
     [SerializeField] Image SoundButton;
     [SerializeField] public Text ServerName;
     [SerializeField] public Scrollbar ScroolVolumeSound;
+    [SerializeField] public RectTransform _Content;
     [SerializeField] public Scrollbar ScroolVolumeMaxConnections;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
     public _Cache_Save_System_ UserData;
@@ -168,7 +169,25 @@ public class User_Interface : MonoBehaviour
             GetComponent<Animator>().Play("Close_Host");
         }
     }
-
+    public void AnimationMenuConnectChange(bool _To)
+    {
+        if (_To)
+        {
+            GetComponent<Animator>().Play("Open_Connect_Menu");
+        }
+        else
+        {
+            GetComponent<Animator>().Play("Close_Connect_Menu");
+        }
+    }
+    public void _Scroll_Content(Vector2 _)
+    {
+        int _y =((_Content.transform.childCount * 200) - 450)<50?50: ((_Content.transform.childCount * 200) - 450);
+        _Content.localPosition = new Vector3(0, _Content.localPosition.y < 0 ? 0 : _Content.localPosition.y);//min
+        _Content.localPosition = new Vector3(0,  _Content.localPosition.y > _y ? _y: _Content.localPosition.y);//max
+       
+        Debug.Log(_Content.localPosition.y);
+    }
     public void _TheToExitGame()
     {
         GetComponent<Animator>().Play("ExitToGame");
