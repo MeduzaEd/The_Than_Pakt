@@ -60,16 +60,7 @@ public class ExampleNetworkDiscoveryHud : MonoBehaviour
 
         GUILayout.EndArea();
     }
-    IEnumerator PingCheck(string ip)
-    {
-        Ping pn = new Ping(ip);
-        while (!pn.isDone)
-        {
-            yield return null;
-        }
-        
-        yield return pn.time.ToString();
-    }
+
     void ClientSearchGUI()
     {
         if (m_Discovery.IsRunning)
@@ -91,7 +82,7 @@ public class ExampleNetworkDiscoveryHud : MonoBehaviour
             foreach (var discoveredServer in discoveredServers)
             {
                 
-                if (GUILayout.Button($"{discoveredServer.Value.ServerName}[{discoveredServer.Key.ToString()}] Ping:{  StartCoroutine(PingCheck(discoveredServer.Key.ToString())) }"))
+                if (GUILayout.Button($" adress:{   discoveredServer.Key.ToString() }"))
                 {
                     UNetTransport transport = (UNetTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
                     transport.ConnectAddress = discoveredServer.Key.ToString();

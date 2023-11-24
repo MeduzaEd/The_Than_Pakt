@@ -6,19 +6,62 @@ using UnityEngine.UI;
 using Unity.Netcode.Transports.UNET;
 using System.Linq;
 using System;
+using System.Net;
 
 public class User_Interface : MonoBehaviour
 {
     [SerializeField] List<string> BadTexts;
     public static List<string> GlobalBadTexts;
+    [SerializeField] Transform ServersUIContent;
+    [SerializeField] GameObject ServerUIprefab;
     [SerializeField] Image SoundButton;
     [SerializeField] public Text ServerName;
     [SerializeField] public Scrollbar ScroolVolumeSound;
     [SerializeField] public RectTransform _Content;
     [SerializeField] public Scrollbar ScroolVolumeMaxConnections;
     [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
+    [SerializeField] Dictionary<IPAddress, DiscoveryResponseData> discoveredServers = new Dictionary<IPAddress, DiscoveryResponseData>();
+
     public _Cache_Save_System_ UserData;
     private NetworkManager _NetworkManager;
+    private ExampleNetworkDiscovery m_Discovery;
+    public void OnServerFound(IPEndPoint sender, DiscoveryResponseData response)
+    {
+        discoveredServers[sender.Address] = response;
+       
+    }
+    public void searchservers()
+    {
+        Debug.Log(discoveredServers.Values.Count);
+        if (!m_Discovery.IsRunning)
+        {
+            m_Discovery.StartClient(); 
+        }
+        m_Discovery.ClientBroadcast(new DiscoveryBroadcastData());
+        ReloadServersUI();
+        Debug.Log(discoveredServers.Values.Count);
+        Debug.Log(discoveredServers.Keys);
+    }
+    public void ReloadServersUI()
+    {
+        if (ServersUIContent.childCount > 0)
+        {
+            ServersUIContent.DetachChildren();
+        }
+        if (discoveredServers.Values.Count > 0)
+        {
+            foreach (var server in discoveredServers)
+            {
+                GameObject NewServerUI = Instantiate(ServerUIprefab, ServersUIContent);
+                NewServerUI.GetComponent<NetworkConnectionToServer>()._Adress = server.Key.ToString();
+                NewServerUI.GetComponent<NetworkConnectionToServer>()._Port = server.Value.Port;
+                NewServerUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = server.Value.ServerName;
+                NewServerUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"Users:{server.Value.MaxConnections}/{server.Value.CurentConnections}";
+            }
+            discoveredServers.Clear();
+        }
+        //m_Discovery.StopDiscovery();
+    }
     private void Start()
     {
         #region Load Local Data's
@@ -33,6 +76,7 @@ public class User_Interface : MonoBehaviour
         GlobalBadTexts = BadTexts;
         #endregion
         _NetworkManager = GameObject.FindObjectOfType<NetworkManager>();
+        m_Discovery = GameObject.FindObjectOfType<ExampleNetworkDiscovery>();
     }
     public void _MaxUsersChange()
     {
@@ -198,7 +242,7 @@ public class User_Interface : MonoBehaviour
     }
     public void _HostGame()
     {
-        GameObject.FindObjectOfType<NetworkManager>().StartHost();
+        _NetworkManager.StartHost();
     }
 
     private void _Exit_()

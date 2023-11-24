@@ -35,7 +35,7 @@ RectTransform:
   - {fileID: 3508917617564320235}
   - {fileID: 2639048366042180507}
   m_Father: {fileID: 2405813747980548500}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -129,7 +129,7 @@ RectTransform:
   m_Children:
   - {fileID: 3839379890535404167}
   m_Father: {fileID: 2405813747980548500}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -217,7 +217,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 428783394568522339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3492950171699886888}
+        m_TargetAssemblyTypeName: NetworkConnectionToServer, Assembly-CSharp
+        m_MethodName: connectclient
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &326187695158235098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +353,7 @@ GameObject:
   - component: {fileID: 2405813747980548502}
   - component: {fileID: 2405813747980548503}
   - component: {fileID: 2405813747980548497}
+  - component: {fileID: 3492950171699886888}
   m_Layer: 5
   m_Name: _server_ui_prefab_
   m_TagString: Untagged
@@ -360,8 +373,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3209121336004724201}
   - {fileID: 8940158918852847207}
+  - {fileID: 3209121336004724201}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -423,6 +436,22 @@ MonoBehaviour:
   m_EffectColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.19607843}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &3492950171699886888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405813747980548501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9bb9a6fcba9d247aa1982731133bbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Adress: 127.0.0.1
+  _Port: 7777
+  _Ping: 999
+  m_NetworkManager: {fileID: 0}
 --- !u!1 &4150301822981265449
 GameObject:
   m_ObjectHideFlags: 0
