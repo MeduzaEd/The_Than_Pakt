@@ -12,6 +12,7 @@ public class User_Interface : MonoBehaviour
 {
     [SerializeField] List<string> BadTexts;
     public static List<string> GlobalBadTexts;
+    [SerializeField] Text IpAdress;
     [SerializeField] Transform ServersUIContent;
     [SerializeField] GameObject ServerUIprefab;
     [SerializeField] Image SoundButton;
@@ -56,11 +57,34 @@ public class User_Interface : MonoBehaviour
                 NewServerUI.GetComponent<NetworkConnectionToServer>()._Adress = server.Key.ToString();
                 NewServerUI.GetComponent<NetworkConnectionToServer>()._Port = server.Value.Port;
                 NewServerUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = server.Value.ServerName;
-                NewServerUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"Users:{server.Value.MaxConnections}/{server.Value.CurentConnections}";
+                NewServerUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"Users:{server.Value.CurentConnections}/{server.Value.MaxConnections}";
             }
             discoveredServers.Clear();
         }
         //m_Discovery.StopDiscovery();
+    }
+    public void ConnectFromIP()
+    {
+        try
+        {
+            if (_NetworkManager.IsConnectedClient)
+            {
+                _NetworkManager.DisconnectClient(_NetworkManager.LocalClientId);
+            }
+            IpAdress.text = checktoip(IpAdress.text);
+            UNetTransport transport = (UNetTransport)_NetworkManager.NetworkConfig.NetworkTransport;
+            transport.ConnectAddress = IpAdress.text;
+            transport.ConnectPort = 7777;
+            _NetworkManager.StartClient();
+        }
+        catch (Exception ex) 
+        { 
+            Debug.Log(ex); 
+        }
+    }
+    private string checktoip(string _adress)
+    {
+        return _adress.Trim().ToLower();
     }
     private void Start()
     {

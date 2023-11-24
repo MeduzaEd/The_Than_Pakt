@@ -2976,7 +2976,6 @@ GameObject:
   - component: {fileID: 342381246}
   - component: {fileID: 342381245}
   - component: {fileID: 342381244}
-  - component: {fileID: 342381247}
   m_Layer: 0
   m_Name: ---Netcode--Network---
   m_TagString: Untagged
@@ -3085,20 +3084,6 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
---- !u!114 &342381247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 342381240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76448ef1416e7dc4d9def5ec93b3a22f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Discovery: {fileID: 342381245}
-  DrawOffset: {x: 10, y: 210}
 --- !u!1 &344802356
 GameObject:
   m_ObjectHideFlags: 0
@@ -6980,6 +6965,7 @@ MonoBehaviour:
   - "\u0441\u0443\u043A\u0438"
   - "\u0447\u0435\u0440\u0442"
   - "\u0447\u0435\u0440\u0442\u0438"
+  IpAdress: {fileID: 344802358}
   ServersUIContent: {fileID: 1135758598}
   ServerUIprefab: {fileID: 2405813747980548501, guid: 5809a9c5adaa3044f8cd1a878068dd3f, type: 3}
   SoundButton: {fileID: 465424578}
@@ -13803,7 +13789,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1633075004}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 849761479}
+        m_TargetAssemblyTypeName: User_Interface, Assembly-CSharp
+        m_MethodName: ConnectFromIP
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1633075004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15692,7 +15690,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1494153276}
   m_HandleRect: {fileID: 1494153275}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
