@@ -12,31 +12,39 @@ public struct AllUserData
 
     #region User Main Data's
 
-    public uint Wind_Jade;
+    public uint Golds;
     public uint Crystals;
 
     #endregion
 
     #region User Characters Data's
 
-    public List<string> Characters;
-    public List<string> CharactersSkins;
+    public List<Character> Characters;
 
+    public string SelectedCharacterPath;
+    public string SelectedCharacterSkinPath;
     #endregion
 
     #region Menu Data's
-    public bool TutorialSkip;
+    public uint TutorialStage;
     public bool SoundsIsMute;
     public float SoundsVolume;
     public int MaxUsersInHost;
     public string MyServerName;
     #endregion
 }
-
+[System.Serializable]
+public struct Character
+{
+    public string CharacterPath;
+    public List<string> CharacterSkins;
+}
 public class _Cache_Save_System_ : MonoBehaviour
 {
     public AllUserData UserData=new AllUserData();
     public static _Cache_Save_System_ _SaveSingeton;
+    [SerializeField] string StarterCharacterPath;
+    [SerializeField] string StarterSkinPath;
     public void SaveData()
     {
     
@@ -67,10 +75,26 @@ public class _Cache_Save_System_ : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
         _SaveSingeton = this;
         LoadData();
+        CheckToLoad();
     }
-
+    public void CheckToLoad()
+    {
+        if(UserData.Characters.Count <=0)
+        {
+            Debug.Log(StarterSkinPath);
+            Character _Character = new Character();
+            Debug.Log(_Character);
+            _Character.CharacterPath = StarterCharacterPath.ToString();
+            Debug.Log(_Character);
+            _Character.CharacterSkins.Add(StarterSkinPath.ToString());
+            Debug.Log(_Character);
+            UserData.Characters.Add(_Character);
+            Debug.Log(_Character);
+        }
+    }
     public void LoadData()
     {
         string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");

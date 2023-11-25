@@ -62,6 +62,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9f3b7cc733a0846898f0bbf43cb33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health:
+    m_InternalValue: 1500
+  MaxHealth:
+    m_InternalValue: 2000
+  Defence:
+    m_InternalValue: 5
+  Speed:
+    m_InternalValue: 200
+  MagicPower:
+    m_InternalValue: 5
+  PhysicPower:
+    m_InternalValue: 250
+  AttackSpeed:
+    m_InternalValue: 100
+  AttackColdown:
+    m_InternalValue: 0
+  CritRarity:
+    m_InternalValue: 0
+  CritPower:
+    m_InternalValue: 100
+  Stun:
+    m_InternalValue: 0
+  Stopped:
+    m_InternalValue: 0
+  PlayerKilled:
+    m_InternalValue: 4294967295
+  Inmortal:
+    m_InternalValue: 0
+  Died:
+    m_InternalValue: 0
+  Block:
+    m_InternalValue: 0
 --- !u!114 &2806000694367338118
 MonoBehaviour:
   m_ObjectHideFlags: 0

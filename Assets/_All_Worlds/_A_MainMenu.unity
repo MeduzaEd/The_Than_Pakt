@@ -168,15 +168,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
+    x: 1
+    y: 1
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 7
+  near clip plane: 1
+  far clip plane: 1.01
+  field of view: 0.00001
+  orthographic: 1
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -16081,6 +16081,8 @@ MonoBehaviour:
     SoundsVolume: 1
     MaxUsersInHost: 8
     MyServerName: Default-SERVER
+  StarterCharacterPath: Assets/Resources/Characters/Eldric/Character.prefab
+  StarterSkinPath: Assets/Resources/Skins/Eldric/Darkside/Character.prefab
 --- !u!114 &1933661338
 MonoBehaviour:
   m_ObjectHideFlags: 0
