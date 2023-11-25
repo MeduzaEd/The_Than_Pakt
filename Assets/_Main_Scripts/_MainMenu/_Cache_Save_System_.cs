@@ -84,15 +84,11 @@ public class _Cache_Save_System_ : MonoBehaviour
     {
         if(UserData.Characters.Count <=0)
         {
-            Debug.Log(StarterSkinPath);
             Character _Character = new Character();
-            Debug.Log(_Character);
             _Character.CharacterPath = StarterCharacterPath.ToString();
-            Debug.Log(_Character);
-            _Character.CharacterSkins.Add(StarterSkinPath.ToString());
-            Debug.Log(_Character);
+            _Character.CharacterSkins = new List<string>();
+            _Character.CharacterSkins.Add(StarterSkinPath);
             UserData.Characters.Add(_Character);
-            Debug.Log(_Character);
         }
     }
     public void LoadData()
