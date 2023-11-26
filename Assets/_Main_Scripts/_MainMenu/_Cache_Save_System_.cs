@@ -98,10 +98,10 @@ public class _Cache_Save_System_ : MonoBehaviour
     {
         try
         {
-            GameObject _object = (GameObject)Instantiate(Resources.Load(UserData.SelectedCharacterPath));
+            GameObject _object = Instantiate(Resources.Load<GameObject>(UserData.SelectedCharacterPath));
             NetworkObject _networkobject = _object.GetComponent<NetworkObject>();
             Destroy(_object);
-            GameObject _skinobject = (GameObject)Instantiate(Resources.Load(UserData.SelectedCharacterSkinPath));
+            GameObject _skinobject = Instantiate(Resources.Load<GameObject>(UserData.SelectedCharacterSkinPath));
             NetworkObject _skinnetworkobject = _skinobject.GetComponent<NetworkObject>();
             Destroy(_skinobject);
         }

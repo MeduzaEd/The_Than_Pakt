@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 8104264882596363781}
   - component: {fileID: -8961069947420852768}
   - component: {fileID: -2806251488892194358}
+  - component: {fileID: 155216217928291842}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -182,6 +183,19 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
+--- !u!114 &155216217928291842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8036816967908031508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dbcd83307b7a85418f8d9b2c83548e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: Eldric
 --- !u!1001 &1482688196825836381
 PrefabInstance:
   m_ObjectHideFlags: 0
