@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
+
 
 [System.Serializable]
 public struct AllUserData
@@ -79,6 +81,7 @@ public class _Cache_Save_System_ : MonoBehaviour
         _SaveSingeton = this;
         LoadData();
         CheckToLoad();
+        CheckToSelected();
     }
     public void CheckToLoad()
     {
@@ -89,6 +92,23 @@ public class _Cache_Save_System_ : MonoBehaviour
             _Character.CharacterSkins = new List<string>();
             _Character.CharacterSkins.Add(StarterSkinPath);
             UserData.Characters.Add(_Character);
+        }
+    }
+    private void CheckToSelected()
+    {
+        try
+        {
+            GameObject _object = (GameObject)Instantiate(Resources.Load(UserData.SelectedCharacterPath));
+            NetworkObject _networkobject = _object.GetComponent<NetworkObject>();
+            Destroy(_object);
+            GameObject _skinobject = (GameObject)Instantiate(Resources.Load(UserData.SelectedCharacterSkinPath));
+            NetworkObject _skinnetworkobject = _skinobject.GetComponent<NetworkObject>();
+            Destroy(_skinobject);
+        }
+        catch
+        {
+            UserData.SelectedCharacterPath = StarterCharacterPath;
+            UserData.SelectedCharacterSkinPath = StarterSkinPath;
         }
     }
     public void LoadData()

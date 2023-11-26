@@ -16072,11 +16072,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UserData:
-    Wind_Jade: 0
+    Golds: 0
     Crystals: 0
     Characters: []
-    CharactersSkins: []
-    TutorialSkip: 0
+    SelectedCharacterPath: 
+    SelectedCharacterSkinPath: 
+    TutorialStage: 0
     SoundsIsMute: 0
     SoundsVolume: 1
     MaxUsersInHost: 8
