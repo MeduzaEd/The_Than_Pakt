@@ -14,7 +14,7 @@ public class User_Data_System : NetworkBehaviour
         }
     }
     [ServerRpc]
-    public void LoadCharacterServerRpc(string CharacterPath,string SkinPath)
+    public void LoadCharacterServerRpc(string CharacterPath,string SkinPath,ulong UserId)
     {
         Debug.Log($"s1CharacterPath: {CharacterPath} and SkinPath:{SkinPath}");
         if (!IsServer) {return;}
@@ -33,11 +33,14 @@ public class User_Data_System : NetworkBehaviour
             {
                 TryDestroy(SpawnCharacter);
                 TryDestroy(SpawnSkin);
+                Debug.Log("Dont spawn!!!");
+                return;
             }
-            SpawnCharacter.GetComponent<NetworkObject>().Spawn();
-            SpawnSkin.GetComponent<NetworkObject>().Spawn();
-            SpawnCharacter.transform.SetParent(this.transform);
+            
+            SpawnCharacter.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
+            SpawnSkin.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
             SpawnSkin.transform.SetParent(SpawnCharacter.transform);
+            SpawnCharacter.transform.SetParent(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserId).transform);
             
             Debug.Log("sSpawn");
         }
@@ -58,7 +61,7 @@ public class User_Data_System : NetworkBehaviour
         {
             Debug.Log("2");
             _CSS = _Cache_Save_System_.FindObjectOfType<_Cache_Save_System_>();
-            LoadCharacterServerRpc(_CSS.UserData.SelectedCharacterPath, _CSS.UserData.SelectedCharacterSkinPath);
+            LoadCharacterServerRpc(_CSS.UserData.SelectedCharacterPath, _CSS.UserData.SelectedCharacterSkinPath,OwnerClientId);
             Debug.Log("end");
         }
     }
