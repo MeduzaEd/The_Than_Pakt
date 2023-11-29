@@ -13,7 +13,10 @@ public class Humanoid : NetworkBehaviour
         if (!IsServer) { return; }
 
     }
-
+    public void Start()
+    {
+        Debug.Log("HumanoidStarted!!");
+    }
     public NetworkVariable<uint> Health;
     public NetworkVariable<uint> MaxHealth;
     public NetworkVariable<uint> Defence;

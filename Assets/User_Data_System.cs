@@ -39,9 +39,12 @@ public class User_Data_System : NetworkBehaviour
             
             SpawnCharacter.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
             SpawnSkin.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
-            SpawnSkin.transform.SetParent(SpawnCharacter.transform);
             SpawnCharacter.transform.SetParent(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserId).transform);
-            
+            SpawnSkin.transform.SetParent(SpawnCharacter.transform);
+            //_rb = GetComponentInChildren<Rigidbody>();
+            //_camera = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
+   
+            SpawnCharacter.transform.parent.GetComponent<User_Control>().UserLoaded.Value=true;
             Debug.Log("sSpawn");
         }
         catch(Exception ex)
@@ -57,7 +60,7 @@ public class User_Data_System : NetworkBehaviour
     private void Start()
     {
         Debug.Log("1");
-        if(IsOwner&&IsClient)
+        if(IsOwner&&IsClient&&IsLocalPlayer)
         {
             Debug.Log("2");
             _CSS = _Cache_Save_System_.FindObjectOfType<_Cache_Save_System_>();

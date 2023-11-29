@@ -254,7 +254,7 @@ public class User_Interface : MonoBehaviour
         _Content.localPosition = new Vector3(0, _Content.localPosition.y < 0 ? 0 : _Content.localPosition.y);//min
         _Content.localPosition = new Vector3(0,  _Content.localPosition.y > _y ? _y: _Content.localPosition.y);//max
        
-        Debug.Log(_Content.localPosition.y);
+        //Debug.Log(_Content.localPosition.y);
     }
     public void _TheToExitGame()
     {
