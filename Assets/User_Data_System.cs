@@ -41,9 +41,11 @@ public class User_Data_System : NetworkBehaviour
             SpawnSkin.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
             SpawnCharacter.transform.SetParent(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserId).transform);
             SpawnSkin.transform.SetParent(SpawnCharacter.transform);
+            SpawnCharacter.transform.position = Vector3.zero;
+            SpawnSkin.transform.position = Vector3.zero;
             //_rb = GetComponentInChildren<Rigidbody>();
             //_camera = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
-   
+
             SpawnCharacter.transform.parent.GetComponent<User_Control>().UserLoaded.Value=true;
             Debug.Log("sSpawn");
         }
