@@ -79,7 +79,7 @@ public class User_Control : NetworkBehaviour
         if (!IsLocalPlayer ) { return; }
 
         rotationInput = rotationInput.normalized;
-        float _speed = 200f;
+        float _speed = 1000f;
         if (rotationInput.magnitude >= 0.1f || Input.GetAxis("Mouse ScrollWheel")!=0)
         {
 

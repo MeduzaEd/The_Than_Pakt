@@ -70,7 +70,7 @@ MonoBehaviour:
   Defence:
     m_InternalValue: 5
   Speed:
-    m_InternalValue: 85
+    m_InternalValue: 200
   MagicPower:
     m_InternalValue: 5
   PhysicPower:
@@ -119,9 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c88ad338399da04585ca9f84766a5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  _rb: {fileID: 0}
-  UserLoaded:
-    m_InternalValue: 0
   currentZoomDistance: 0
   _offset: {x: 0, y: 0.5, z: 0}
