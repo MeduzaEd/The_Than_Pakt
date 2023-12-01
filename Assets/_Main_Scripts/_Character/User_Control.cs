@@ -77,44 +77,57 @@ public class User_Control : NetworkBehaviour
     private void MovingCamera(Vector3 rotationInput)
     {
         if (!IsLocalPlayer ) { return; }
-
-        rotationInput = rotationInput.normalized;
-        float _speed = 200f;
+        float _speed = 150f;
+        rotationInput = rotationInput.normalized * Time.fixedDeltaTime* _speed;
+    
         if (rotationInput.magnitude >= 0.1f || Input.GetAxis("Mouse ScrollWheel")!=0)
         {
 
             //_camera.transform.parent.RotateAround(_rb.position, _camera.transform.parent.right, -rotationInput.z * _speed * Time.deltaTime);
-            _camera.transform.parent.RotateAround(_rb.position, Vector3.up, rotationInput.x * _speed * Time.deltaTime);
+            _camera.transform.parent.RotateAround(_rb.position, Vector3.up, rotationInput.x );
 
             // Поворот вокруг оси X с ограничением углов
 
-            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z * _speed * Time.deltaTime, -40f, 55f);
-
+            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -40f, 55f);
+           // Debug.Log($"newRotationX:{newRotationX} & rotationInput:{rotationInput}");
             // Применение поворота вокруг оси X с учетом ограничений
-            _camera.transform.parent.rotation = Quaternion.Euler(newRotationX, _camera.transform.parent.rotation.eulerAngles.y, 0f);
+            _camera.transform.parent.rotation = Quaternion.Euler(newRotationX , _camera.transform.parent.rotation.eulerAngles.y, 0f);
 
             // Обновление предыдущего угла
             prevXRotation = newRotationX;
 
             // Zoom using the scroll wheel
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-            currentZoomDistance -= scrollInput * 1.1f;
-            currentZoomDistance = Mathf.Clamp(currentZoomDistance, -0.1f, 1f);
+            currentZoomDistance -= scrollInput * 400f*Time.deltaTime;
+            currentZoomDistance = Mathf.Clamp(currentZoomDistance, -0.1f, 1.5f);
 
             // Position the camera
 
         }
-        offset = -_camera.transform.forward * currentZoomDistance + _offset;
-        _camera.transform.parent.position = _rb.position + offset;
-        //servercamera.transform.rotation = Quaternion.LookRotation(Target.position);
-        //servercamera.RotateAround(Target.position, Vector3.up, _MoveVector.x*2);
-        //Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
-        //RaycastHit hit;
-        //if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition), ~LayerMask.NameToLayer("CameraTransparent")))
-        //{
-        //     _camera.transform.position = hit.point;
+        offset = ( - _camera.transform.forward * currentZoomDistance + _offset);
+        _camera.transform.parent.position = _rb.transform.position + offset;
+        Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset}");
 
-        //}
+
+        Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.01f);
+        
+        RaycastHit hit;
+        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.transform.position + _offset, offset - _offset), ~LayerMask.NameToLayer("CameraTransparent")))
+        {
+            _camera.transform.parent.position = hit.point;
+            Debug.Log("Hit");
+        }
+        
+        //Debug.DrawRay(_rb.position + _offset, (_rb.position + _offset)+offset, Color.cyan, Vector3.Distance(_rb.position + _offset,  offset));
+            //servercamera.transform.rotation = Quaternion.LookRotation(Target.position);
+            //servercamera.RotateAround(Target.position, Vector3.up, _MoveVector.x*2);
+            //Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
+            //RaycastHit hit;
+            //if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition), ~LayerMask.NameToLayer("CameraTransparent")))
+            //{
+            //     _camera.transform.position = hit.point;
+
+            //}
     }
     private void Update()
     {
