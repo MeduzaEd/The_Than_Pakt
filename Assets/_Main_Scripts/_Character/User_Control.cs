@@ -106,13 +106,13 @@ public class User_Control : NetworkBehaviour
         }
         offset = ( - _camera.transform.forward * currentZoomDistance + _offset);
         _camera.transform.parent.position = _rb.transform.position + offset;
-        Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset}");
+        Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset} mag:{Vector3.Distance(_rb.position + _offset, _rb.position + _offset + offset)}");
 
 
         Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.01f);
         
         RaycastHit hit;
-        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.transform.position + _offset, offset - _offset), ~LayerMask.NameToLayer("CameraTransparent")))
+        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.position + _offset, _rb.position + _offset+ offset), ~LayerMask.GetMask("CameraTransparent")))
         {
             _camera.transform.parent.position = hit.point;
             Debug.Log("Hit");
