@@ -30,10 +30,7 @@ public class User_Control : NetworkBehaviour
         {
             _camera.enabled = true;
             _camera.GetComponent<AudioListener>().enabled = true;
-            if(IsHost)
-            {
-               // _rb.interpolation = RigidbodyInterpolation.None;
-            }
+
         }
         yield return null;
     }

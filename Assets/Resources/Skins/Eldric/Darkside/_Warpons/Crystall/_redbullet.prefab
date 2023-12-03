@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6581204775466236122}
   - component: {fileID: 2595978779293345476}
   - component: {fileID: 5848731732615423973}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: _redbullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7172392879504331855, guid: 2b69084acbf01894eb0357af759ccc5c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7172392879504331855, guid: 2b69084acbf01894eb0357af759ccc5c, type: 3}
       propertyPath: m_StaticEditorFlags
