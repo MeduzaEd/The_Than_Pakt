@@ -85,7 +85,7 @@ public class User_Control : NetworkBehaviour
 
             // ѕоворот вокруг оси X с ограничением углов
 
-            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -40f, 55f);
+            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -22.5f, 45f);
            // Debug.Log($"newRotationX:{newRotationX} & rotationInput:{rotationInput}");
             // ѕрименение поворота вокруг оси X с учетом ограничений
             _camera.transform.parent.rotation = Quaternion.Euler(newRotationX , _camera.transform.parent.rotation.eulerAngles.y, 0f);
@@ -103,32 +103,35 @@ public class User_Control : NetworkBehaviour
         }
         offset = ( - _camera.transform.forward * currentZoomDistance + _offset);
        
-        Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset} mag:{Vector3.Distance(_rb.position + _offset, _rb.position + _offset + offset)}");
+        //Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset} mag:{Vector3.Distance(_rb.position + _offset, _rb.position + _offset + offset)}");
 
 
-        Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.01f);
-        
+      //  Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.1f);
+      //  Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * 0.25f), Color.yellow, 0.1f);
+       // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * -0.25f), Color.grey, 0.1f);
         RaycastHit hit;
         if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.position + _offset, _rb.position + _offset+ offset), ~LayerMask.GetMask("CameraTransparent")))
         {
-            _camera.transform.parent.position =hit.point + (_camera.transform.forward * .025f);
+            RaycastHit hit2;
+            _camera.transform.parent.position =hit.point + (_camera.transform.forward * .0125f);
+     
+            if (Physics.Raycast(_camera.transform.parent.position,_camera.transform.right * .0125f, out hit2, Vector3.Distance(_camera.transform.parent.position, _camera.transform.right * .0125f), ~LayerMask.GetMask("CameraTransparent")))
+            {
+            //    Debug.Log("Hit2");
+                _camera.transform.parent.position = hit2.point + (_camera.transform.right * -.0125f);
+            }
+            else if (Physics.Raycast(_camera.transform.parent.position, (_camera.transform.right * -.0125f), out hit2, Vector3.Distance(_camera.transform.parent.position,(_camera.transform.right * -.0125f)), ~LayerMask.GetMask("CameraTransparent")))
+            {
+             //   Debug.Log("Hit3");
+                _camera.transform.parent.position = hit2.point - (_camera.transform.right * -.0125f);
+            }
 
-            Debug.Log("Hit");
+          //  Debug.Log("Hit");
         }else
         {
             _camera.transform.parent.position = _rb.transform.position + offset;
         }
         
-        //Debug.DrawRay(_rb.position + _offset, (_rb.position + _offset)+offset, Color.cyan, Vector3.Distance(_rb.position + _offset,  offset));
-            //servercamera.transform.rotation = Quaternion.LookRotation(Target.position);
-            //servercamera.RotateAround(Target.position, Vector3.up, _MoveVector.x*2);
-            //Vector3 cameraTargetPosition = rb.position + _camera.transform.forward * Offset.z + Vector3.up * Offset.y;
-            //RaycastHit hit;
-            //if (Physics.Raycast(rb.position, cameraTargetPosition - rb.position, out hit, Vector3.Distance(rb.position, cameraTargetPosition), ~LayerMask.NameToLayer("CameraTransparent")))
-            //{
-            //     _camera.transform.position = hit.point;
-
-            //}
     }
     private void Update()
     {
