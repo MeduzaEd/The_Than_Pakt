@@ -14,4 +14,5 @@ public class Character_Type : NetworkBehaviour
             transform.GetComponentInChildren<Camera>().enabled = true;
         }
     }
+
 }
