@@ -10,11 +10,11 @@ public class User_Control : NetworkBehaviour
     private Rigidbody _srb;
     private bool OnRotating = false;
     private float prevXRotation = 0f;
-    public float currentZoomDistance = 0f;
+    public float currentZoomDistance = 0.7f;
     private Vector3 MovingTo= Vector3.zero;
     private Vector3 offset = Vector3.zero;
     public Vector3 _offset = new Vector3(0,0.5f,0);
-
+    private Animator SkinAnimator;
     IEnumerator WaitFromLoadCharacter()
     {
         
@@ -30,7 +30,6 @@ public class User_Control : NetworkBehaviour
         {
             _camera.enabled = true;
             _camera.GetComponent<AudioListener>().enabled = true;
-
         }
         yield return null;
     }
@@ -49,16 +48,22 @@ public class User_Control : NetworkBehaviour
     [ServerRpc]
     private void MoveServerRpc(ulong uid ,Vector3 _MoveVector, Vector3 forwardDirection, Vector3 rightDirection)
     {
-        if (_MoveVector == Vector3.zero||!IsServer ){ return; }
+        
+        if (!IsServer ){ return; }
+        NetworkObject User = NetworkManager.SpawnManager.GetPlayerNetworkObject(uid);
+        _srb = User.GetComponentInChildren<Rigidbody>();
+        SkinAnimator = _srb.transform.GetChild(1).GetChild(0).GetComponent<Animator>();
+        SkinAnimator.SetFloat("Speed", _rb.velocity.magnitude);
+        if (_MoveVector == Vector3.zero) { return; }
         _MoveVector.Normalize();
         forwardDirection.y = 0f;
         forwardDirection.Normalize();
         rightDirection.Normalize();
-        NetworkObject User = NetworkManager.SpawnManager.GetPlayerNetworkObject(uid);
+    
         // Создаем вектор движения, комбинируя направления вправо и вперед
         Vector3 moveDirection = (rightDirection * _MoveVector.x) + (forwardDirection * _MoveVector.z);
         moveDirection = moveDirection.normalized;
-        _srb = User.GetComponentInChildren<Rigidbody>();
+      
         // Вычисляем и применяем окончательный вектор движения
         Vector3 MoveVector = moveDirection * User.GetComponent<Humanoid>().Speed.Value;
         MoveVector = MoveVector * NetworkManager.ServerTime.FixedDeltaTime;
@@ -96,7 +101,7 @@ public class User_Control : NetworkBehaviour
             // Zoom using the scroll wheel
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
             currentZoomDistance -= scrollInput * 400f*Time.deltaTime;
-            currentZoomDistance = Mathf.Clamp(currentZoomDistance, -0.1f, 1.5f);
+            currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.25f, 1.5f);
 
             // Position the camera
 
@@ -135,13 +140,18 @@ public class User_Control : NetworkBehaviour
     }
     private void Update()
     {
+        
         if (!IsOwner|| UserLoaded.Value==false|| !_rb||!_camera) { return; }
         #region Moving
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             Vector3 MovingTo = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             MoveServerRpc(OwnerClientId, MovingTo, _camera.transform.parent.forward, _camera.transform.parent.right);
+        }else
+        {
+            MoveServerRpc(OwnerClientId, Vector3.zero, _camera.transform.parent.forward, _camera.transform.parent.right);
         }
+        
         #endregion
 
         #region CameraUpdate

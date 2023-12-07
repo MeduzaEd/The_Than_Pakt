@@ -123,5 +123,5 @@ MonoBehaviour:
   _rb: {fileID: 0}
   UserLoaded:
     m_InternalValue: 0
-  currentZoomDistance: 0
+  currentZoomDistance: 0.5
   _offset: {x: 0, y: 0.5, z: 0}

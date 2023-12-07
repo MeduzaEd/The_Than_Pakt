@@ -172,16 +172,16 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Speed
-    m_EventTreshold: 2.2
+    m_EventTreshold: 4
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5686291776057265192}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.23073676
+  m_TransitionDuration: 0.08743561
   m_TransitionOffset: 0
-  m_ExitTime: 0.000000001112377
+  m_ExitTime: 0.0000000027870377
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -258,16 +258,16 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 2.2
+    m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5139487438455717329}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.23161831
+  m_TransitionDuration: 0.08575598
   m_TransitionOffset: 0
-  m_ExitTime: 0.000000019082929
+  m_ExitTime: 0.000000018398705
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -337,14 +337,14 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.01
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -41939620442821829}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.20574632
+  m_TransitionDuration: 0.16155057
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -362,16 +362,16 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.075
+    m_EventTreshold: 0.11
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5139487438455717329}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.15024611
+  m_TransitionDuration: 0.1624125
   m_TransitionOffset: 0
-  m_ExitTime: 2.7141467e-10
+  m_ExitTime: 5.8201544e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
