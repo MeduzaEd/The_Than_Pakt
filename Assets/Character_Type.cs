@@ -8,11 +8,12 @@ public class Character_Type : NetworkBehaviour
     public string Type="none";
     private void Start()
     {
-        if (!IsOwner) { return; }
-        if(transform.GetComponentInChildren<Camera>())
+        if (!IsOwner) {  return; }
+        if (transform.GetComponentInChildren<Camera>())
         {
             transform.GetComponentInChildren<Camera>().enabled = true;
         }
+
     }
 
 }

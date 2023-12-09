@@ -15,12 +15,18 @@ public class User_Control : NetworkBehaviour
     private Vector3 offset = Vector3.zero;
     public Vector3 _offset = new Vector3(0,0.5f,0);
     private Animator SkinAnimator;
+    float _Rotatespeed = 150f;
+    #region Coroutine
+    public void Start()
+    {
+        #region Init Allows and Server!!!
+        StartCoroutine(WaitFromLoadCharacter());
+        #endregion
+    }
     IEnumerator WaitFromLoadCharacter()
     {
-        
         do
         {
-
             yield return new WaitForSecondsRealtime(0.125f);
             yield return null;
         } while (UserLoaded.Value==false);
@@ -33,18 +39,8 @@ public class User_Control : NetworkBehaviour
         }
         yield return null;
     }
-    public void Start ()
-    {
-        Debug.Log($"Player Started id:{IsLocalPlayer}");
-        #region Init Allows and Server!!!
-
-        StartCoroutine(WaitFromLoadCharacter());
-
-        #endregion
-
-        //if (!IsOwner || !IsClient) { return; }
-     
-    }
+    #endregion
+    #region ServerRpc
     [ServerRpc]
     private void MoveServerRpc(ulong uid ,Vector3 _MoveVector, Vector3 forwardDirection, Vector3 rightDirection)
     {
@@ -76,42 +72,26 @@ public class User_Control : NetworkBehaviour
             _srb.transform.GetChild(1).transform.rotation = Quaternion.Slerp(_srb.transform.GetChild(1).transform.rotation, targetRotation, Time.deltaTime * 25f);
         }
     }
+    #endregion
+
+    #region Camera
     private void MovingCamera(Vector3 rotationInput)
     {
         if (!IsLocalPlayer ) { return; }
-        float _speed = 150f;
-        rotationInput = rotationInput.normalized * Time.fixedDeltaTime* _speed;
-    
+       
+        rotationInput = rotationInput.normalized * Time.fixedDeltaTime* _Rotatespeed;
         if (rotationInput.magnitude >= 0.1f || Input.GetAxis("Mouse ScrollWheel")!=0)
         {
 
-            //_camera.transform.parent.RotateAround(_rb.position, _camera.transform.parent.right, -rotationInput.z * _speed * Time.deltaTime);
             _camera.transform.parent.RotateAround(_rb.position, Vector3.up, rotationInput.x );
-
-            // Поворот вокруг оси X с ограничением углов
-
             float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -22.5f, 45f);
-           // Debug.Log($"newRotationX:{newRotationX} & rotationInput:{rotationInput}");
-            // Применение поворота вокруг оси X с учетом ограничений
             _camera.transform.parent.rotation = Quaternion.Euler(newRotationX , _camera.transform.parent.rotation.eulerAngles.y, 0f);
-
-            // Обновление предыдущего угла
             prevXRotation = newRotationX;
-
-            // Zoom using the scroll wheel
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
             currentZoomDistance -= scrollInput * 400f*Time.deltaTime;
             currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.5f, 2f);
-
-            // Position the camera
-
         }
         offset = ( - _camera.transform.forward * currentZoomDistance) + _offset;
-       
-        //Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset} mag:{Vector3.Distance(_rb.position + _offset, _rb.position + _offset + offset)}");
-
-
-       
 
         RaycastHit hit;
         if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.transform.position + _offset, _rb.transform.position + offset ), ~LayerMask.GetMask("CameraTransparent")))
@@ -131,6 +111,9 @@ public class User_Control : NetworkBehaviour
        // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * -0.25f), Color.yellow, 0.1f);
        // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * 0.25f), Color.yellow, 0.1f);
     }
+    #endregion
+
+    #region Update
     private void Update()
     {
         
@@ -172,4 +155,5 @@ public class User_Control : NetworkBehaviour
         MovingCamera(MovingTo);
         #endregion
     }
+    #endregion 
 }

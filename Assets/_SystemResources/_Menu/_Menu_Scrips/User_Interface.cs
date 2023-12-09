@@ -26,10 +26,24 @@ public class User_Interface : MonoBehaviour
     public _Cache_Save_System_ UserData;
     private NetworkManager _NetworkManager;
     private ExampleNetworkDiscovery m_Discovery;
+   
+    IEnumerator AutoSearchServers()
+    {
+
+        do
+        {
+            Debug.Log("loop");
+            //searchservers();
+            //yield return null;
+            yield return new WaitForSecondsRealtime(3f);
+        }
+        while (true);
+        //yield return null;
+    }
     public void OnServerFound(IPEndPoint sender, DiscoveryResponseData response)
     {
         discoveredServers[sender.Address] = response;
-       
+        Debug.Log("serverfownded");
     }
     public void searchservers()
     {
@@ -47,7 +61,10 @@ public class User_Interface : MonoBehaviour
     {
         if (ServersUIContent.childCount > 0)
         {
-            ServersUIContent.DetachChildren();
+            foreach (RectTransform server in ServersUIContent.GetComponentsInChildren<RectTransform>())
+            {
+                Destroy(server.gameObject);
+            }
         }
         if (discoveredServers.Values.Count > 0)
         {
@@ -58,8 +75,10 @@ public class User_Interface : MonoBehaviour
                 NewServerUI.GetComponent<NetworkConnectionToServer>()._Port = server.Value.Port;
                 NewServerUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = server.Value.ServerName;
                 NewServerUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"Users:{server.Value.CurentConnections}/{server.Value.MaxConnections}";
+                NewServerUI.transform.SetParent(ServersUIContent, false);
             }
             discoveredServers.Clear();
+            Debug.Log("cleared");
         }
         //m_Discovery.StopDiscovery();
     }
@@ -101,6 +120,9 @@ public class User_Interface : MonoBehaviour
         #endregion
         _NetworkManager = GameObject.FindObjectOfType<NetworkManager>();
         m_Discovery = GameObject.FindObjectOfType<ExampleNetworkDiscovery>();
+
+        StartCoroutine(AutoSearchServers());
+ 
     }
     public void _MaxUsersChange()
     {
