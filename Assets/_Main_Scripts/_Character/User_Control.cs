@@ -73,7 +73,7 @@ public class User_Control : NetworkBehaviour
         if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            _srb.transform.GetChild(1).transform.rotation = Quaternion.Slerp(_srb.transform.GetChild(1).transform.rotation, targetRotation, Time.deltaTime * 10f);
+            _srb.transform.GetChild(1).transform.rotation = Quaternion.Slerp(_srb.transform.GetChild(1).transform.rotation, targetRotation, Time.deltaTime * 25f);
         }
     }
     private void MovingCamera(Vector3 rotationInput)
@@ -101,42 +101,35 @@ public class User_Control : NetworkBehaviour
             // Zoom using the scroll wheel
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
             currentZoomDistance -= scrollInput * 400f*Time.deltaTime;
-            currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.25f, 1.5f);
+            currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.5f, 2f);
 
             // Position the camera
 
         }
-        offset = ( - _camera.transform.forward * currentZoomDistance + _offset);
+        offset = ( - _camera.transform.forward * currentZoomDistance) + _offset;
        
         //Debug.Log($"offeset:{offset} rb:{_rb.GetComponent<Transform>().position}|{_rb.transform.position} camera:{ _camera.transform.parent.position} |Rb+_offset:{_rb.transform.position + _offset} mag:{Vector3.Distance(_rb.position + _offset, _rb.position + _offset + offset)}");
 
 
-      //  Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.1f);
-      //  Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * 0.25f), Color.yellow, 0.1f);
-       // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * -0.25f), Color.grey, 0.1f);
-        RaycastHit hit;
-        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.position + _offset, _rb.position + _offset+ offset), ~LayerMask.GetMask("CameraTransparent")))
-        {
-            RaycastHit hit2;
-            _camera.transform.parent.position =hit.point + (_camera.transform.forward * .0125f);
-     
-            if (Physics.Raycast(_camera.transform.parent.position,_camera.transform.right * .0125f, out hit2, Vector3.Distance(_camera.transform.parent.position, _camera.transform.right * .0125f), ~LayerMask.GetMask("CameraTransparent")))
-            {
-            //    Debug.Log("Hit2");
-                _camera.transform.parent.position = hit2.point + (_camera.transform.right * -.0125f);
-            }
-            else if (Physics.Raycast(_camera.transform.parent.position, (_camera.transform.right * -.0125f), out hit2, Vector3.Distance(_camera.transform.parent.position,(_camera.transform.right * -.0125f)), ~LayerMask.GetMask("CameraTransparent")))
-            {
-             //   Debug.Log("Hit3");
-                _camera.transform.parent.position = hit2.point - (_camera.transform.right * -.0125f);
-            }
+       
 
-          //  Debug.Log("Hit");
-        }else
+        RaycastHit hit;
+        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.transform.position + _offset, _rb.transform.position + offset ), ~LayerMask.GetMask("CameraTransparent")))
         {
+      
+            _camera.transform.parent.position = hit.point;
+            //_camera.transform.parent.position = _camera.transform.parent.transform.forward * 1.0125f;
+            Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.1f);
+        }
+        else
+        {
+            Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.blue, 0.1f);
             _camera.transform.parent.position = _rb.transform.position + offset;
         }
-        
+
+
+       // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * -0.25f), Color.yellow, 0.1f);
+       // Debug.DrawRay(_camera.transform.parent.position, (_camera.transform.right * 0.25f), Color.yellow, 0.1f);
     }
     private void Update()
     {
