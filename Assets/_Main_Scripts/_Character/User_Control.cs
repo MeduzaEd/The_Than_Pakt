@@ -15,7 +15,7 @@ public class User_Control : NetworkBehaviour
     private Vector3 offset = Vector3.zero;
     public Vector3 _offset = new(0,0.5f,0);
     private Animator SkinAnimator;
-    private readonly float _Rotatespeed = 150f;
+    private readonly float _Rotatespeed = 100f;
     #region Coroutine
     public void Start()
     {
@@ -80,16 +80,16 @@ public class User_Control : NetworkBehaviour
         if (!IsLocalPlayer ) { return; }
        
         rotationInput = Time.fixedDeltaTime * _Rotatespeed* rotationInput.normalized;
-        if (rotationInput.magnitude >= 0.1f || Input.GetAxis("Mouse ScrollWheel")!=0)
+        if (rotationInput.magnitude >= 0.025f || Input.GetAxis("Mouse ScrollWheel")!=0)
         {
 
             _camera.transform.parent.RotateAround(_rb.position, Vector3.up, rotationInput.x );
-            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -22.5f, 45f);
+            float newRotationX = Mathf.Clamp(prevXRotation - rotationInput.z, -25f, 45f);
             _camera.transform.parent.rotation = Quaternion.Euler(newRotationX , _camera.transform.parent.rotation.eulerAngles.y, 0f);
             prevXRotation = newRotationX;
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
             currentZoomDistance -= scrollInput * 400f*Time.deltaTime;
-            currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.5f, 2f);
+            currentZoomDistance = Mathf.Clamp(currentZoomDistance, 0.4f, 1.4f);
         }
         offset = ( - _camera.transform.forward * currentZoomDistance) + _offset;
 
