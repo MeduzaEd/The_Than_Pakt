@@ -41,10 +41,10 @@ public struct Character
     public string CharacterPath;
     public List<string> CharacterSkins;
 }
-public class _Cache_Save_System_ : MonoBehaviour
+public class Cache_Save_System_ : MonoBehaviour
 {
-    public AllUserData UserData=new AllUserData();
-    public static _Cache_Save_System_ _SaveSingeton;
+    public AllUserData UserData=new();
+    public static Cache_Save_System_ _SaveSingeton;
     [SerializeField] string StarterCharacterPath;
     [SerializeField] string StarterSkinPath;
     public void SaveData()
@@ -87,9 +87,9 @@ public class _Cache_Save_System_ : MonoBehaviour
     {
         if(UserData.Characters.Count <=0)
         {
-            Character _Character = new Character();
+            Character _Character = new();
             _Character.CharacterPath = StarterCharacterPath.ToString();
-            _Character.CharacterSkins = new List<string>();
+            _Character.CharacterSkins = new();
             _Character.CharacterSkins.Add(StarterSkinPath);
             UserData.Characters.Add(_Character);
         }
@@ -131,12 +131,12 @@ public class _Cache_Save_System_ : MonoBehaviour
                 UserData= data;
                 #region Sync to start!
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeSound.value = UserData.SoundsVolume;
-                GameObject.FindObjectOfType<User_Interface>()._ImageChange();
+                GameObject.FindObjectOfType<User_Interface>().ImageChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value =((float)UserData.MaxUsersInHost)/16;
-                GameObject.FindObjectOfType<User_Interface>()._MaxUsersChange();
+                GameObject.FindObjectOfType<User_Interface>().MaxUsersChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.onValueChanged.AddListener(The_MaxUsersChange);
                 GameObject.FindObjectOfType<User_Interface>().ServerName.transform.parent.GetComponent<InputField>().text = UserData.MyServerName ;
-                GameObject.FindObjectOfType<User_Interface>()._ServerNameChange(UserData.MyServerName);
+                GameObject.FindObjectOfType<User_Interface>().ServerNameChange(UserData.MyServerName);
 
                 #endregion
                 Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
@@ -152,7 +152,7 @@ public class _Cache_Save_System_ : MonoBehaviour
 
     private void The_MaxUsersChange(float _)
     {
-        GameObject.FindObjectOfType<User_Interface>()._MaxUsersChange();
+        GameObject.FindObjectOfType<User_Interface>().MaxUsersChange();
     }
     private void OnApplicationQuit()
     {

@@ -13,9 +13,9 @@ public class User_Control : NetworkBehaviour
     public float currentZoomDistance = 0.7f;
     private Vector3 MovingTo= Vector3.zero;
     private Vector3 offset = Vector3.zero;
-    public Vector3 _offset = new Vector3(0,0.5f,0);
+    public Vector3 _offset = new(0,0.5f,0);
     private Animator SkinAnimator;
-    float _Rotatespeed = 150f;
+    private readonly float _Rotatespeed = 150f;
     #region Coroutine
     public void Start()
     {
@@ -62,7 +62,7 @@ public class User_Control : NetworkBehaviour
       
         // ¬ычисл€ем и примен€ем окончательный вектор движени€
         Vector3 MoveVector = moveDirection * User.GetComponent<Humanoid>().Speed.Value;
-        MoveVector = MoveVector * NetworkManager.ServerTime.FixedDeltaTime;
+        MoveVector*= NetworkManager.ServerTime.FixedDeltaTime;
         _srb.velocity = MoveVector;
 
         // ѕоворачиваем персонаж в направлении движени€
@@ -79,7 +79,7 @@ public class User_Control : NetworkBehaviour
     {
         if (!IsLocalPlayer ) { return; }
        
-        rotationInput = rotationInput.normalized * Time.fixedDeltaTime* _Rotatespeed;
+        rotationInput = Time.fixedDeltaTime * _Rotatespeed* rotationInput.normalized;
         if (rotationInput.magnitude >= 0.1f || Input.GetAxis("Mouse ScrollWheel")!=0)
         {
 
@@ -93,10 +93,9 @@ public class User_Control : NetworkBehaviour
         }
         offset = ( - _camera.transform.forward * currentZoomDistance) + _offset;
 
-        RaycastHit hit;
-        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out hit, Vector3.Distance(_rb.transform.position + _offset, _rb.transform.position + offset ), ~LayerMask.GetMask("CameraTransparent")))
+        if (Physics.Raycast(_rb.transform.position + _offset, offset - _offset, out RaycastHit hit, Vector3.Distance(_rb.transform.position + _offset, _rb.transform.position + offset ), ~LayerMask.GetMask("CameraTransparent")))
         {
-      
+            
             _camera.transform.parent.position = hit.point;
             //_camera.transform.parent.position = _camera.transform.parent.transform.forward * 1.0125f;
             Debug.DrawRay(_rb.transform.position + _offset, offset - _offset, Color.red, 0.1f);
@@ -121,7 +120,7 @@ public class User_Control : NetworkBehaviour
         #region Moving
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            Vector3 MovingTo = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            Vector3 MovingTo = new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             MoveServerRpc(OwnerClientId, MovingTo, _camera.transform.parent.forward, _camera.transform.parent.right);
         }else
         {

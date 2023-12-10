@@ -3577,7 +3577,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 849761479}
         m_TargetAssemblyTypeName: User_Interface, Assembly-CSharp
-        m_MethodName: _HostGameAnimation
+        m_MethodName: HostGameAnimation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6984,15 +6984,15 @@ MonoBehaviour:
   ServersUIContent: {fileID: 1135758598}
   ServerUIprefab: {fileID: 2405813747980548501, guid: 5809a9c5adaa3044f8cd1a878068dd3f, type: 3}
   SoundButton: {fileID: 465424578}
-  ServerName: {fileID: 1737910184}
-  ScroolVolumeSound: {fileID: 1444900958}
-  _Content: {fileID: 1135758598}
-  ScroolVolumeMaxConnections: {fileID: 330484586}
   SoundButtons:
   - {fileID: 854256497, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
   - {fileID: -2049525304, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
   - {fileID: 92947626, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
   - {fileID: -1602450909, guid: a0b2f382374aaf248841de5299f9571a, type: 3}
+  ServerName: {fileID: 1737910184}
+  ScroolVolumeSound: {fileID: 1444900958}
+  _Content: {fileID: 1135758598}
+  ScroolVolumeMaxConnections: {fileID: 330484586}
   UserData: {fileID: 1933661337}
 --- !u!95 &849761480
 Animator:

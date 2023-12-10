@@ -16,14 +16,13 @@ public class User_Interface : MonoBehaviour
     [SerializeField] Transform ServersUIContent;
     [SerializeField] GameObject ServerUIprefab;
     [SerializeField] Image SoundButton;
-    [SerializeField] public Text ServerName;
-    [SerializeField] public Scrollbar ScroolVolumeSound;
-    [SerializeField] public RectTransform _Content;
-    [SerializeField] public Scrollbar ScroolVolumeMaxConnections;
-    [SerializeField] List<Sprite> SoundButtons=new List<Sprite>();
-    [SerializeField] Dictionary<IPAddress, DiscoveryResponseData> discoveredServers = new Dictionary<IPAddress, DiscoveryResponseData>();
-
-    public _Cache_Save_System_ UserData;
+    [SerializeField] List<Sprite> SoundButtons=new();
+    [SerializeField] Dictionary<IPAddress, DiscoveryResponseData> discoveredServers = new();
+    public Text ServerName;
+    public Scrollbar ScroolVolumeSound;
+    public RectTransform _Content;
+    public Scrollbar ScroolVolumeMaxConnections;
+    public Cache_Save_System_ UserData;
     private NetworkManager _NetworkManager;
     private ExampleNetworkDiscovery m_Discovery;
    
@@ -45,7 +44,7 @@ public class User_Interface : MonoBehaviour
         discoveredServers[sender.Address] = response;
         Debug.Log("serverfownded");
     }
-    public void searchservers()
+    public void Searchservers()
     {
         Debug.Log(discoveredServers.Values.Count);
         if (!m_Discovery.IsRunning)
@@ -90,7 +89,7 @@ public class User_Interface : MonoBehaviour
             {
                 _NetworkManager.DisconnectClient(_NetworkManager.LocalClientId);
             }
-            IpAdress.text = checktoip(IpAdress.text);
+            IpAdress.text = Checktoip(IpAdress.text);
             UNetTransport transport = (UNetTransport)_NetworkManager.NetworkConfig.NetworkTransport;
             transport.ConnectAddress = IpAdress.text;
             transport.ConnectPort = 7777;
@@ -101,21 +100,21 @@ public class User_Interface : MonoBehaviour
             Debug.Log(ex); 
         }
     }
-    private string checktoip(string _adress)
+    private string Checktoip(string _adress)
     {
         return _adress.Trim().ToLower();
     }
     private void Start()
     {
         #region Load Local Data's
-        UserData = GameObject.FindObjectOfType<_Cache_Save_System_>();
+        UserData = GameObject.FindObjectOfType<Cache_Save_System_>();
         #endregion
 
         #region UI's Load
-        _ImageChange();
+        ImageChange();
         #endregion
         #region Actions
-        ScroolVolumeSound.onValueChanged.AddListener(_VolumeChange);
+        ScroolVolumeSound.onValueChanged.AddListener(VolumeChange);
         GlobalBadTexts = BadTexts;
         #endregion
         _NetworkManager = GameObject.FindObjectOfType<NetworkManager>();
@@ -124,15 +123,15 @@ public class User_Interface : MonoBehaviour
         StartCoroutine(AutoSearchServers());
  
     }
-    public void _MaxUsersChange()
+    public void MaxUsersChange()
     {
         int Users = (int)(ScroolVolumeMaxConnections.value * 15);
         UserData.UserData.MaxUsersInHost =(Users+1);
 
         GameObject.FindObjectOfType<UNetTransport>().MaxConnections =UserData.UserData.MaxUsersInHost;
-        _TextChangeInMaxUsers();
+        TextChangeInMaxUsers();
     }
-    public void _TextChangeInMaxUsers()
+    public void TextChangeInMaxUsers()
     {
         ScroolVolumeMaxConnections.transform.parent.GetChild(0).GetComponent<Text>().text = $"max connections:{UserData.UserData.MaxUsersInHost}";
     }
@@ -169,7 +168,7 @@ public class User_Interface : MonoBehaviour
 
         return _text;
     }
-    public void _ServerNameChange(string _text)
+    public void ServerNameChange(string _text)
     {
         _text = ServerNameFormat(_text);
         ServerName.text = _text;
@@ -177,7 +176,7 @@ public class User_Interface : MonoBehaviour
         UserData.UserData.MyServerName = _text;
         GameObject.FindObjectOfType<ExampleNetworkDiscovery>().ServerName = UserData.UserData.MyServerName;
     }
-    public void _ImageChange()
+    public void ImageChange()
     {
         if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
         {
@@ -198,21 +197,21 @@ public class User_Interface : MonoBehaviour
         ScroolVolumeSound.value = UserData.UserData.SoundsVolume;
         if (UserData.UserData.SoundsIsMute) { SoundButton.sprite = SoundButtons[0]; }
     }
-    public void _VolumeChange(float _v)
+    public void VolumeChange(float _v)
     {
 
         Debug.Log("Ñðôòïóâ");
-        UserData.UserData.SoundsIsMute = _v>0?false:true;
+        UserData.UserData.SoundsIsMute = _v<0;
         UserData.UserData.SoundsVolume = _v;
         
-        _ImageChange();
+        ImageChange();
        
     }
-    public void _MuteUnMute()
+    public void MuteUnMute()
     {
         UserData.UserData.SoundsIsMute = !UserData.UserData.SoundsIsMute;
         SoundButton.sprite= SoundButtons[0];
-        if (!UserData.UserData.SoundsIsMute) { _VolumeChange(UserData.UserData.SoundsVolume); }
+        if (!UserData.UserData.SoundsIsMute) {VolumeChange(UserData.UserData.SoundsVolume); }
     }
     public void AnimationSettingsChange(bool _To)
     {
@@ -270,7 +269,7 @@ public class User_Interface : MonoBehaviour
             GetComponent<Animator>().Play("Close_Connect_Menu");
         }
     }
-    public void _Scroll_Content(Vector2 _)
+    public void Scroll_Content(Vector2 _)
     {
         int _y =((_Content.transform.childCount * 200) - 450)<50?50: ((_Content.transform.childCount * 200) - 450);
         _Content.localPosition = new Vector3(0, _Content.localPosition.y < 0 ? 0 : _Content.localPosition.y);//min
@@ -278,20 +277,23 @@ public class User_Interface : MonoBehaviour
        
         //Debug.Log(_Content.localPosition.y);
     }
-    public void _TheToExitGame()
+    public void TheToExitGame()
     {
         GetComponent<Animator>().Play("ExitToGame");
     }
-    public void _HostGameAnimation()
+    public void HostGameAnimation()
     {
         GetComponent<Animator>().Play("StartHostAnimation");
     }
-    public void _HostGame()
+    public void HostGame()
     {
         _NetworkManager.StartHost();
     }
-
-    private void _Exit_()
+    private void OnApplicationQuit()
+    {
+        Exit_();
+    }
+    private void Exit_()
     {
         Debug.Log("Saving");
         UserData.SaveData();

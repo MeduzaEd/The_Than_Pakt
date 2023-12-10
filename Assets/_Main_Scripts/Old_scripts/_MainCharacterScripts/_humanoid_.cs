@@ -43,7 +43,7 @@ public struct Variables
     public bool IsPlayer;
 }
 
-public class _humanoid_ : MonoBehaviour
+public class Humanoid_ : MonoBehaviour
 {
 
     public Variables variables;
