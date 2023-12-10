@@ -4,11 +4,11 @@ using UnityEngine;
 using Unity.Netcode;
 public class Eldric_Control : NetworkBehaviour
 {
-
+    private Transform _Camera;
     private void Start()
     {
         if (!IsOwner) return;
-
+        _Camera = transform.parent.GetChild(0).GetChild(0).transform;
     }
 
     private void Update()
@@ -49,11 +49,16 @@ public class Eldric_Control : NetworkBehaviour
 
     #region ServerAttacks 
     [ServerRpc]
-    public void BasicAttackServerRpc(ulong UserID)
+    public void BasicAttackServerRpc(ulong UserID,Quaternion CameraRotation)
     {
         if ((!IsServer)||(BasicAttackcd.Value==true)) {return;}
-        Debug.Log($"1OnSlash:{UserID}");
         StartCoroutine(AttackCoroutine());
+        GameObject Character = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetChild(1).gameObject;
+        GameObject Bullet = Instantiate(Character.GetComponent<User_SkinParams>().BasicAttackPrefab);
+        Bullet.GetComponent<NetworkObject>().Spawn();
+        Bullet.transform.SetPositionAndRotation(Character.transform.position+new Vector3(0f,0.55f,0f),CameraRotation);
+        Bullet.GetComponent<Rigidbody>().velocity = Bullet.transform.forward *  2.5f;
+
 
     }
     #endregion
@@ -61,9 +66,10 @@ public class Eldric_Control : NetworkBehaviour
     #region LoaclAttacks 
     public void BasicAttack()
     {
-        if (!IsOwner) return;
-        BasicAttackServerRpc(OwnerClientId);
-        Debug.Log("2OnSlash!");
+        if ((!IsOwner)|| _Camera==null) return;
+        
+        BasicAttackServerRpc(OwnerClientId,_Camera.rotation);
+        
     }
     #endregion
 }

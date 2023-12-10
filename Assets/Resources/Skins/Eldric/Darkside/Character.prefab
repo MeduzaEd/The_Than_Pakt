@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: -2806251488892194358}
   - component: {fileID: 155216217928291842}
   - component: {fileID: -7582802238371823745}
+  - component: {fileID: 5411764396424213327}
   m_Layer: 9
   m_Name: Character
   m_TagString: Untagged
@@ -255,6 +256,24 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 0
+--- !u!114 &5411764396424213327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8036816967908031508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f941a9de2707684983a03495f9b3745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DashPrefab: {fileID: 0}
+  BasicAttackPrefab: {fileID: 6890652486857140995, guid: 290e86e857611a542b1bfd483495ced3, type: 3}
+  Attack1Prefab: {fileID: 8591559883077704101, guid: e3498d7722ad76a42a337f93b962e749, type: 3}
+  Attack2Prefab: {fileID: 0}
+  Attack3Prefab: {fileID: 0}
+  TauntPrefab: {fileID: 0}
 --- !u!1001 &1482688196825836381
 PrefabInstance:
   m_ObjectHideFlags: 0
