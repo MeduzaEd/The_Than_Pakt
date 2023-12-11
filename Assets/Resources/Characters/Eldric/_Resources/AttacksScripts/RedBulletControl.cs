@@ -5,9 +5,22 @@ public class RedBulletControl : NetworkBehaviour
 {
     private void Start()
     {
-        Debug.Log("Despawn");
         if (!IsServer) { return; }
-        StartCoroutine(WaitRealTime.WaitToRealTime.WaitRealTime(2f));
+        _Destroytime = 2.5f + Time.time;
+        
+    }
+    public float _Destroytime;
+    private void Update()
+    {
+        Debug.Log("Despawn");
+        if ((!IsServer)||(Time.time<_Destroytime)) { return; }
         transform.GetComponent<NetworkObject>().Despawn();
+    }
+    [ServerRpc]
+    public void ImpulseServerRpc()
+    {
+        Debug.Log("Impulse");
+        if (!IsServer) { return; }
+        GetComponent<Rigidbody>().AddForce(transform.forward * 260f, ForceMode.Force);
     }
 }

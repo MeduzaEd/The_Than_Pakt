@@ -37,11 +37,7 @@ public class Eldric_Control : NetworkBehaviour
     public NetworkVariable<bool> SpecAttack3cd = new() { Value = false };
 
     #endregion
-    IEnumerator WaitRealTime(float _Time)
-    {
-        yield return new WaitForSecondsRealtime(_Time);
-        yield return null;
-    }
+
     IEnumerator AttackCoroutine()
     {
         BasicAttackcd.Value = true;
@@ -57,17 +53,20 @@ public class Eldric_Control : NetworkBehaviour
     {
         if ((!IsServer)||(BasicAttackcd.Value==true)) {return;}
         StartCoroutine(AttackCoroutine());
-        for (int i=-1; i<2;i++)
+        StartCoroutine(SpawnBulletsWithDelay(Random.Range(.095f, 0.155f),UserID,CameraRotation));
+    }
+
+    IEnumerator SpawnBulletsWithDelay(float delay, ulong UserID, Quaternion CameraRotation)
+    {
+        for (int i = -1; i < 2; i++)
         {
             GameObject Character = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetChild(1).gameObject;
             GameObject Bullet = Instantiate(Character.GetComponent<User_SkinParams>().BasicAttackPrefab);
-            Bullet.GetComponent<NetworkObject>().Spawn();
-            Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, Random.Range(.95f, 1.125f)*0.55f,0)+(Random.Range(.9f, 3.5f) * 0.1f *i*Character.transform.right) + (Random.Range(-.2f,.2f)* Character.transform.forward), CameraRotation);
-            Bullet.GetComponent<Rigidbody>().AddForce(Bullet.transform.forward * 15f, ForceMode.Impulse);
-            StartCoroutine(WaitRealTime(Random.Range(.095f, 0.155f)));
-        }
+            Bullet.GetComponent<NetworkObject>().SpawnWithOwnership(UserID);
+            Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, Random.Range(.95f, 1.125f) * 0.55f, 0) + (Random.Range(.9f, 3.5f) * 0.1f * i * Character.transform.right) + (Random.Range(-.2f, .2f) * Character.transform.forward), CameraRotation);
 
-        //  Bullet.transform.SetPositionAndRotation(Character.transform.position+new Vector3(0f,0.55f,0f),Quaternion.LookRotation(Character.transform.forward * 40f,Vector3.up));
+            yield return new WaitForSeconds(delay);
+        }
     }
     #endregion
 
