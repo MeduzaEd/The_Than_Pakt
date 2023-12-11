@@ -95,6 +95,8 @@ MonoBehaviour:
     m_InternalValue: 0
   Block:
     m_InternalValue: 0
+  Sollowing:
+  - m_InternalValue: 0
 --- !u!114 &2806000694367338118
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,15 +8,16 @@ using Unity.Netcode.Components;
 
 public class Humanoid : NetworkBehaviour
 {
-    public void OnDamage(float Damage,uint Killer)
-    {
-        if (!IsServer) { return; }
+   // public void OnDamage(float Damage,uint Killer)
+   // {
+  //      if (!IsServer) { return; }
 
-    }
+  //  }
     public void Start()
     {
         Debug.Log("HumanoidStarted!!");
     }
+    #region NetVars
     public NetworkVariable<uint> Health;
     public NetworkVariable<uint> MaxHealth;
     public NetworkVariable<uint> Defence;
@@ -33,4 +34,6 @@ public class Humanoid : NetworkBehaviour
     public NetworkVariable<bool> Inmortal;
     public NetworkVariable<bool> Died;
     public NetworkVariable<bool> Block;
+    #endregion
+  // public List<NetworkVariable<uint>> Sollowing;
 }

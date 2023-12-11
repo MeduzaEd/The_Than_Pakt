@@ -58,12 +58,12 @@ public class Eldric_Control : NetworkBehaviour
 
     IEnumerator SpawnBulletsWithDelay(float delay, ulong UserID, Quaternion CameraRotation)
     {
-        for (int i = -1; i < 2; i++)
+        for (int i = Random.Range(-2, 0); i < Random.Range(0, 3); i++)
         {
             GameObject Character = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetChild(1).gameObject;
             GameObject Bullet = Instantiate(Character.GetComponent<User_SkinParams>().BasicAttackPrefab);
             Bullet.GetComponent<NetworkObject>().SpawnWithOwnership(UserID);
-            Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, Random.Range(.95f, 1.125f) * 0.55f, 0) + (Random.Range(.9f, 3.5f) * 0.1f * i * Character.transform.right) + (Random.Range(-.2f, .2f) * Character.transform.forward), CameraRotation);
+            Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, (Random.Range(-1, 1) * Random.Range(.055f, .125f)* i) + 0.55f, 0) + (Random.Range(.9f, 3.5f) * 0.1f * i * Character.transform.right) + (Random.Range(-.2f, .2f) * Character.transform.forward), CameraRotation);
 
             yield return new WaitForSeconds(delay);
         }

@@ -6,7 +6,7 @@ public class RedBulletControl : NetworkBehaviour
     private void Start()
     {
         if (!IsServer) { return; }
-        _Destroytime = 2.5f + Time.time;
+        _Destroytime = 3f + Time.time;
         
     }
     public float _Destroytime;
@@ -21,6 +21,6 @@ public class RedBulletControl : NetworkBehaviour
     {
         Debug.Log("Impulse");
         if (!IsServer) { return; }
-        GetComponent<Rigidbody>().AddForce(transform.forward * 260f, ForceMode.Force);
+        GetComponent<Rigidbody>().AddForce(transform.forward * 400f, ForceMode.Force);
     }
 }
