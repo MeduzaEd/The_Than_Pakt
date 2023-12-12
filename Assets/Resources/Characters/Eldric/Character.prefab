@@ -135,10 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec9d18b033b196459e4dc132919ebde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultACT: 0.45
-  DefaultS1CT: 3
-  DefaultS2CT: 4
-  DefaultS3CT: 7
+  DefaultACT: 0.4
   OnDashColdown:
     m_InternalValue: 0
   BasicAttackcd:

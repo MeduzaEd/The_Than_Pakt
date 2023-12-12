@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 public class User_Control : NetworkBehaviour
 {
+
     public Camera _camera;
     public Rigidbody _rb;
     public NetworkVariable<bool> UserLoaded;
@@ -47,6 +48,8 @@ public class User_Control : NetworkBehaviour
         
         if (!IsServer ){ return; }
         NetworkObject User = NetworkManager.SpawnManager.GetPlayerNetworkObject(uid);
+        Humanoid _Humanoid = User.GetComponent<Humanoid>();
+        if (_Humanoid.OnAttack.Value == true) { return; }
         _srb = User.GetComponentInChildren<Rigidbody>();
         SkinAnimator = _srb.transform.GetChild(1).GetChild(0).GetComponent<Animator>();
         SkinAnimator.SetFloat("Speed", _rb.velocity.magnitude);
@@ -61,7 +64,7 @@ public class User_Control : NetworkBehaviour
         moveDirection = moveDirection.normalized;
       
         // Вычисляем и применяем окончательный вектор движения
-        Vector3 MoveVector = moveDirection * User.GetComponent<Humanoid>().Speed.Value;
+        Vector3 MoveVector =0.01f* _Humanoid.Speed.Value* _Humanoid.SpeedMulti.Value * moveDirection;
         MoveVector*= NetworkManager.ServerTime.FixedDeltaTime;
         _srb.velocity = MoveVector;
 
