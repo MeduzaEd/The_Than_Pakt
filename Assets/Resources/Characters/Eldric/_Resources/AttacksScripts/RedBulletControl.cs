@@ -21,6 +21,6 @@ public class RedBulletControl : NetworkBehaviour
     {
         Debug.Log("Impulse");
         if (!IsServer) { return; }
-        GetComponent<Rigidbody>().AddForce(transform.forward * 400f, ForceMode.Force);
+        GetComponent<Rigidbody>().AddForce(transform.forward * 666f, ForceMode.Force);
     }
 }

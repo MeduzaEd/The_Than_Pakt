@@ -57,14 +57,14 @@ public class Eldric_Control : NetworkBehaviour
         Rigidbody _Rb = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetComponent<Rigidbody>();
         Vector3 moveDirection = new((CameraRotation * _Rb.transform.forward).x, 0, (CameraRotation * _Rb.transform.forward).z);
         // Остальной код остается без изменений
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 40; i++)
         {
             if (moveDirection * 250f != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                _Rb.transform.GetChild(1).transform.rotation = Quaternion.Slerp(_Rb.transform.GetChild(1).transform.rotation, targetRotation, Time.deltaTime * 90f);
+                _Rb.transform.GetChild(1).transform.rotation = Quaternion.Slerp(_Rb.transform.GetChild(1).transform.rotation, targetRotation, Time.deltaTime * 50f);
             }
-            yield return new WaitForSecondsRealtime(0.05f);
+            yield return new WaitForSecondsRealtime(0.005f);
             yield return null;
         }
         yield return null;
@@ -76,7 +76,7 @@ public class Eldric_Control : NetworkBehaviour
         if ((!IsServer)||(BasicAttackcd.Value==true)) {return;}
         //if(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).GetComponent<Humanoid>().OnAttack.Value == true){ return; }
         StartCoroutine(AttackCoroutine(UserID));
-        StartCoroutine(SpawnBulletsWithDelay(Random.Range(.095f, 0.155f),UserID,CameraRotation));
+        StartCoroutine(SpawnBulletsWithDelay(Random.Range(.0499f, 0.199f),UserID,CameraRotation));
         StartCoroutine(RotationgCorutione(UserID, CameraRotation));
     }
 
