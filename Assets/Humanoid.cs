@@ -13,6 +13,7 @@ public class Humanoid : NetworkBehaviour
   //      if (!IsServer) { return; }
 
   //  }
+  
     public void Start()
     {
         Debug.Log("HumanoidStarted!!");
@@ -30,12 +31,17 @@ public class Humanoid : NetworkBehaviour
     public NetworkVariable<uint> CritPower = new() { Value = 1 };
     public NetworkVariable<uint> Stun;
     public NetworkVariable<uint> Stopped;
-    public NetworkVariable<uint> PlayerKilled = new() { Value = uint.MaxValue };
+    public NetworkVariable<ulong> PlayerKilled = new() { Value = ulong.MaxValue };
     public NetworkVariable<bool> Inmortal;
     public NetworkVariable<bool> Died;
     public NetworkVariable<bool> Block;
     public NetworkVariable<bool> OnAttack;
     #endregion
+    public void OnDamage(ulong _OwnerID,uint _Damage)
+    {
+        PlayerKilled.Value = _OwnerID;
+        Health.Value -= _Damage;
+    }
     // public List<NetworkVariable<uint>> Sollowing;
     public NetworkVariable<uint> SpeedMulti = new(){ Value = 100};
 }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4072077103696725914}
   - component: {fileID: 6661367261178836839}
   - component: {fileID: 2396621848282351759}
+  - component: {fileID: 6438998026492736920}
   m_Layer: 3
   m_Name: RedBullet
   m_TagString: Untagged
@@ -239,6 +240,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6438998026492736920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6890652486857140995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5daf3e4990b27642bb5daddd2a99727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2174556961297903909
 PrefabInstance:
   m_ObjectHideFlags: 0
