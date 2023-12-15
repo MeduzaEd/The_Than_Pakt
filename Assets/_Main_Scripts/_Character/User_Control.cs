@@ -20,6 +20,7 @@ public class User_Control : NetworkBehaviour
     #region Coroutine
     public void Start()
     {
+        
         #region Init Allows and Server!!!
         StartCoroutine(WaitFromLoadCharacter());
         #endregion
@@ -37,11 +38,23 @@ public class User_Control : NetworkBehaviour
         {
             _camera.enabled = true;
             _camera.GetComponent<AudioListener>().enabled = true;
+            OnStartServerRpc(OwnerClientId);
+            
         }
         yield return null;
     }
     #endregion
     #region ServerRpc
+    [ServerRpc]
+    private void OnStartServerRpc(ulong _ID)
+    {
+        if ((!IsServer)) { return; }
+        
+        _rb = NetworkManager.SpawnManager.GetPlayerNetworkObject(_ID).transform.GetChild(0).GetComponent<Rigidbody>();
+        _rb.AddForce(Vector3.up*-5,ForceMode.Impulse);
+    }
+
+
     [ServerRpc]
     private void MoveServerRpc(ulong uid ,Vector3 _MoveVector, Vector3 forwardDirection, Vector3 rightDirection)
     {

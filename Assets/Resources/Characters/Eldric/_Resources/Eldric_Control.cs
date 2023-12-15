@@ -83,7 +83,7 @@ public class Eldric_Control : NetworkBehaviour
         _UpDown = _UpDown > 0? 1:-1;
         Debug.Log(_I);
         Debug.Log(_UpDown);
-        for (int i = _UpDown * (_I); _UpDown==1? i  > -1*_I : i < _I; i+= -1* _UpDown)
+        for (int i = _UpDown * (_I); _UpDown==1?( i  >= -1*_I) :( i <= _I); i+= -1* _UpDown)
         {
             Debug.Log(i);
             // i = 1 * 2; i(2) < 1*(2+2);i+=1
