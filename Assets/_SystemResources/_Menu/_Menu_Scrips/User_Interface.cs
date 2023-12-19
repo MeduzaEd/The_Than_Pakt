@@ -7,6 +7,7 @@ using Unity.Netcode.Transports.UNET;
 using System.Linq;
 using System;
 using System.Net;
+using UnityEngine.Audio;
 
 public class User_Interface : MonoBehaviour
 {
@@ -19,22 +20,23 @@ public class User_Interface : MonoBehaviour
     [SerializeField] List<Sprite> SoundButtons=new();
     [SerializeField] Dictionary<IPAddress, DiscoveryResponseData> discoveredServers = new();
     public Text ServerName;
-    public Scrollbar ScroolVolumeSound;
+    public Slider ScroolVolumeSound;
     public RectTransform _Content;
     public Scrollbar ScroolVolumeMaxConnections;
+    public AudioMixer _mixer;
     public Cache_Save_System_ UserData;
     private NetworkManager _NetworkManager;
     private ExampleNetworkDiscovery m_Discovery;
    
-    IEnumerator AutoSearchServers()
+    public IEnumerator AutoSearchServers()
     {
-
+        yield return new WaitForSecondsRealtime(3f);
         do
         {
-            Debug.Log("loop");
-            //searchservers();
-            //yield return null;
+
+           // Searchservers();
             yield return new WaitForSecondsRealtime(3f);
+            yield return null;
         }
         while (true);
         //yield return null;
@@ -42,6 +44,7 @@ public class User_Interface : MonoBehaviour
     public void OnServerFound(IPEndPoint sender, DiscoveryResponseData response)
     {
         discoveredServers[sender.Address] = response;
+        ReloadServersUI();
         Debug.Log("serverfownded");
     }
     public void Searchservers()
@@ -51,20 +54,22 @@ public class User_Interface : MonoBehaviour
         {
             m_Discovery.StartClient(); 
         }
+    
         m_Discovery.ClientBroadcast(new DiscoveryBroadcastData());
-        ReloadServersUI();
-        Debug.Log(discoveredServers.Values.Count);
-        Debug.Log(discoveredServers.Keys);
+       
+        //Debug.Log(discoveredServers.Values.Count);
+        //Debug.Log(discoveredServers.Keys);
     }
     public void ReloadServersUI()
     {
-        if (ServersUIContent.childCount > 0)
+        try
         {
-            foreach (RectTransform server in ServersUIContent.GetComponentsInChildren<RectTransform>())
+            if (ServersUIContent.childCount > 0)
             {
-                Destroy(server.gameObject);
+                ServersUIContent.DetachChildren();
             }
         }
+        catch { }
         if (discoveredServers.Values.Count > 0)
         {
             foreach (var server in discoveredServers)
@@ -104,8 +109,9 @@ public class User_Interface : MonoBehaviour
     {
         return _adress.Trim().ToLower();
     }
-    private void Start()
+    public void Start()
     {
+      
         #region Load Local Data's
         UserData = GameObject.FindObjectOfType<Cache_Save_System_>();
         #endregion
@@ -114,6 +120,7 @@ public class User_Interface : MonoBehaviour
         ImageChange();
         #endregion
         #region Actions
+
         ScroolVolumeSound.onValueChanged.AddListener(VolumeChange);
         GlobalBadTexts = BadTexts;
         #endregion
@@ -178,23 +185,27 @@ public class User_Interface : MonoBehaviour
     }
     public void ImageChange()
     {
-        if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 0.25f)
+        Debug.Log(UserData.UserData.SoundsVolume);
+        UserData.UserData.SoundsVolume = ScroolVolumeSound.value;
+        if (UserData.UserData.SoundsVolume > -80f && UserData.UserData.SoundsVolume <= -40f)
         {
             SoundButton.sprite = SoundButtons[1];
         }
-        else if (UserData.UserData.SoundsVolume > 0.25f && UserData.UserData.SoundsVolume <= 0.5f)
+        else if (UserData.UserData.SoundsVolume > -40f && UserData.UserData.SoundsVolume <= 0)
         {
             SoundButton.sprite = SoundButtons[2];
         }
-        else if (UserData.UserData.SoundsVolume > 0.5f && UserData.UserData.SoundsVolume <= 1f)
+        else if (UserData.UserData.SoundsVolume > 0f && UserData.UserData.SoundsVolume <= 20f)
         {
             SoundButton.sprite = SoundButtons[3];
         }
-        else if (UserData.UserData.SoundsVolume <= 0f)
+        else if (UserData.UserData.SoundsVolume <= -40f)
         {
             SoundButton.sprite = SoundButtons[0];
         }
-        ScroolVolumeSound.value = UserData.UserData.SoundsVolume;
+        
+       // _mixer.SetFloat("Volume", ScroolVolumeSound.value>0? ScroolVolumeSound.value*20f: (ScroolVolumeSound.value ==0 ?0f: ScroolVolumeSound.value*80f));
+
         if (UserData.UserData.SoundsIsMute) { SoundButton.sprite = SoundButtons[0]; }
     }
     public void VolumeChange(float _v)
@@ -203,7 +214,7 @@ public class User_Interface : MonoBehaviour
         Debug.Log("Ñðôòïóâ");
         UserData.UserData.SoundsIsMute = _v<0;
         UserData.UserData.SoundsVolume = _v;
-        
+        _mixer.SetFloat("Volume",_v);
         ImageChange();
        
     }
@@ -212,6 +223,7 @@ public class User_Interface : MonoBehaviour
         UserData.UserData.SoundsIsMute = !UserData.UserData.SoundsIsMute;
         SoundButton.sprite= SoundButtons[0];
         if (!UserData.UserData.SoundsIsMute) {VolumeChange(UserData.UserData.SoundsVolume); }
+        else { VolumeChange(-80f); }
     }
     public void AnimationSettingsChange(bool _To)
     {

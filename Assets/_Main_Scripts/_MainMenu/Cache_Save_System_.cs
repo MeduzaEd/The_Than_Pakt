@@ -73,6 +73,7 @@ public class Cache_Save_System_ : MonoBehaviour
             File.WriteAllText(filePath, encryptedJson);
             Debug.Log("Data saved at: " + filePath);
         }
+        Debug.Log("HasSaved");
     }
 
     private void Start()
@@ -82,6 +83,7 @@ public class Cache_Save_System_ : MonoBehaviour
         LoadData();
         CheckToLoad();
         CheckToSelected();
+        StartCoroutine(AutoSave());
     }
     public void CheckToLoad()
     {
@@ -115,48 +117,95 @@ public class Cache_Save_System_ : MonoBehaviour
     {
         string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
         string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
+
         try
         {
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            
+
             if (File.Exists(filePath))
             {
-        
-                string decryptedJson = EncryptionManager.Decrypt(File.ReadAllText(filePath));
+                string encryptedJson = File.ReadAllText(filePath);
+
+                // Проверка наличия данных в файле
+                if (string.IsNullOrEmpty(encryptedJson))
+                {
+                    AllUserData defaultData = new();
+                    SaveDefaultData(filePath, defaultData);
+                    Debug.LogError("Файл 'IsUserLocalData.json' пустой или поврежден.");
+                    return;
+                }
+
+                string decryptedJson = EncryptionManager.Decrypt(encryptedJson);
+
+                // Проверка наличия данных после дешифрования
+                if (string.IsNullOrEmpty(decryptedJson))
+                {
+                    AllUserData defaultData = new();
+                    SaveDefaultData(filePath, defaultData);
+                    Debug.LogError("Файл 'IsUserLocalData.json' содержит некорректные данные.");
+                    return;
+                }
+
                 AllUserData data = JsonUtility.FromJson<AllUserData>(decryptedJson);
-               // JsonUtility.FromJsonOverwrite(decryptedJson, UserData);
-                UserData= data;
+                UserData = data;
+
                 #region Sync to start!
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeSound.value = UserData.SoundsVolume;
+
                 GameObject.FindObjectOfType<User_Interface>().ImageChange();
-                GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value =((float)UserData.MaxUsersInHost)/16;
+                GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.value = ((float)UserData.MaxUsersInHost) / 16;
                 GameObject.FindObjectOfType<User_Interface>().MaxUsersChange();
                 GameObject.FindObjectOfType<User_Interface>().ScroolVolumeMaxConnections.onValueChanged.AddListener(The_MaxUsersChange);
-                GameObject.FindObjectOfType<User_Interface>().ServerName.transform.parent.GetComponent<InputField>().text = UserData.MyServerName ;
+                GameObject.FindObjectOfType<User_Interface>().ServerName.transform.parent.GetComponent<InputField>().text = UserData.MyServerName;
                 GameObject.FindObjectOfType<User_Interface>().ServerNameChange(UserData.MyServerName);
-
                 #endregion
+
                 Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
             }
             else
             {
-
-                SaveData();
-                Debug.Log("Save file-'UserLocalData' not found and Saved new file to path : " + filePath);
+                AllUserData defaultData = new();
+                SaveDefaultData(filePath, defaultData);
+                Debug.Log("Файл 'IsUserLocalData.json' не найден. Создан новый файл по пути: " + filePath);
             }
-        }catch(Exception ex) { Debug.Log(ex);}
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Произошла ошибка при загрузке данных: {ex.Message}\nStackTrace: {ex.StackTrace}");
+        }
     }
+    private void SaveDefaultData(string filePath, AllUserData defaultData)
+    {
+        // Сохраняем новые данные по умолчанию в файл
+        string defaultJson = JsonUtility.ToJson(defaultData);
+        string encryptedJson = EncryptionManager.Encrypt(defaultJson);
 
+        File.WriteAllText(filePath, encryptedJson);
+
+        Debug.Log("Создан новый файл 'IsUserLocalData.json' с данными по умолчанию.");
+    }
     private void The_MaxUsersChange(float _)
     {
         GameObject.FindObjectOfType<User_Interface>().MaxUsersChange();
     }
+
     private void OnApplicationQuit()
     {
         SaveData();
-        Debug.Log($"{ UserData.MaxUsersInHost} - HasSaved!");
+        Debug.Log($" - HasSaved!");
+    }
+    IEnumerator AutoSave()
+    {
+        do
+        {
+
+            yield return new WaitForSecondsRealtime(9f);
+            SaveData();
+            yield return null;
+        }
+        while (true) ;
     }
 }
