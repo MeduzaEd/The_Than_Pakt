@@ -28,18 +28,30 @@ public class EncryptionManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         // Сохраняем ключи при выходе из приложения
-        PlayerPrefs.SetString("the_encryption_key2", Convert.ToBase64String(key));
-        PlayerPrefs.SetString("the_encryption_iv2", Convert.ToBase64String(iv));
+        SaveEncryptoAndDescrypto();
+        Debug.Log("Saved E&D");
+    }
+    private void SaveEncryptoAndDescrypto()
+    {
+        PlayerPrefs.SetString("the_encryption_key", Convert.ToBase64String(key));
+        PlayerPrefs.SetString("the_encryption_iv", Convert.ToBase64String(iv));
         PlayerPrefs.Save();
     }
-
     private void Start()
     {
         // Загружаем ключи при запуске приложения
-        key = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_key2", GenerateKey()));
-        iv = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_iv2", GenerateIV()));
-        //Debug.Log(key);
-        //Debug.Log(iv);
+        key = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_key", GenerateKey()));
+        iv = Convert.FromBase64String(PlayerPrefs.GetString("the_encryption_iv", GenerateIV()));
+        if((key.Length != 32)||(iv.Length != 16))
+        {
+            PlayerPrefs.DeleteAll();
+            key = Convert.FromBase64String(GenerateKey());
+            iv = Convert.FromBase64String(GenerateIV());
+            SaveEncryptoAndDescrypto();
+            Debug.Log("IncorrectLenght");
+        }
+        Debug.Log(key.Length);
+        Debug.Log(iv.Length);
     }
     public static string Encrypt(string plainText)
     {
@@ -51,12 +63,15 @@ public class EncryptionManager : MonoBehaviour
         ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
         using MemoryStream msEncrypt = new ();
-
-        using CryptoStream csEncrypt = new (msEncrypt, encryptor, CryptoStreamMode.Write);
-
-        using StreamWriter swEncrypt = new (csEncrypt);
-            
-        swEncrypt.Write(plainText);
+        {
+            using CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write);
+            {
+                using StreamWriter swEncrypt = new(csEncrypt);
+                {
+                    swEncrypt.Write(plainText);
+                }
+            }
+        }
      
         return Convert.ToBase64String(msEncrypt.ToArray());
         

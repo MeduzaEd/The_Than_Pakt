@@ -51,8 +51,8 @@ public class Cache_Save_System_ : MonoBehaviour
     {
     
         string encryptedJson = EncryptionManager.Encrypt(JsonUtility.ToJson(UserData));
-        string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
-        string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
+        string directoryPath = Path.Combine(Application.persistentDataPath, "Data", "Json");
+        string filePath = Path.Combine(directoryPath, "LocalData.json");
 
         // Создаем директорию, если ее нет
         if (!Directory.Exists(directoryPath))
@@ -115,8 +115,8 @@ public class Cache_Save_System_ : MonoBehaviour
     }
     public void LoadData()
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "MeduzaEdCompany", "Soul_Night");
-        string filePath = Path.Combine(directoryPath, "IsUserLocalData.json");
+        string directoryPath = Path.Combine(Application.persistentDataPath, "Data", "Json");
+        string filePath = Path.Combine(directoryPath, "LocalData.json");
 
         try
         {
@@ -132,7 +132,7 @@ public class Cache_Save_System_ : MonoBehaviour
                 // Проверка наличия данных в файле
                 if (string.IsNullOrEmpty(encryptedJson))
                 {
-                    AllUserData defaultData = new();
+                    AllUserData defaultData = new ();
                     SaveDefaultData(filePath, defaultData);
                     Debug.LogError("Файл 'IsUserLocalData.json' пустой или поврежден.");
                     return;
