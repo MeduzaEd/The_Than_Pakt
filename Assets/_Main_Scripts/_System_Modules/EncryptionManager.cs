@@ -50,8 +50,8 @@ public class EncryptionManager : MonoBehaviour
             SaveEncryptoAndDescrypto();
             Debug.Log("IncorrectLenght");
         }
-        Debug.Log(key.Length);
-        Debug.Log(iv.Length);
+      //  Debug.Log(key.Length);
+      //  Debug.Log(iv.Length);
     }
     public static string Encrypt(string plainText)
     {

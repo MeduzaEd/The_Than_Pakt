@@ -185,7 +185,7 @@ public class User_Interface : MonoBehaviour
     }
     public void ImageChange()
     {
-        Debug.Log(UserData.UserData.SoundsVolume);
+        //Debug.Log(UserData.UserData.SoundsVolume);
         UserData.UserData.SoundsVolume = ScroolVolumeSound.value;
         if (UserData.UserData.SoundsVolume > -80f && UserData.UserData.SoundsVolume <= -40f)
         {
@@ -211,7 +211,7 @@ public class User_Interface : MonoBehaviour
     public void VolumeChange(float _v)
     {
 
-        Debug.Log("Ñðôòïóâ");
+      //  Debug.Log("Ñðôòïóâ");
         UserData.UserData.SoundsIsMute = _v<0;
         UserData.UserData.SoundsVolume = _v;
         _mixer.SetFloat("Volume",_v);
@@ -307,9 +307,9 @@ public class User_Interface : MonoBehaviour
     }
     private void Exit_()
     {
-        Debug.Log("Saving");
+      //  Debug.Log("Saving");
         UserData.SaveData();
-        Debug.Log("Exiting");
+       // Debug.Log("Exiting");
         Application.Quit();
     }
 }

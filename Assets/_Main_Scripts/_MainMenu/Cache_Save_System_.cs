@@ -73,7 +73,7 @@ public class Cache_Save_System_ : MonoBehaviour
             File.WriteAllText(filePath, encryptedJson);
             Debug.Log("Data saved at: " + filePath);
         }
-        Debug.Log("HasSaved");
+        //Debug.Log("HasSaved");
     }
 
     private void Start()
@@ -163,7 +163,7 @@ public class Cache_Save_System_ : MonoBehaviour
                 GameObject.FindObjectOfType<User_Interface>().ServerNameChange(UserData.MyServerName);
                 #endregion
 
-                Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
+             //   Debug.Log("UserLocalData loaded from: " + UserData.MaxUsersInHost);
             }
             else
             {

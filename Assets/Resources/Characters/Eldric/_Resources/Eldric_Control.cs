@@ -68,39 +68,31 @@ public class Eldric_Control : NetworkBehaviour
     public void BasicAttackServerRpc(ulong UserID,Quaternion CameraRotation)
     {
         if ((!IsServer)||(BasicAttackcd.Value==true)) {return;}
-        //if(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).GetComponent<Humanoid>().OnAttack.Value == true){ return; }
         StartCoroutine(AttackCoroutine(UserID));
-        StartCoroutine(SpawnBulletsWithDelay(Random.Range(.0499f, 0.199f),UserID,CameraRotation));
-      
-    }
-
-    IEnumerator SpawnBulletsWithDelay(float delay, ulong UserID, Quaternion CameraRotation)
-    {
-        GameObject Character = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetChild(2).gameObject;
         StartCoroutine(RotationgCorutione(UserID, CameraRotation));
-        int _I= Random.Range(2, 3);
-        int _UpDown= Random.Range(0, 1);
-        _UpDown = _UpDown > 0? 1:-1;
+        int _I = Random.Range(2, 3);
+        int _UpDown = Random.Range(0, 1);
+        _UpDown = _UpDown > 0 ? 1 : -1;
         Debug.Log(_I);
         Debug.Log(_UpDown);
-        for (int i = _UpDown * (_I); _UpDown==1? i  > -1*_I : i < _I; i+= -1* _UpDown)
+        for (int i = _UpDown * (_I); _UpDown == 1 ? i > -1 * _I : i < _I; i += -1 * _UpDown)
         {
             Debug.Log(i);
-            // i = 1 * 2; i(2) < 1*(2+2);i+=1
-            // i = -1 * 2; (-1*i)(2) < -1*(2+2);i+=-1 alter
-            // i= -1* 2 ;
-            // -2 > 2
+            StartCoroutine(SpawnBulletsWithDelay(Random.Range(.125f, 1.125f), UserID, CameraRotation,i));
 
-            // i = 2
-
-            //2 > 2
-            GameObject Bullet = Instantiate(Character.GetComponent<User_SkinParams>().BasicAttackPrefab);
-            Bullet.GetComponent<NetworkObject>().SpawnWithOwnership(UserID);
-            Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, (Random.Range(-1, 1) * Random.Range(.055f, .125f)* i) + 0.75f, 0) + (Random.Range(.9f, 3.5f) * 0.1f * i * Character.transform.right) + (Random.Range(-.2f, .2f) * Character.transform.forward), CameraRotation);
-            Bullet.GetComponent<Damage>()._OwnerID = UserID;
-            Bullet.GetComponent<Damage>()._DefaultDamage += NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).GetComponent<Humanoid>().MagicPower.Value;
-            yield return new WaitForSeconds(delay);
         }
+    }
+
+    IEnumerator SpawnBulletsWithDelay(float delay, ulong UserID, Quaternion CameraRotation,int i)
+    {
+        yield return new WaitForSeconds(delay);
+        GameObject Character = NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).transform.GetChild(0).GetChild(2).gameObject;
+        GameObject Bullet = Instantiate(Character.GetComponent<User_SkinParams>().BasicAttackPrefab);
+        Bullet.GetComponent<NetworkObject>().SpawnWithOwnership(UserID);
+        Bullet.transform.SetPositionAndRotation(Character.transform.position + new Vector3(0, (Random.Range(-1, 1) * Random.Range(.055f, .125f) * i) + 0.75f, 0) + (Random.Range(.9f, 2.5f) * 0.1f * i * Character.transform.right) + (Random.Range(-.2f, .2f) * Character.transform.forward), CameraRotation);
+        Bullet.GetComponent<Damage>()._OwnerID = UserID;
+        Bullet.GetComponent<Damage>()._DefaultDamage += NetworkManager.SpawnManager.GetPlayerNetworkObject(UserID).GetComponent<Humanoid>().MagicPower.Value;
+        yield return null;
     }
     #endregion
 
@@ -109,7 +101,7 @@ public class Eldric_Control : NetworkBehaviour
     {
         if ((!IsOwner)|| _Camera==null) return;
         
-        BasicAttackServerRpc(OwnerClientId,Quaternion.LookRotation((33f* _Camera.transform.forward)+(7f*_Camera.transform.up)+new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1)),Vector3.up));
+        BasicAttackServerRpc(OwnerClientId,Quaternion.LookRotation((33f* _Camera.transform.forward)+(7f*_Camera.transform.up)+new Vector3(Random.Range(-.3f, .5f), Random.Range(-.5f, .3f), Random.Range(-.3f, .6f)),Vector3.up));
         
     }
     #endregion
