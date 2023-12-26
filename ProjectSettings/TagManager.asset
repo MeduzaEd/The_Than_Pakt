@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - _USERS_
+  - _Toucnhable_
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - PostProcess
   - MenuPostProcess
   - Player
-  - 
+  - Wall
   - 
   - 
   - 

@@ -78,7 +78,7 @@ public class Eldric_Control : NetworkBehaviour
         for (int i = _UpDown * (_I); _UpDown == 1 ? i > -1 * _I : i < _I; i += -1 * _UpDown)
         {
             Debug.Log(i);
-            StartCoroutine(SpawnBulletsWithDelay(Random.Range(.125f, 1.125f), UserID, CameraRotation,i));
+            StartCoroutine(SpawnBulletsWithDelay(Random.Range(.45f, 0.75f), UserID, CameraRotation,i));
 
         }
     }
