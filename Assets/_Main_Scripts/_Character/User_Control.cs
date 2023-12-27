@@ -50,7 +50,7 @@ public class User_Control : NetworkBehaviour
         NetworkObject User = NetworkManager.SpawnManager.GetPlayerNetworkObject(uid);
         Humanoid _Humanoid = User.GetComponent<Humanoid>();
         _srb = User.GetComponentInChildren<Rigidbody>();
-        SkinAnimator = _srb.transform.GetChild(2).GetChild(0).GetComponent<Animator>();
+        SkinAnimator = _srb.transform.GetChild(3).GetChild(0).GetComponent<Animator>();
         SkinAnimator.SetFloat("Speed", _rb.velocity.magnitude);
         if (_Humanoid.OnAttack.Value == true) { return; }
         if (_MoveVector == Vector3.zero) { return; }
@@ -72,7 +72,7 @@ public class User_Control : NetworkBehaviour
         if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            _srb.transform.GetChild(2).transform.rotation = Quaternion.Slerp(_srb.transform.GetChild(2).transform.rotation, targetRotation, Time.deltaTime * 25f);
+            _srb.transform.GetChild(2).transform.rotation = Quaternion.Slerp(_srb.transform.GetChild(3).transform.rotation, targetRotation, Time.deltaTime * 25f);
         }
     }
     #endregion

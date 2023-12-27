@@ -194,15 +194,15 @@ public class Cache_Save_System_ : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SaveData();
-        Debug.Log($" - HasSaved!");
+      // SaveData();
+       Debug.Log($" - Quited!");
     }
     IEnumerator AutoSave()
     {
         do
         {
 
-            yield return new WaitForSecondsRealtime(9f);
+            yield return new WaitForSecondsRealtime(30f);
             SaveData();
             yield return null;
         }
