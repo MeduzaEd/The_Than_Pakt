@@ -7,7 +7,7 @@ public class BildboardElement : MonoBehaviour
     private Transform _camera;
     private void Start()
     {
-        _camera = Camera.current.transform;
+        _camera = Camera.current !=null? Camera.current.transform:null;
     }
     private void LateUpdate()
     {

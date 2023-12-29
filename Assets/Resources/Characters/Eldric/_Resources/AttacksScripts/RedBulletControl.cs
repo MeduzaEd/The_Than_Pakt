@@ -6,7 +6,7 @@ public class RedBulletControl : NetworkBehaviour
     private Animator _Animator;
     private void Start()
     {
-        if (!IsServer) { return; }
+        if (!IsOwner) { return; }
         _Destroytime = 1.75f + Time.time;
         _Animator=GetComponent<Animator>();
     }
@@ -14,7 +14,8 @@ public class RedBulletControl : NetworkBehaviour
     private void Update()
     {
         Debug.Log("Despawn");
-        if ((!IsServer)||(Time.time<_Destroytime)) { return; }
+        if ((!IsOwner) ||(Time.time<_Destroytime)) { return; }
+        _Animator = GetComponent<Animator>();
         _Animator.SetBool("Destroy", true);
     }
     public void Despawne()
@@ -22,10 +23,17 @@ public class RedBulletControl : NetworkBehaviour
         if (!IsServer) { return; }
         transform.GetComponent<NetworkObject>().Despawn();
     }
+    
+    public void ImpulseServer()
+    {
+       
+        if (!IsOwner) { Debug.Log("returned");  return; }
+        Debug.Log("Impulse");
+        ImpulseServerRpc();
+    }
     [ServerRpc]
     public void ImpulseServerRpc()
     {
-        Debug.Log("Impulse");
         if (!IsServer) { return; }
         GetComponent<Rigidbody>().AddForce(transform.forward * 2800f, ForceMode.Force);
     }
@@ -34,6 +42,7 @@ public class RedBulletControl : NetworkBehaviour
         if (!IsServer) { return; }
         if(_obj.CompareTag("_Toucnhable_"))
         {
+            _Animator = GetComponent<Animator>();
             _Animator.SetBool("Destroy", true);
         }
         OnDamange();
