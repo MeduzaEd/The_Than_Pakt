@@ -119,7 +119,7 @@ public class User_Control : NetworkBehaviour
     private void Update()
     {
         
-        if (!IsOwner|| UserLoaded.Value==false|| !_rb||!_camera) { return; }
+        if (!IsOwner|| UserLoaded.Value==false|| _rb == null || _camera==null) { return; }
         #region Moving
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {

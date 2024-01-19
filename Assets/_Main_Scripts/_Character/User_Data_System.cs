@@ -16,30 +16,30 @@ public class User_Data_System : NetworkBehaviour
     [ServerRpc]
     public void LoadCharacterServerRpc(string CharacterPath,string SkinPath,ulong UserId)
     {
-        Debug.Log($"s1CharacterPath: {CharacterPath} and SkinPath:{SkinPath}");
+    //    Debug.Log($"s1CharacterPath: {CharacterPath} and SkinPath:{SkinPath}");
         if (!IsServer) {return;}
-        Debug.Log("s2");
+      //  Debug.Log("s2");
         GameObject SpawnCharacter=null;
         GameObject SpawnSkin=null;
         try 
         {
-            Debug.Log($"CharacterPath0: {Resources.Load<GameObject>(CharacterPath)}");
-            Debug.Log($"CharacterPath1: {Instantiate(Resources.Load<GameObject>(CharacterPath))}");
+        //    Debug.Log($"CharacterPath0: {Resources.Load<GameObject>(CharacterPath)}");
+      //      Debug.Log($"CharacterPath1: {Instantiate(Resources.Load<GameObject>(CharacterPath))}");
             SpawnCharacter =Instantiate(Resources.Load<GameObject>(CharacterPath));
-            Debug.Log($"SpawnCharacter: {SpawnCharacter}");
+        //    Debug.Log($"SpawnCharacter: {SpawnCharacter}");
             SpawnSkin = Instantiate(Resources.Load<GameObject>(SkinPath));
-            Debug.Log($"SpawnCharacter: {SpawnCharacter} and SpawnSkin:{SpawnSkin}");
+         //   Debug.Log($"SpawnCharacter: {SpawnCharacter} and SpawnSkin:{SpawnSkin}");
             if (SpawnCharacter.GetComponent<Character_Type>().Type!= SpawnSkin.GetComponent<Character_Type>().Type)
             {
                 TryDestroy(SpawnCharacter);
                 TryDestroy(SpawnSkin);
-                Debug.Log("Dont spawn!!!");
+                Debug.Log(" spawn error !!!");
                 return;
             }
             
             SpawnCharacter.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
-            SpawnSkin.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
             SpawnCharacter.GetComponent<NetworkObject>().TrySetParent(NetworkManager.SpawnManager.GetPlayerNetworkObject(UserId).transform);
+            SpawnSkin.GetComponent<NetworkObject>().SpawnWithOwnership(UserId);
             SpawnSkin.GetComponent<NetworkObject>().TrySetParent(SpawnCharacter.transform);
             SpawnCharacter.transform.position = Vector3.zero;
             SpawnSkin.transform.position = Vector3.zero;
