@@ -39,8 +39,13 @@ public class Humanoid : NetworkBehaviour
     #endregion
     public void OnDamage(ulong _OwnerID,uint _Damage)
     {
+
+        if (!IsServer) { return; }
+        Debug.LogWarning("OnDamaged");
+        if(Health.Value == 0) { return; }
         PlayerKilled.Value = _OwnerID;
-        Health.Value -= _Damage;
+        if (Health.Value< _Damage) { Health.Value = 0; }
+        else { Health.Value -= _Damage; }
     }
     // public List<NetworkVariable<uint>> Sollowing;
     public NetworkVariable<uint> SpeedMulti = new(){ Value = 100};

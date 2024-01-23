@@ -64,7 +64,7 @@ public class Eldric_Control : NetworkBehaviour
         yield return null;
     }
         #region ServerAttacks 
-        [ServerRpc]
+    [ServerRpc]
     public void BasicAttackServerRpc(ulong UserID,Quaternion CameraRotation)
     {
         if ((!IsServer)||(BasicAttackcd.Value==true)) {return;}
@@ -100,7 +100,7 @@ public class Eldric_Control : NetworkBehaviour
     public void BasicAttack()
     {
         if ((!IsOwner)|| _Camera==null) return;
-        
+        Debug.Log($"OwnerClientId:{OwnerClientId}");
         BasicAttackServerRpc(OwnerClientId,Quaternion.LookRotation((33f* _Camera.transform.forward)+(7f*_Camera.transform.up)+new Vector3(Random.Range(-.3f, .5f), Random.Range(-.5f, .3f), Random.Range(-.3f, .6f)),Vector3.up));
         
     }

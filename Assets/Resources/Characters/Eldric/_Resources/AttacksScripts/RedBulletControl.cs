@@ -49,15 +49,15 @@ public class RedBulletControl : NetworkBehaviour
             _Animator.SetBool("Destroy", true);
 
         }
-        OnDamange();
+        //OnDamange();
         //OnDamange(_obj.transform.parent.GetComponent<NetworkObject>().NetworkObjectId, _AttackOwner);
     }
-    private void OnDamange()
-    {
-        if (!IsServer) { return; }
-        //Humanoid _humanoid = NetworkManager.SpawnManager.GetPlayerNetworkObject(ownerid).GetComponent<Humanoid>();
-       // Humanoid _enemyhumanoid = NetworkManager.SpawnManager.GetPlayerNetworkObject(_id).GetComponent<Humanoid>();
-       // _enemyhumanoid.Health.Value -= (uint)((_humanoid.MagicPower.Value * 0.3f) + (_humanoid.PhysicPower.Value * 0.45f));
-       // _enemyhumanoid.PlayerKilled.Value = ownerid;
-    }
+    //private void OnDamange()
+    //{
+    //    if (!IsServer) { return; }
+    //    //Humanoid _humanoid = NetworkManager.SpawnManager.GetPlayerNetworkObject(ownerid).GetComponent<Humanoid>();
+    //   // Humanoid _enemyhumanoid = NetworkManager.SpawnManager.GetPlayerNetworkObject(_id).GetComponent<Humanoid>();
+    //   // _enemyhumanoid.Health.Value -= (uint)((_humanoid.MagicPower.Value * 0.3f) + (_humanoid.PhysicPower.Value * 0.45f));
+    //   // _enemyhumanoid.PlayerKilled.Value = ownerid;
+    //}
 }
