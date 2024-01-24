@@ -189,6 +189,7 @@ MonoBehaviour:
     m_InternalValue: 0
   OnAttack:
     m_InternalValue: 0
+  _Animator: {fileID: 547687205725226341}
   SpeedMulti:
     m_InternalValue: 100
 --- !u!114 &4440581814998378247

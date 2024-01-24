@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WolfController : MonoBehaviour
 {
-    private Transform _Target;
+   // private Transform _Target;
     [SerializeField] Humanoid _Humanoid;
 
 
